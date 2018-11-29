@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ManyToManyAddressesSearch</string>
+    <string name="title_address_detail">Address Detail</string>
+</resources>

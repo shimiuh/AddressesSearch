@@ -1,0 +1,15 @@
+apply plugin: 'com.android.instantapp'
+
+dependencies {
+    implementation project(':feature')
+    implementation project(':base')
+}
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion '28.0.2'
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
