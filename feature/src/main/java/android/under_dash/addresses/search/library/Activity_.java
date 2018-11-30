@@ -3,6 +3,8 @@ package android.under_dash.addresses.search.library;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import io.objectbox.Box;
+
 public class Activity_ extends AppCompatActivity {
 
     @Override
@@ -14,5 +16,10 @@ public class Activity_ extends AppCompatActivity {
 //                    .replace(R.id.container, Fragment_.newInstance())
 //                    .commitNow();
 //        }
+    }
+
+
+    public <T> Box<T> getBox(Class clazz){
+        return Application_.getBoxStore().boxFor(clazz);
     }
 }

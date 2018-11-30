@@ -18,6 +18,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.under_dash.addresses.search.helpers.MyCSVFileReader;
 import android.under_dash.addresses.search.library.Activity_;
+import android.under_dash.addresses.search.models.Address;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,8 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.util.List;
+
+import io.objectbox.Box;
 
 /**
  * An activity representing a list of Addresses. This activity
@@ -100,7 +103,7 @@ public class AddressListActivity extends Activity_ {
         View recyclerView = findViewById(R.id.address_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
-
+        Box<Address> addressBox = getBox(Address.class);
 
     }
 

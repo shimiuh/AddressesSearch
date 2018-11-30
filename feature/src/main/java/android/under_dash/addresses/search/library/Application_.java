@@ -32,16 +32,19 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Process;
+import android.under_dash.addresses.search.models.MyObjectBox;
 import android.util.Log;
 
 import java.util.stream.DoubleStream;
+
+import io.objectbox.BoxStore;
 
 //import io.objectbox.BoxStore;
 //import io.objectbox.BoxStoreBuilder;
 
 public class Application_ extends Application {
 	private static final String TAG = "MainApplication";
-	//private final BoxStore sBoxStore = null;
+	private static BoxStore sBoxStore = null;
 
 	private static Application_ appContext;
 	private static Handler sUiHandler = null;
@@ -61,15 +64,15 @@ public class Application_ extends Application {
 		Application_.appContext = this;
 		// do this once, for example in your Application class
 		Log.d(TAG, "onCreate() called");
-		//sBoxStore = MyObjectBox.builder().androidContext(Application_.get()).build();
+		getBoxStore();
 	}
 
-//	synchronized public static Handler getBoxStore(){
-//		if (sBoxStore==null){
-//			sBoxStore = MyObjectBox.builder().androidContext(Application_.get()).build();
-//		}
-//		return sBoxStore;
-//	}
+	synchronized public static BoxStore getBoxStore(){
+		if (sBoxStore==null){
+			sBoxStore = MyObjectBox.builder().androidContext(Application_.get()).build();
+		}
+		return sBoxStore;
+	}
 
 
 

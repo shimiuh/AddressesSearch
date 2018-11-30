@@ -5,7 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity(tableName = "institutions")
+@Entity (tableName = "institutions")
 public class Institution {
 
     @PrimaryKey(autoGenerate = true)
