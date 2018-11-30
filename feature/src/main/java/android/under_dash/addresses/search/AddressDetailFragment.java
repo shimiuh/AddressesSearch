@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.under_dash.addresses.search.library.ui.fragment.Fragment_;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,7 @@ import android.under_dash.addresses.search.dummy.DummyContent;
  * in two-pane mode (on tablets) or a {@link AddressDetailActivity}
  * on handsets.
  */
-public class AddressDetailFragment extends Fragment {
+public class AddressDetailFragment extends Fragment_ {
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.

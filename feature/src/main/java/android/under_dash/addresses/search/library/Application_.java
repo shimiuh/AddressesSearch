@@ -24,7 +24,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package android.under_dash.addresses.search.app;
+package android.under_dash.addresses.search.library;
 
 import android.app.Application;
 import android.content.Context;
@@ -34,16 +34,22 @@ import android.os.Looper;
 import android.os.Process;
 import android.util.Log;
 
-public class MainApplication extends Application {
-	private static final String TAG = "MainApplication";
+import java.util.stream.DoubleStream;
 
-	private static MainApplication appContext;
+//import io.objectbox.BoxStore;
+//import io.objectbox.BoxStoreBuilder;
+
+public class Application_ extends Application {
+	private static final String TAG = "MainApplication";
+	//private final BoxStore sBoxStore = null;
+
+	private static Application_ appContext;
 	private static Handler sUiHandler = null;
 	private static Handler sBackgroundHandler = null;
 
 
 
-	public static MainApplication get() {
+	public static Application_ get() {
 		return appContext;
 	}
 
@@ -52,9 +58,18 @@ public class MainApplication extends Application {
     @Override
 	public void onCreate() {
 		super.onCreate();
-		MainApplication.appContext = this;
+		Application_.appContext = this;
+		// do this once, for example in your Application class
 		Log.d(TAG, "onCreate() called");
+		//sBoxStore = MyObjectBox.builder().androidContext(Application_.get()).build();
 	}
+
+//	synchronized public static Handler getBoxStore(){
+//		if (sBoxStore==null){
+//			sBoxStore = MyObjectBox.builder().androidContext(Application_.get()).build();
+//		}
+//		return sBoxStore;
+//	}
 
 
 
@@ -70,7 +85,7 @@ public class MainApplication extends Application {
 		Log.d(TAG, "onTrimMemory() called with: level = [" + level + "]");
 	}
 
-	public static MainApplication getAppContext() {
+	public static Application_ getAppContext() {
 		return appContext;
 	}
 

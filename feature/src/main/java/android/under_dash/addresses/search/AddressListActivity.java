@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.under_dash.addresses.search.helpers.MyCSVFileReader;
+import android.under_dash.addresses.search.library.Activity_;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,7 @@ import java.util.List;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class AddressListActivity extends AppCompatActivity {
+public class AddressListActivity extends Activity_ {
 
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {

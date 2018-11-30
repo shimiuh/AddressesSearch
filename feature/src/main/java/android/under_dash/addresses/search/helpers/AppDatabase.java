@@ -4,7 +4,7 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
-import android.under_dash.addresses.search.app.MainApplication;
+import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.models.Institution;
 import android.under_dash.addresses.search.models.SearchList;
 import android.under_dash.addresses.search.models.SearchResult;
@@ -29,10 +29,10 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     public void addSearchItem(final SearchList... searchList){
-        MainApplication.getBackgroundHandler().post(() -> searchListDao().insertAll(searchList));
+        App.getBackgroundHandler().post(() -> searchListDao().insertAll(searchList));
     }
 
     public void addInstitution(final Institution... institution){
-        MainApplication.getBackgroundHandler().post(() -> institutionDao().insertAll(institution));
+        App.getBackgroundHandler().post(() -> institutionDao().insertAll(institution));
     }
 }
