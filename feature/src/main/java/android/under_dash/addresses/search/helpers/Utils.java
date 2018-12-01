@@ -27,7 +27,7 @@ public class Utils {
                 sb.append(address.getLatitude()).append(",").append(address.getLongitude());
                 result = sb.toString();
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.e("shimi", "Unable to connect to Geocoder", e);
         }
         return result;
