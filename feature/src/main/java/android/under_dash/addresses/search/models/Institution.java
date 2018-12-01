@@ -4,7 +4,6 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-
 @Entity (tableName = "institutions")
 public class Institution {
 
@@ -32,7 +31,6 @@ public class Institution {
 
     @ColumnInfo(name = "phone")
     public String phone;
-
 
     @ColumnInfo(name = "map_distance")
     public Integer mapDistance;

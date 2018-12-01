@@ -32,11 +32,13 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Process;
+import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.models.MyObjectBox;
 import android.util.Log;
 
 import java.util.stream.DoubleStream;
 
+import io.objectbox.Box;
 import io.objectbox.BoxStore;
 
 //import io.objectbox.BoxStore;
@@ -72,6 +74,10 @@ public class Application_ extends Application {
 			sBoxStore = MyObjectBox.builder().androidContext(Application_.get()).build();
 		}
 		return sBoxStore;
+	}
+
+	public <T> Box<T> getBox(Class clazz) {
+		return getBoxStore().boxFor(clazz);
 	}
 
 

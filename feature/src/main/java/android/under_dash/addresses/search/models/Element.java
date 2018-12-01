@@ -13,6 +13,7 @@ public class Element {
     @JsonProperty("status")
     private String status;
 
+
     @JsonProperty("distance")
     public Distance getDistance() {
         return distance;

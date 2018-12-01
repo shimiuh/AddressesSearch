@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.under_dash.addresses.search.app.App;
+import android.under_dash.addresses.search.helpers.HttpHelper;
 import android.under_dash.addresses.search.helpers.MyCSVFileReader;
 import android.under_dash.addresses.search.library.Activity_;
 import android.under_dash.addresses.search.models.Address;
@@ -36,6 +39,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import java.util.List;
 
 import io.objectbox.Box;
+import io.objectbox.TxCallback;
 
 /**
  * An activity representing a list of Addresses. This activity
@@ -103,7 +107,43 @@ public class AddressListActivity extends Activity_ {
         View recyclerView = findViewById(R.id.address_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
-        Box<Address> addressBox = getBox(Address.class);
+
+
+        App.getBackgroundHandler().post(() -> {
+            Box<Address> addressBox = getBox(Address.class);
+            List<Address> addresses = addressBox.getAll();
+            StringBuilder destination = new StringBuilder();
+            if(addresses != null && addresses.size() > 0 && addresses.get(0).getDuration() == 0) {
+
+
+                for (Address address : addresses) {
+                    if (address != null) {
+                        destination.append(address.latLong).append("|");
+                        //Log.d("shimi", .toString());
+                    }
+                }
+                //
+                Log.d("shimi", "in create addresses.size() = "+addresses.size()+ "  destination = "+destination.toString());
+                HttpHelper.getDistanceInfo("New+York+City,NY",destination.toString());
+            }else{
+                if(addresses != null) {
+                    Log.d("shimi", "in create else addresses.size() = "+addresses.size());
+                    for (Address address : addresses) {
+                        if (address != null) {
+                            Log.d("shimi", " Distance = "+address.getDistance()+" Duration = "+address.getDuration());
+                        }
+                    }
+                }
+            }
+
+
+
+        });
+
+
+
+
+
 
     }
 

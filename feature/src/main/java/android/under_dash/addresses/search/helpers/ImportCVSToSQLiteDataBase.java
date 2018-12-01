@@ -3,6 +3,8 @@ package android.under_dash.addresses.search.helpers;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.under_dash.addresses.search.app.App;
+import android.under_dash.addresses.search.models.Address;
 import android.under_dash.addresses.search.models.Institution;
 import android.util.Log;
 import android.widget.Toast;
@@ -53,10 +55,17 @@ public class ImportCVSToSQLiteDataBase extends AsyncTask<String, String, String>
                 String acc_address = row.getField(2);
 
                 Institution institution = new Institution(0,acc_name,acc_website,acc_address);
-                AppDatabase.get(mContext).addInstitution(institution);
-                data=data+"Account_name:"+acc_name  +"  Account_web:"+acc_website+"\n" +"  Account_address:"+acc_address+"\n";
-                Log.d("shimi", "doInBackground: "+"Read line: " + row);
-                Log.d("shimi", "First column of line: " + row.getField(0));
+                //AppDatabase.get(mContext).addInstitution(institution);
+                App.getBoxStore().runInTxAsync(() -> {
+                    String latLong = Utils.getLatLongFromLocation(acc_address,mContext);
+                    //Log.e("shimi", "latLong = "+latLong);
+                    App.get().getBox(Address.class).put(new Address(acc_name,acc_address,acc_website,latLong));
+                }, (result, error) -> {
+                    // transaction is done! do something?
+                });
+                //data=data+"Account_name:"+acc_name  +"  Account_web:"+acc_website+"\n" +"  Account_address:"+acc_address+"\n";
+                //Log.d("shimi", "doInBackground: "+"Read line: " + row);
+                //Log.d("shimi", "First column of line: " + row.getField(0));
             }
             return data;
 
@@ -76,7 +85,7 @@ public class ImportCVSToSQLiteDataBase extends AsyncTask<String, String, String>
 
         if (data.length()!=0){
             //Toast.makeText(mContext, "File is built Successfully!"+"\n"+data, Toast.LENGTH_LONG).show();
-            Log.d("shimi", "File is built Successfully!"+"\n"+data+"\n institutionDB = "+AppDatabase.get(mContext).institutionDao().getAll().toString());
+            //Log.d("shimi", "File is built Successfully!"+"\n"+data+"\n institutionDB = "+AppDatabase.get(mContext).institutionDao().getAll().toString());
         }else{
             Toast.makeText(mContext, "File fail to build", Toast.LENGTH_SHORT).show();
         }
