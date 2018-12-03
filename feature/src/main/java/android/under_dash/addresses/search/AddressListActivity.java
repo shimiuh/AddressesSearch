@@ -2,7 +2,6 @@ package android.under_dash.addresses.search;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Location;
@@ -20,10 +19,7 @@ import android.under_dash.addresses.search.helpers.MyCSVFileReader;
 import android.under_dash.addresses.search.library.Activity_;
 import android.under_dash.addresses.search.models.Address;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import android.under_dash.addresses.search.dummy.DummyContent;
 
@@ -33,6 +29,7 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.objectbox.Box;
@@ -108,13 +105,15 @@ public class AddressListActivity extends Activity_ {
         App.getBackgroundHandler().post(() -> {
             Box<Address> addressBox = getBox(Address.class);
             List<Address> addresses = addressBox.getAll();
-            StringBuilder destination = new StringBuilder();
+            //StringBuilder destination = new StringBuilder();
+            List<String> destination = new ArrayList<>();
             if(addresses != null && addresses.size() > 0 && addresses.get(0).getDuration() == 0) {
 
                 //
                 for (Address address : addresses) {
                     if (address != null) {
-                        destination.append(address.latLong).append("|");
+                        destination.add(address.latLong);
+                        //destination.append(address.latLong).append("|");
                         //Log.d("shimi", .toString());
                     }
                 }
@@ -122,7 +121,8 @@ public class AddressListActivity extends Activity_ {
 
 
                 Log.d("shimi", "in create addresses.size() = "+addresses.size()+ "  destination = "+destination.toString());
-                HttpHelper.getDistanceInfoAndAddInDb("New+York+City,NY",destination.toString(),null);
+                HttpHelper.getDistanceInfoAndAddInDb(destination,destination);
+                //HttpHelper.getDistanceInfoAndAddInDb("New+York+City,NY",destination.toString(),null);
             }else{
                 if(addresses != null) {
                     Log.d("shimi", "in create else addresses.size() = "+addresses.size());
@@ -146,74 +146,10 @@ public class AddressListActivity extends Activity_ {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
+        recyclerView.setAdapter(new AddressesSearchAdapter(this, DummyContent.ITEMS, mTwoPane));
     }
 
-    public static class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final AddressListActivity mParentActivity;
-        private final List<DummyContent.DummyItem> mValues;
-        private final boolean mTwoPane;
-        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
-                if (mTwoPane) {
-                    Bundle arguments = new Bundle();
-                    arguments.putString(AddressDetailFragment.ARG_ITEM_ID, item.id);
-                    AddressDetailFragment fragment = new AddressDetailFragment();
-                    fragment.setArguments(arguments);
-                    mParentActivity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.address_detail_container, fragment)
-                            .commit();
-                } else {
-                    Context context = view.getContext();
-                    Intent intent = new Intent(context, AddressDetailActivity.class);
-                    intent.putExtra(AddressDetailFragment.ARG_ITEM_ID, item.id);
-
-                    context.startActivity(intent);
-                }
-            }
-        };
-
-         SimpleItemRecyclerViewAdapter(AddressListActivity parent, List<DummyContent.DummyItem> items, boolean twoPane) {
-            mValues = items;
-            mParentActivity = parent;
-            mTwoPane = twoPane;
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.address_list_content, parent, false);
-            return new ViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
-
-            holder.itemView.setTag(mValues.get(position));
-            holder.itemView.setOnClickListener(mOnClickListener);
-        }
-
-        @Override
-        public int getItemCount() {
-            return mValues.size();
-        }
-
-        class ViewHolder extends RecyclerView.ViewHolder {
-            final TextView mIdView;
-            final TextView mContentView;
-
-            ViewHolder(View view) {
-                super(view);
-                mIdView = (TextView) view.findViewById(R.id.id_text);
-                mContentView = (TextView) view.findViewById(R.id.content);
-            }
-        }
-    }
 
     public void requestPermissions(){
 

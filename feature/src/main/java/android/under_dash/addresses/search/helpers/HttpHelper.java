@@ -27,10 +27,18 @@ import retrofit2.Response;
 public class HttpHelper {
 
     private static final String YOUR_API_KEY = "AIzaSyAOZZ2Xul6PmPxBUHxTZG7UurJOch_IDQ4";
-
+    private static int sCount = 0;
+    private static final String TAG = HttpHelper.class.getSimpleName();
 
 
     public static void getDistanceInfoAndAddInDb(List<String> startPointList, List<String> destinationList) {
+
+        if(Looper.myLooper() == Looper.getMainLooper()){
+            App.getBackgroundHandler().post(() -> {
+                getDistanceInfoAndAddInDb(startPointList, destinationList);
+            });
+            return;
+        }
 
         int targetSize = 25;
         List<List<String>> startPointListOfList = ListUtils.partition(startPointList, targetSize);
@@ -38,12 +46,17 @@ public class HttpHelper {
 
         List<List<String>> originDestinationListOfList = new ArrayList<>();
         originDestinationListOfList.addAll(destinationListOfList);
+        sCount = 0;
         getDistanceInfoRecursion(startPointListOfList,destinationListOfList,originDestinationListOfList);
 
     }
 
-    public static void getDistanceInfoRecursion(final List<List<String>> startPointListOfList, final  List<List<String>> destinationListOfList,
+    private static void getDistanceInfoRecursion(final List<List<String>> startPointListOfList, final  List<List<String>> destinationListOfList,
                                                final List<List<String>> originDestinationListOfList) {
+        sCount ++;
+        Log.d(TAG,"in getDistanceInfoRecursion sCount = "+sCount+" startPointListOfList.size = "+startPointListOfList.size()
+                +" destinationListOfList.size = "+destinationListOfList.size()
+                +" originDestinationListOfList.size = "+originDestinationListOfList.size());
         if(startPointListOfList.size() == 0 ){
             return;
         }
