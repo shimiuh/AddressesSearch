@@ -8,6 +8,8 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -77,6 +79,7 @@ public class AddressListActivity extends Activity_ {
             }
         });
         View detailContainer = findViewById(R.id.address_detail_container);
+        View parent = findViewById(R.id.parent);
 
 
         if (findViewById(R.id.address_detail_container) != null) {
@@ -86,16 +89,21 @@ public class AddressListActivity extends Activity_ {
             // activity should be in two-pane mode.
 
         }
+        ConstraintSet set = new ConstraintSet();
         int orientation = getResources().getConfiguration().orientation;
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (true||orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape
             detailContainer.setVisibility(View.VISIBLE);
+            //set.constrainPercentWidth(R.id.address_list,0.5f);
+            //set.constrainPercentWidth(R.id.address_detail_container,0.5f);
             mTwoPane = true;
         } else {
             // In portrait
             detailContainer.setVisibility(View.GONE);
+            //set.constrainPercentWidth(R.id.address_list,1);
             mTwoPane = false;
         }
+        //set.applyTo((ConstraintLayout) parent);
 
 
         View recyclerView = findViewById(R.id.address_list);
