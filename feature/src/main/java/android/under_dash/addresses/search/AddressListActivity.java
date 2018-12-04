@@ -21,11 +21,14 @@ import android.under_dash.addresses.search.helpers.MyCSVFileReader;
 import android.under_dash.addresses.search.library.Activity_;
 import android.under_dash.addresses.search.models.Address;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import android.under_dash.addresses.search.dummy.DummyContent;
+import android.widget.Toast;
 
 import com.davidecirillo.multichoicerecyclerview.MultiChoiceAdapter;
+import com.github.ag.floatingactionmenu.OptionsFabLayout;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -69,15 +72,37 @@ public class AddressListActivity extends Activity_ {
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        OptionsFabLayout fab = (OptionsFabLayout) findViewById(R.id.fab);
+        fab.setMiniFabsColors(R.color.green_fab,R.color.colorPrimary);
+        fab.setMainFabOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                Log.d("shimi", "in fab click");
-                MyCSVFileReader.openDialogToReadCSV(AddressListActivity.this);
             }
         });
+        fab.setMiniFabSelectedListener(new OptionsFabLayout.OnMiniFabSelectedListener() {
+            @Override
+            public void onMiniFabSelected(MenuItem fabItem) {
+                fab.closeOptionsMenu();
+                int id = fabItem.getItemId();
+                if(id == R.id.fab_link){
+                    Toast.makeText(getApplicationContext(),fabItem.getTitle() + " clicked!",Toast.LENGTH_SHORT).show();
+                }else if(id == R.id.fab_add){
+                    Log.d("shimi", "in fab click");
+                    MyCSVFileReader.openDialogToReadCSV(AddressListActivity.this);
+                }
+            }
+        });
+
+
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+//                Log.d("shimi", "in fab click");
+//                MyCSVFileReader.openDialogToReadCSV(AddressListActivity.this);
+//            }
+//        });
         View detailContainer = findViewById(R.id.address_detail_container);
         View parent = findViewById(R.id.parent);
 

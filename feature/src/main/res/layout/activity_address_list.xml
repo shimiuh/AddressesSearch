@@ -68,16 +68,29 @@
         <!--<include layout="@layout/address_list" />-->
     <!--</FrameLayout>-->
 
-    <android.support.design.widget.FloatingActionButton
+    <com.github.ag.floatingactionmenu.OptionsFabLayout
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        custom:color="@color/colorAccent"
+        custom:options_color="@color/colorPrimary"
+        custom:options_menu="@menu/search_menu"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/address_list"
-        android:layout_gravity="bottom|start"
         android:layout_marginStart="160dp"
-        android:layout_marginBottom="16dp"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        custom:src="@drawable/ic_add_24dp"
+        />
+
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/fab"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="@id/address_list"-->
+        <!--android:layout_gravity="bottom|start"-->
+        <!--android:layout_marginStart="160dp"-->
+        <!--android:layout_marginBottom="16dp"-->
+        <!--app:srcCompat="@android:drawable/ic_dialog_email" />-->
 
 
 </android.support.constraint.ConstraintLayout >

@@ -43,6 +43,7 @@ dependencies {
     annotationProcessor 'android.arch.persistence.room:compiler:1.0.0'
     implementation 'com.karumi:dexter:5.0.0'
     implementation 'org.apache.commons:commons-collections4:4.1'
-    compile 'com.davidecirillo.multichoicerecyclerview:multichoicerecyclerview:2.3.0'
+    implementation 'com.davidecirillo.multichoicerecyclerview:multichoicerecyclerview:2.3.0'
     implementation 'com.android.support.constraint:constraint-layout:2.0.0-alpha2'
+    implementation 'com.github.arthurghazaryan:floatingactionmenu:1.0.0'
 }
