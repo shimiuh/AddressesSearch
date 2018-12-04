@@ -23,6 +23,7 @@ import android.view.View;
 
 import android.under_dash.addresses.search.dummy.DummyContent;
 
+import com.davidecirillo.multichoicerecyclerview.MultiChoiceAdapter;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -101,6 +102,11 @@ public class AddressListActivity extends Activity_ {
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
 
+        //initAddressData();
+
+    }
+
+    private void initAddressData() {
 
         App.getBackgroundHandler().post(() -> {
             Box<Address> addressBox = getBox(Address.class);
@@ -118,8 +124,6 @@ public class AddressListActivity extends Activity_ {
                     }
                 }
 
-
-
                 Log.d("shimi", "in create addresses.size() = "+addresses.size()+ "  destination = "+destination.toString());
                 HttpHelper.getDistanceInfoAndAddInDb(destination,destination);
                 //HttpHelper.getDistanceInfoAndAddInDb("New+York+City,NY",destination.toString(),null);
@@ -133,20 +137,14 @@ public class AddressListActivity extends Activity_ {
                     }
                 }
             }
-
-
-
         });
-
-
-
-
-
 
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new AddressesSearchAdapter(this, DummyContent.ITEMS, mTwoPane));
+        MultiChoiceAdapter adapter = new AddressesSearchAdapter(this, DummyContent.ITEMS, mTwoPane);
+        //adapter.setSingleClickMode(true);
+        recyclerView.setAdapter(adapter);
     }
 
 
