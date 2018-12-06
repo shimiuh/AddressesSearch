@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.models.Address;
+import android.under_dash.addresses.search.models.AddressResultList;
 import android.under_dash.addresses.search.models.Institution;
 import android.util.Log;
 import android.widget.Toast;
@@ -57,9 +58,9 @@ public class ImportCVSToSQLiteDataBase extends AsyncTask<String, String, String>
                 Institution institution = new Institution(0,acc_name,acc_website,acc_address);
                 //AppDatabase.get(mContext).addInstitution(institution);
                 App.getBoxStore().runInTxAsync(() -> {
-                    String latLong = Utils.getLatLongFromLocation(acc_address,mContext);
+                    String latLong = Utils.getLatLongFromLocation(acc_address);
                     //Log.e("shimi", "latLong = "+latLong);
-                    App.get().getBox(Address.class).put(new Address(acc_name,acc_address,acc_website,latLong));
+                    App.get().getBox(AddressResultList.class).put(new AddressResultList(acc_name,acc_address,acc_website,latLong));
                 }, (result, error) -> {
                     // transaction is done! do something?
                 });

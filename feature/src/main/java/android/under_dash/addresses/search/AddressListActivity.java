@@ -1,12 +1,15 @@
 package android.under_dash.addresses.search;
 
 import android.Manifest;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
@@ -18,8 +21,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.helpers.HttpHelper;
 import android.under_dash.addresses.search.helpers.MyCSVFileReader;
+import android.under_dash.addresses.search.helpers.Utils;
 import android.under_dash.addresses.search.library.Activity_;
 import android.under_dash.addresses.search.models.Address;
+import android.under_dash.addresses.search.models.AddressResultList;
+import android.under_dash.addresses.search.models.AddressSearchList;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +40,7 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.rany.albeg.wein.springfabmenu.SpringFabMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,26 +79,28 @@ public class AddressListActivity extends Activity_ {
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        OptionsFabLayout fab = (OptionsFabLayout) findViewById(R.id.fab);
-        fab.setMiniFabsColors(R.color.green_fab,R.color.colorPrimary);
-        fab.setMainFabOnClickListener(new View.OnClickListener() {
+        SpringFabMenu fab = (SpringFabMenu)findViewById(R.id.fab);
+        fab.setOnSpringFabMenuItemClickListener(new SpringFabMenu.OnSpringFabMenuItemClickListener() {
             @Override
-            public void onClick(View view) {
-            }
-        });
-        fab.setMiniFabSelectedListener(new OptionsFabLayout.OnMiniFabSelectedListener() {
-            @Override
-            public void onMiniFabSelected(MenuItem fabItem) {
-                fab.closeOptionsMenu();
-                int id = fabItem.getItemId();
-                if(id == R.id.fab_link){
-                    Toast.makeText(getApplicationContext(),fabItem.getTitle() + " clicked!",Toast.LENGTH_SHORT).show();
-                }else if(id == R.id.fab_add){
+            public void onSpringFabMenuItemClick(View view) {
+                int id = view.getId();
+
+                if(id == R.id.fab_clip){
+                    addAddressFromClip();
+                    Toast.makeText(getApplicationContext(), " clicked!",Toast.LENGTH_SHORT).show();
+
+                }else if(id == R.id.fab_result_list){
+
+                }else if(id == R.id.fab_search_list){
+
                     Log.d("shimi", "in fab click");
                     MyCSVFileReader.openDialogToReadCSV(AddressListActivity.this);
+
                 }
+
             }
         });
+
 
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -116,16 +125,16 @@ public class AddressListActivity extends Activity_ {
         }
         ConstraintSet set = new ConstraintSet();
         int orientation = getResources().getConfiguration().orientation;
-        if (true||orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape
             detailContainer.setVisibility(View.VISIBLE);
-            //set.constrainPercentWidth(R.id.address_list,0.5f);
+            set.constrainPercentWidth(R.id.address_list,0.5f);
             //set.constrainPercentWidth(R.id.address_detail_container,0.5f);
             mTwoPane = true;
         } else {
             // In portrait
             detailContainer.setVisibility(View.GONE);
-            //set.constrainPercentWidth(R.id.address_list,1);
+            set.constrainPercentWidth(R.id.address_list,1);
             mTwoPane = false;
         }
         //set.applyTo((ConstraintLayout) parent);
@@ -139,11 +148,29 @@ public class AddressListActivity extends Activity_ {
 
     }
 
+    private void addAddressFromClip() {
+
+        if(Looper.myLooper() != Looper.getMainLooper()){
+            App.getBackgroundHandler().post(this::addAddressFromClip);
+            return;
+        }
+
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        ClipData clip = clipboard.getPrimaryClip();
+        if(clip != null){
+            String address = clip.getItemAt(0).toString();
+            Box<AddressSearchList> searchBox = getBox(AddressSearchList.class);
+            String latLong = Utils.getLatLongFromLocation(address);
+            searchBox.put(new AddressSearchList("","","",latLong));
+        }
+
+    }
+
     private void initAddressData() {
 
         App.getBackgroundHandler().post(() -> {
-            Box<Address> addressBox = getBox(Address.class);
-            List<Address> addresses = addressBox.getAll();
+            Box<AddressResultList> addressBox = getBox(AddressResultList.class);
+            List<AddressResultList> addresses = addressBox.getAll();
             //StringBuilder destination = new StringBuilder();
             List<String> destination = new ArrayList<>();
             if(addresses != null && addresses.size() > 0 && addresses.get(0).getDuration() == 0) {

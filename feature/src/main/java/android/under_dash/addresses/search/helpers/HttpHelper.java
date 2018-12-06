@@ -134,7 +134,7 @@ public class HttpHelper {
                             String destinationAddress = list.get(i);
 
                             if (address != null) {
-                                Log.d("shimi", "destinationAddress = |"+Utils.getLatLongFromLocation(destinationAddress,App.get())+"| address =|"+address.latLong+"|");
+                                Log.d("shimi", "destinationAddress = |"+Utils.getLatLongFromLocation(destinationAddress)+"| address =|"+address.latLong+"|");
                             }
                         }
                     }
@@ -143,8 +143,8 @@ public class HttpHelper {
                         String destinationAddress = list.get(i);
 
                         App.getBackgroundHandler().post(() -> {
-                            //TODO: google is returning a edided address so we are not finding in DB
-                            Address address = addressBox.query().equal(Address_.latLong, Utils.getLatLongFromLocation(destinationAddress,App.get())).build().findUnique();
+                            //TODO: google izs returning a edided address so we are not finding in DB
+                            Address address = addressBox.query().equal(Address_.latLong, Utils.getLatLongFromLocation(destinationAddress)).build().findUnique();
 
                             if(address != null){
                                 address.setDuration(element.getDuration().getValue());
@@ -194,7 +194,7 @@ public class HttpHelper {
                         App.getBackgroundHandler().post(() -> {
                             //TODO: google is returning a eddied address so we are not finding in DB thus i am converting to latLong
                             Box<Address> addressBox = App.get().getBox(Address.class);
-                            Address address = addressBox.query().equal(Address_.latLong, Utils.getLatLongFromLocation(destinationAddress,App.get())).build().findUnique();
+                            Address address = addressBox.query().equal(Address_.latLong, Utils.getLatLongFromLocation(destinationAddress)).build().findUnique();
 
                             if(address != null){
                                 address.setDuration(element.getDuration().getValue());

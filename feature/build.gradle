@@ -46,4 +46,5 @@ dependencies {
     implementation 'com.davidecirillo.multichoicerecyclerview:multichoicerecyclerview:2.3.0'
     implementation 'com.android.support.constraint:constraint-layout:2.0.0-alpha2'
     implementation 'com.github.arthurghazaryan:floatingactionmenu:1.0.0'
+    implementation 'com.rany.albeg.wein:spring-fab-menu:1.0.1'
 }

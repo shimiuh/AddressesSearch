@@ -6,6 +6,7 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.under_dash.addresses.search.app.App;
 import android.util.Log;
 
 import java.io.IOException;
@@ -16,8 +17,8 @@ public class Utils {
 
     private static final String TAG = "GeocodingLocation";
 
-    public static String getLatLongFromLocation(final String locationAddress, final Context context) {
-        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+    public static String getLatLongFromLocation(final String locationAddress) {
+        Geocoder geocoder = new Geocoder(App.get(), Locale.getDefault());
         String result = null;
         try {
             List<Address> addressList = geocoder.getFromLocationName(locationAddress, 5);
