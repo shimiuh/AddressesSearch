@@ -70,6 +70,7 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
         };
     }
 
+
     @Override
     public int getItemCount() {
         return mValues.size();

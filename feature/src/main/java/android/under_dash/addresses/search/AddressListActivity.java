@@ -34,6 +34,7 @@ import android.under_dash.addresses.search.dummy.DummyContent;
 import android.widget.Toast;
 
 import com.davidecirillo.multichoicerecyclerview.MultiChoiceAdapter;
+import com.davidecirillo.multichoicerecyclerview.MultiChoiceToolbar;
 import com.github.ag.floatingactionmenu.OptionsFabLayout;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -101,17 +102,6 @@ public class AddressListActivity extends Activity_ {
             }
         });
 
-
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-//                Log.d("shimi", "in fab click");
-//                MyCSVFileReader.openDialogToReadCSV(AddressListActivity.this);
-//            }
-//        });
         View detailContainer = findViewById(R.id.address_detail_container);
         View parent = findViewById(R.id.parent);
 
@@ -142,7 +132,7 @@ public class AddressListActivity extends Activity_ {
 
         View recyclerView = findViewById(R.id.address_list);
         assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        setupRecyclerView((RecyclerView) recyclerView, toolbar);
 
         //initAddressData();
 
@@ -161,8 +151,23 @@ public class AddressListActivity extends Activity_ {
             String address = clip.getItemAt(0).toString();
             Box<AddressSearchList> searchBox = getBox(AddressSearchList.class);
             String latLong = Utils.getLatLongFromLocation(address);
-            searchBox.put(new AddressSearchList("","","",latLong));
+            searchBox.put(new AddressSearchList("",address,"",latLong));
         }
+
+
+
+
+    }
+
+    private void removeAddress(AddressSearchList address) {
+
+        if(Looper.myLooper() != Looper.getMainLooper()){
+            App.getBackgroundHandler().post(() -> removeAddress(address));
+            return;
+        }
+
+        Box<AddressSearchList> searchBox = getBox(AddressSearchList.class);
+        searchBox.remove(address);
 
     }
 
@@ -201,8 +206,15 @@ public class AddressListActivity extends Activity_ {
 
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView, Toolbar toolbar) {
         MultiChoiceAdapter adapter = new AddressesSearchAdapter(this, DummyContent.ITEMS, mTwoPane);
+        MultiChoiceToolbar multiChoiceToolbar = new MultiChoiceToolbar.Builder(this, toolbar).setDefaultIcon(R.drawable.ic_delete_24dp, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), " multiChoiceToolbar clicked",Toast.LENGTH_SHORT).show();
+            }
+        }).build();
+        adapter.setMultiChoiceToolbar(multiChoiceToolbar);
         //adapter.setSingleClickMode(true);
         recyclerView.setAdapter(adapter);
     }
