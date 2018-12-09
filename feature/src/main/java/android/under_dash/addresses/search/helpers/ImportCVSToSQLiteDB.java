@@ -16,15 +16,17 @@ import de.siegmar.fastcsv.reader.CsvContainer;
 import de.siegmar.fastcsv.reader.CsvReader;
 import de.siegmar.fastcsv.reader.CsvRow;
 
-public class ImportCVSToSQLiteDataBase extends AsyncTask<String, String, String> {
+public class ImportCVSToSQLiteDB extends AsyncTask<String, String, String> {
 
+    Class mClassDbToAdd;
     Context mContext;
-    File mFile=null;
+    File mFile = null;
     private ProgressDialog dialog;
 
-    public ImportCVSToSQLiteDataBase(Context context,File file) {
+    public ImportCVSToSQLiteDB(Context context, File file, Class classDbToAdd) {
         this.mContext=context;
         this.mFile=file;
+        this.mClassDbToAdd = classDbToAdd;
     }
 
     @Override
@@ -44,6 +46,10 @@ public class ImportCVSToSQLiteDataBase extends AsyncTask<String, String, String>
         String data="";
         Log.d(getClass().getName(), mFile.toString());
 
+        App.getBoxStore().runInTxAsync(() -> {
+            App.get().getBox(mClassDbToAdd).removeAll();
+        }, (result, error) -> {});
+
         try{
             CsvReader csvReader = new CsvReader();
             CsvContainer csv = csvReader.read(mFile, StandardCharsets.UTF_8);
@@ -60,7 +66,7 @@ public class ImportCVSToSQLiteDataBase extends AsyncTask<String, String, String>
                 App.getBoxStore().runInTxAsync(() -> {
                     String latLong = Utils.getLatLongFromLocation(acc_address);
                     //Log.e("shimi", "latLong = "+latLong);
-                    App.get().getBox(AddressResultList.class).put(new AddressResultList(acc_name,acc_address,acc_website,latLong));
+                    App.get().getBox(mClassDbToAdd).put(new AddressResultList(acc_name,acc_address,acc_website,latLong));
                 }, (result, error) -> {
                     // transaction is done! do something?
                 });

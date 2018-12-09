@@ -11,15 +11,15 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
 import android.under_dash.addresses.search.app.App;
+import android.under_dash.addresses.search.helpers.DbUtils;
 import android.under_dash.addresses.search.helpers.HttpHelper;
+import android.under_dash.addresses.search.helpers.ImportCVSToSQLiteDB;
 import android.under_dash.addresses.search.helpers.MyCSVFileReader;
 import android.under_dash.addresses.search.helpers.Utils;
 import android.under_dash.addresses.search.library.Activity_;
@@ -27,15 +27,12 @@ import android.under_dash.addresses.search.models.Address;
 import android.under_dash.addresses.search.models.AddressResultList;
 import android.under_dash.addresses.search.models.AddressSearchList;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 
-import android.under_dash.addresses.search.dummy.DummyContent;
 import android.widget.Toast;
 
 import com.davidecirillo.multichoicerecyclerview.MultiChoiceAdapter;
 import com.davidecirillo.multichoicerecyclerview.MultiChoiceToolbar;
-import com.github.ag.floatingactionmenu.OptionsFabLayout;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -70,6 +67,7 @@ public class AddressListActivity extends Activity_ {
      * device.
      */
     private boolean mTwoPane;
+    private AddressesSearchAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,16 +87,22 @@ public class AddressListActivity extends Activity_ {
                 if(id == R.id.fab_clip){
                     addAddressFromClip();
                     Toast.makeText(getApplicationContext(), " clicked!",Toast.LENGTH_SHORT).show();
-
                 }else if(id == R.id.fab_result_list){
-
+                    Log.d("shimi", "in fab fab_result_list");
+                    MyCSVFileReader.openDialogToReadCSV(AddressListActivity.this, pathFile -> {
+                        new ImportCVSToSQLiteDB(AddressListActivity.this,pathFile,AddressResultList.class).execute();
+                    });
                 }else if(id == R.id.fab_search_list){
-
-                    Log.d("shimi", "in fab click");
-                    MyCSVFileReader.openDialogToReadCSV(AddressListActivity.this);
-
+                    Log.d("shimi", "in fab fab_search_list");
+                    MyCSVFileReader.openDialogToReadCSV(AddressListActivity.this, pathFile -> {
+                        new ImportCVSToSQLiteDB(AddressListActivity.this,pathFile,AddressSearchList.class).execute();
+                    });
+                }else if(id == R.id.fab_swap){
+                    Log.d("shimi", "in fab fab_swap");
+                    DbUtils.swapLists(() -> {
+                        updateListData();
+                    });
                 }
-
             }
         });
 
@@ -207,18 +211,24 @@ public class AddressListActivity extends Activity_ {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, Toolbar toolbar) {
-        MultiChoiceAdapter adapter = new AddressesSearchAdapter(this, DummyContent.ITEMS, mTwoPane);
+
+        mAdapter = new AddressesSearchAdapter(this, mTwoPane);//DummyContent.ITEMS
         MultiChoiceToolbar multiChoiceToolbar = new MultiChoiceToolbar.Builder(this, toolbar).setDefaultIcon(R.drawable.ic_delete_24dp, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), " multiChoiceToolbar clicked",Toast.LENGTH_SHORT).show();
             }
         }).build();
-        adapter.setMultiChoiceToolbar(multiChoiceToolbar);
+        mAdapter.setMultiChoiceToolbar(multiChoiceToolbar);
         //adapter.setSingleClickMode(true);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(mAdapter);
+        updateListData();
     }
 
+    private void updateListData() {
+        Box<AddressResultList> addressBox = getBox(AddressResultList.class);
+        mAdapter.setData(addressBox.getAll());
+    }
 
 
     public void requestPermissions(){

@@ -81,13 +81,13 @@
         app:layout_constraintEnd_toEndOf="@id/address_list"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginEnd="-50dp"
-        android:translationY="80dp">
+        android:translationY="120dp">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_result_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/ic_dialog_email"
+            app:srcCompat="@android:drawable/ic_menu_compass"
             android:contentDescription="@string/fab_result_list"
             app:fabSize="mini"/>
 
@@ -95,7 +95,7 @@
             android:id="@+id/fab_search_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/ic_dialog_alert"
+            app:srcCompat="@android:drawable/ic_menu_search"
             android:contentDescription="@string/fab_search_list"
             app:fabSize="mini"/>
 
@@ -103,7 +103,23 @@
             android:id="@+id/fab_clip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/ic_dialog_info"
+            app:srcCompat="@android:drawable/ic_menu_save"
+            android:contentDescription="@string/fab_clip"
+            app:fabSize="mini"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_swap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@android:drawable/ic_menu_revert"
+            android:contentDescription="@string/fab_swap"
+            app:fabSize="mini"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
             android:contentDescription="@string/fab_clip"
             app:fabSize="mini"/>
 

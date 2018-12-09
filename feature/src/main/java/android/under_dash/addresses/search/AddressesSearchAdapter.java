@@ -4,7 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.under_dash.addresses.search.dummy.DummyContent;
+import android.under_dash.addresses.search.models.Address;
+import android.under_dash.addresses.search.models.AddressResultList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,19 +13,30 @@ import android.widget.TextView;
 
 import com.davidecirillo.multichoicerecyclerview.MultiChoiceAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchAdapter.ViewHolder> {
 
+
     private final AddressListActivity mParentActivity;
-    private final List<DummyContent.DummyItem> mValues;
+    private List<? extends Address> mValues = new ArrayList<>();
     private final boolean mTwoPane;
 
-    AddressesSearchAdapter(AddressListActivity parent, List<DummyContent.DummyItem> items, boolean twoPane) {
-        mValues = items;
+    AddressesSearchAdapter(AddressListActivity parent, boolean twoPane) {
         mParentActivity = parent;
         mTwoPane = twoPane;
+    }
+    AddressesSearchAdapter(AddressListActivity parent, List<? extends Address> items, boolean twoPane) {
+        mParentActivity = parent;
+        mTwoPane = twoPane;
+        setData(items);
+    }
+
+    public void setData(List<? extends Address> items) {
+        this.mValues = items;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -36,19 +48,19 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mIdView.setText(mValues.get(position).name);
+        holder.mContentView.setText(mValues.get(position).address);
         holder.itemView.setTag(mValues.get(position));
     }
 
     private void onClick(View view) {
-        DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
+        Address item = (Address) view.getTag();
         if(item == null){
             return;
         }
         if (mTwoPane) {
             Bundle arguments = new Bundle();
-            arguments.putString(AddressDetailFragment.ARG_ITEM_ID, item.id);
+            arguments.putString(AddressDetailFragment.ARG_ITEM_ID, String.valueOf(item.id));
             AddressDetailFragment fragment = new AddressDetailFragment();
             fragment.setArguments(arguments);
             mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -57,8 +69,7 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
         } else {
             Context context = view.getContext();
             Intent intent = new Intent(context, AddressDetailActivity.class);
-            intent.putExtra(AddressDetailFragment.ARG_ITEM_ID, item.id);
-
+            intent.putExtra(AddressDetailFragment.ARG_ITEM_ID, String.valueOf(item.id));
             context.startActivity(intent);
         }
     }

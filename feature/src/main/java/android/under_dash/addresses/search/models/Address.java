@@ -8,6 +8,12 @@ import io.objectbox.annotation.Id;
 public class Address {
     @Id
     public long id;
+    public String name;
+    public String address;
+    public String website;
+    public String latLong;
+    public int    distance;
+    public int    duration;
 
     public Address() {}
     public Address(String name, String address, String website,String latLong) {
@@ -17,15 +23,16 @@ public class Address {
         this.latLong = latLong;
     }
 
-    public String name;
-    public String address;
-    public String website;
+    public Address(Address addressToCopy) {
+        this.name = addressToCopy.name;
+        this.address = addressToCopy.address;
+        this.website = addressToCopy.website;
+        this.latLong = addressToCopy.latLong;
+        this.distance = addressToCopy.distance;
+        this.duration = addressToCopy.duration;
+    }
 
 
-
-    public String latLong;
-    public int    distance;
-    public int    duration;
 
     public String getLatLong() {return latLong; }
 
@@ -79,5 +86,14 @@ public class Address {
                 ", distance=" + distance +
                 ", duration=" + duration +
                 '}';
+    }
+
+    public AddressResultList result(){
+
+        return (AddressResultList) this;
+    }
+    public AddressSearchList search(){
+
+        return (AddressSearchList) this;
     }
 }
