@@ -43,6 +43,7 @@
         android:outlineAmbientShadowColor="@color/common_google_signin_btn_text_light"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         app:layout_anchorGravity="start"
+        android:layoutAnimation="@anim/layout_animation_fall_down"
         tools:context="android.under_dash.addresses.search.AddressListActivity"
         tools:listitem="@layout/address_list_content" />
 
