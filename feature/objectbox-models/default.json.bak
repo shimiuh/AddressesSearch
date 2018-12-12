@@ -38,9 +38,81 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "2:4373040749184947593",
+      "lastPropertyId": "7:7853961507393751527",
+      "name": "AddressSearchList",
+      "properties": [
+        {
+          "id": "1:8813572871041310764",
+          "name": "id"
+        },
+        {
+          "id": "2:4977990105051257162",
+          "name": "name"
+        },
+        {
+          "id": "3:5683457438919237910",
+          "name": "address"
+        },
+        {
+          "id": "4:8790383349982646209",
+          "name": "website"
+        },
+        {
+          "id": "5:6222129184866768504",
+          "name": "latLong"
+        },
+        {
+          "id": "6:5783459275392682720",
+          "name": "distance"
+        },
+        {
+          "id": "7:7853961507393751527",
+          "name": "duration"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:7366011982040274519",
+      "lastPropertyId": "7:8076487180128483010",
+      "name": "AddressResultList",
+      "properties": [
+        {
+          "id": "1:7672276246076867214",
+          "name": "id"
+        },
+        {
+          "id": "2:3014579317305895971",
+          "name": "name"
+        },
+        {
+          "id": "3:9066429616502914933",
+          "name": "address"
+        },
+        {
+          "id": "4:826373130793772548",
+          "name": "website"
+        },
+        {
+          "id": "5:6288763722217285448",
+          "name": "latLong"
+        },
+        {
+          "id": "6:8590993971678238597",
+          "name": "distance"
+        },
+        {
+          "id": "7:8076487180128483010",
+          "name": "duration"
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "1:3888336936047366039",
+  "lastEntityId": "3:7366011982040274519",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",

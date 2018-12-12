@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintSet;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.under_dash.addresses.search.app.App;
@@ -68,6 +69,7 @@ public class AddressListActivity extends Activity_ {
      */
     private boolean mTwoPane;
     private AddressesSearchAdapter mAdapter;
+    private SwipeRefreshLayout mSwipeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +137,15 @@ public class AddressListActivity extends Activity_ {
 
 
         View recyclerView = findViewById(R.id.address_list);
-        assert recyclerView != null;
+        mSwipeLayout = findViewById(R.id.swipeRefreshAddressList);
+        // Adding Listener
+        mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateListData();
+            }
+        });
+
         setupRecyclerView((RecyclerView) recyclerView, toolbar);
 
         //initAddressData();
@@ -212,6 +222,8 @@ public class AddressListActivity extends Activity_ {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, Toolbar toolbar) {
 
+
+
         mAdapter = new AddressesSearchAdapter(this, mTwoPane);//DummyContent.ITEMS
         MultiChoiceToolbar multiChoiceToolbar = new MultiChoiceToolbar.Builder(this, toolbar).setDefaultIcon(R.drawable.ic_delete_24dp, new View.OnClickListener() {
             @Override
@@ -226,8 +238,15 @@ public class AddressListActivity extends Activity_ {
     }
 
     private void updateListData() {
-        Box<AddressResultList> addressBox = getBox(AddressResultList.class);
-        mAdapter.setData(addressBox.getAll());
+        mAdapter.setData(new ArrayList<AddressResultList>());
+        App.getUiHandler().postDelayed(new Runnable() {
+            @Override public void run() {
+                Box<AddressResultList> addressBox = getBox(AddressResultList.class);
+                mAdapter.setData(addressBox.getAll());
+                mSwipeLayout.setRefreshing(false);
+            }
+        }, 2000); // Delay in millis
+
     }
 
 

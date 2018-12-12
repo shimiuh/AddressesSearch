@@ -26,34 +26,39 @@
 
 
 
-    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/address_list"
-        android:name="android.under_dash.addresses.search.AddressListFragment"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshAddressList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintWidth_percent="0.5"
-        app:layout_constrainedWidth="true"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="?attr/actionBarSize"
         android:elevation="5dp"
-        android:outlineSpotShadowColor="@color/common_google_signin_btn_text_light"
-        android:outlineAmbientShadowColor="@color/common_google_signin_btn_text_light"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        app:layout_anchorGravity="start"
-        android:layoutAnimation="@anim/layout_animation_fall_down"
-        tools:context="android.under_dash.addresses.search.AddressListActivity"
-        tools:listitem="@layout/address_list_content" />
+        android:layout_marginTop="?attr/actionBarSize"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintWidth_percent="0.5"
+        app:layout_anchorGravity="start">
 
+        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/address_list"
+            android:name="android.under_dash.addresses.search.AddressListFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constrainedWidth="true"
+            android:outlineSpotShadowColor="@color/common_google_signin_btn_text_light"
+            android:outlineAmbientShadowColor="@color/common_google_signin_btn_text_light"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            android:layoutAnimation="@anim/layout_animation_fall_down"
+            tools:context="android.under_dash.addresses.search.AddressListActivity"
+            tools:listitem="@layout/address_list_content" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <FrameLayout
         android:id="@+id/address_detail_container"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         app:layout_constrainedWidth="true"
-        app:layout_constraintStart_toEndOf="@id/address_list"
+        app:layout_constraintStart_toEndOf="@id/swipeRefreshAddressList"
         app:layout_constraintWidth_percent="0.5"
         android:background="@color/colorPrimary"
         app:layout_anchorGravity="end" />
@@ -79,7 +84,7 @@
         app:sfm_expand_duration="400"
         app:sfm_collapse_duration="400"
         app:sfm_delay_expanding_menu_items="0"
-        app:layout_constraintEnd_toEndOf="@id/address_list"
+        app:layout_constraintEnd_toEndOf="@id/swipeRefreshAddressList"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginEnd="-50dp"
         android:translationY="120dp">
