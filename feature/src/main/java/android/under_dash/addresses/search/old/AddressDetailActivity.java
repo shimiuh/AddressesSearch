@@ -1,13 +1,13 @@
-package android.under_dash.addresses.search;
+package android.under_dash.addresses.search.old;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.Toolbar;
+import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.library.Activity_;
+import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
 import android.view.View;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
@@ -15,14 +15,14 @@ import android.view.MenuItem;
  * An activity representing a single Address detail screen. This
  * activity is only used on narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
- * in a {@link AddressListActivity}.
+ * in a {@link AddressSearchActivity}.
  */
 public class AddressDetailActivity extends Activity_ {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_address_detail);
+        setContentView(R.layout.address_result_fragment);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
 //        setSupportActionBar(toolbar);
 
@@ -50,17 +50,17 @@ public class AddressDetailActivity extends Activity_ {
         //
         // http://developer.android.com/guide/components/fragments.html
         //
-        if (savedInstanceState == null) {
-            // Create the detail fragment and add it to the activity
-            // using a fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putString(AddressDetailListFragment.ARG_ITEM_ID, getIntent().getStringExtra(AddressDetailListFragment.ARG_ITEM_ID));
-            AddressDetailListFragment fragment = new AddressDetailListFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.address_detail_list_container, fragment)
-                    .commit();
-        }
+//        if (savedInstanceState == null) {
+//            // Create the detail fragment and add it to the activity
+//            // using a fragment transaction.
+//            Bundle arguments = new Bundle();
+//            arguments.putString(AddressResultFragment.ARG_ITEM_ID, getIntent().getStringExtra(AddressResultFragment.ARG_ITEM_ID));
+//            AddressResultFragment fragment = new AddressResultFragment();
+//            fragment.setArguments(arguments);
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.address_detail_list_container, fragment)
+//                    .commit();
+//        }
     }
 
     @Override
@@ -73,7 +73,7 @@ public class AddressDetailActivity extends Activity_ {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            navigateUpTo(new Intent(this, AddressListActivity.class));
+            navigateUpTo(new Intent(this, AddressSearchActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

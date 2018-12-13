@@ -8,7 +8,7 @@
 
     <application android:name=".app.App">
         <activity
-            android:name=".AddressListActivity"
+            android:name=".view.activitys.AddressSearchActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -18,13 +18,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddressDetailActivity"
+            android:name=".old.AddressDetailActivity"
             android:label="@string/title_address_detail"
-            android:parentActivityName=".AddressListActivity"
+            android:parentActivityName=".view.activitys.AddressSearchActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="android.under_dash.addresses.search.AddressListActivity" />
+                android:value="android.under_dash.addresses.search.view.activitys.AddressSearchActivity" />
         </activity>
     </application>
 

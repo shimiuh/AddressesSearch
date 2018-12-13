@@ -1,4 +1,4 @@
-package android.under_dash.addresses.search;
+package android.under_dash.addresses.search.view.activitys;
 
 import android.Manifest;
 import android.content.ClipData;
@@ -17,6 +17,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.under_dash.addresses.search.old.AddressDetailActivity;
+import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.helpers.DbUtils;
 import android.under_dash.addresses.search.helpers.HttpHelper;
@@ -27,6 +29,7 @@ import android.under_dash.addresses.search.library.Activity_;
 import android.under_dash.addresses.search.models.Address;
 import android.under_dash.addresses.search.models.AddressResultList;
 import android.under_dash.addresses.search.models.AddressSearchList;
+import android.under_dash.addresses.search.view.adapters.AddressesSearchAdapter;
 import android.util.Log;
 import android.view.View;
 
@@ -34,7 +37,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
-import com.davidecirillo.multichoicerecyclerview.MultiChoiceAdapter;
 import com.davidecirillo.multichoicerecyclerview.MultiChoiceToolbar;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -56,7 +58,7 @@ import io.objectbox.Box;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class AddressListActivity extends Activity_ {
+public class AddressSearchActivity extends Activity_ {
 
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
@@ -95,13 +97,13 @@ public class AddressListActivity extends Activity_ {
                     Toast.makeText(getApplicationContext(), " clicked!",Toast.LENGTH_SHORT).show();
                 }else if(id == R.id.fab_result_list){
                     Log.d("shimi", "in fab fab_result_list");
-                    MyCSVFileReader.openDialogToReadCSV(AddressListActivity.this, pathFile -> {
-                        new ImportCVSToSQLiteDB(AddressListActivity.this,pathFile,AddressResultList.class).execute();
+                    MyCSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
+                        new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,AddressResultList.class).execute();
                     });
                 }else if(id == R.id.fab_search_list){
                     Log.d("shimi", "in fab fab_search_list");
-                    MyCSVFileReader.openDialogToReadCSV(AddressListActivity.this, pathFile -> {
-                        new ImportCVSToSQLiteDB(AddressListActivity.this,pathFile,AddressSearchList.class).execute();
+                    MyCSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
+                        new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,AddressSearchList.class).execute();
                     });
                 }else if(id == R.id.fab_swap){
                     Log.d("shimi", "in fab fab_swap");
@@ -139,7 +141,7 @@ public class AddressListActivity extends Activity_ {
         }
         //set.applyTo((ConstraintLayout) parent);
 
-
+        mTwoPane = false;
         mRecyclerView = findViewById(R.id.address_list);
         mSwipeLayout = findViewById(R.id.swipeRefreshAddressList);
         // Adding Listener

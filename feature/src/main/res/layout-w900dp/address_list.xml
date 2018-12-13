@@ -10,7 +10,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context=".AddressListActivity">
+    tools:context=".view.activitys.AddressSearchActivity">
 
     <!--
     This layout is a two-pane layout for the Addresses
@@ -27,7 +27,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context="android.under_dash.addresses.search.AddressListActivity"
+        tools:context="android.under_dash.addresses.search.view.activitys.AddressSearchActivity"
         tools:listitem="@layout/address_list_content" />
 
     <FrameLayout

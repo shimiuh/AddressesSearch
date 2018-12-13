@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     app:layoutDescription="@xml/scene_01"
     android:fitsSystemWindows="true"
-    tools:context=".AddressListActivity">
+    tools:context=".view.activitys.AddressSearchActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
@@ -49,7 +49,7 @@
             android:outlineAmbientShadowColor="@color/common_google_signin_btn_text_light"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             android:layoutAnimation="@anim/layout_animation_fall_down"
-            tools:context="android.under_dash.addresses.search.AddressListActivity"
+            tools:context="android.under_dash.addresses.search.view.activitys.AddressSearchActivity"
             tools:listitem="@layout/address_list_content" />
     </android.support.v4.widget.SwipeRefreshLayout>
 

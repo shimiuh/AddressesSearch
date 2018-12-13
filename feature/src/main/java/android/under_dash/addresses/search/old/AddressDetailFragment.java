@@ -1,19 +1,19 @@
-package android.under_dash.addresses.search;
+package android.under_dash.addresses.search.old;
 
 import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.library.ui.fragment.Fragment_;
+import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.under_dash.addresses.search.dummy.DummyContent;
 
 /**
  * A fragment representing a single Address detail screen.
- * This fragment is either contained in a {@link AddressListActivity}
+ * This fragment is either contained in a {@link AddressSearchActivity}
  * in two-pane mode (on tablets) or a {@link AddressDetailActivity}
  * on handsets.
  */
@@ -57,7 +57,7 @@ public class AddressDetailFragment extends Fragment_ {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_address_detail, container, false);
+        View rootView = inflater.inflate(R.layout.address_result_fragment, container, false);
 
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
@@ -78,11 +78,11 @@ public class AddressDetailFragment extends Fragment_ {
 
             //Bundle arguments = new Bundle();
             //arguments.putString(AddressDetailListFragment.ARG_ITEM_ID, getActivity().getIntent().getStringExtra(AddressDetailListFragment.ARG_ITEM_ID));
-            AddressDetailListFragment fragment = new AddressDetailListFragment();
-            fragment.setArguments(getArguments());
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .add(R.id.address_detail_list_container, fragment)
-                    .commit();
+//            AddressResultFragment fragment = new AddressResultFragment();
+//            fragment.setArguments(getArguments());
+//            getActivity().getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.address_detail_list_container, fragment)
+//                    .commit();
         }
 
         return rootView;
