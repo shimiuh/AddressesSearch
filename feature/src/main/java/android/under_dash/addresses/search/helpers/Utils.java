@@ -34,4 +34,7 @@ public class Utils {
         return result;
     }
 
+    public static boolean isBadPosSize(List mList, int position) {
+        return mList == null || position < 0 || position >= mList.size();
+    }
 }

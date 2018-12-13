@@ -30,6 +30,8 @@ import android.under_dash.addresses.search.models.AddressSearchList;
 import android.util.Log;
 import android.view.View;
 
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
 import com.davidecirillo.multichoicerecyclerview.MultiChoiceAdapter;
@@ -70,6 +72,8 @@ public class AddressListActivity extends Activity_ {
     private boolean mTwoPane;
     private AddressesSearchAdapter mAdapter;
     private SwipeRefreshLayout mSwipeLayout;
+    private RecyclerView mRecyclerView;
+    private LayoutAnimationController mItemAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +140,7 @@ public class AddressListActivity extends Activity_ {
         //set.applyTo((ConstraintLayout) parent);
 
 
-        View recyclerView = findViewById(R.id.address_list);
+        mRecyclerView = findViewById(R.id.address_list);
         mSwipeLayout = findViewById(R.id.swipeRefreshAddressList);
         // Adding Listener
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -146,7 +150,10 @@ public class AddressListActivity extends Activity_ {
             }
         });
 
-        setupRecyclerView((RecyclerView) recyclerView, toolbar);
+        setupRecyclerView(mRecyclerView, toolbar);
+
+        int resId = R.anim.layout_animation_fall_down;
+        mItemAnimation = AnimationUtils.loadLayoutAnimation(this, resId);
 
         //initAddressData();
 
@@ -225,6 +232,7 @@ public class AddressListActivity extends Activity_ {
 
 
         mAdapter = new AddressesSearchAdapter(this, mTwoPane);//DummyContent.ITEMS
+        mAdapter.setHasStableIds(true);
         MultiChoiceToolbar multiChoiceToolbar = new MultiChoiceToolbar.Builder(this, toolbar).setDefaultIcon(R.drawable.ic_delete_24dp, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -242,8 +250,13 @@ public class AddressListActivity extends Activity_ {
         App.getUiHandler().postDelayed(new Runnable() {
             @Override public void run() {
                 Box<AddressResultList> addressBox = getBox(AddressResultList.class);
+                mItemAnimation.getAnimation().reset();
+                mRecyclerView.setLayoutAnimation(mItemAnimation);
                 mAdapter.setData(addressBox.getAll());
+                mRecyclerView.scheduleLayoutAnimation();
                 mSwipeLayout.setRefreshing(false);
+                //mRecyclerView.invalidate();
+                //mRecyclerView.requestLayout();
             }
         }, 2000); // Delay in millis
 

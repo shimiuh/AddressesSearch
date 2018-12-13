@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.under_dash.addresses.search.helpers.Utils;
 import android.under_dash.addresses.search.models.Address;
 import android.under_dash.addresses.search.models.AddressResultList;
 import android.view.LayoutInflater;
@@ -35,7 +36,25 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
     }
 
     public void setData(List<? extends Address> items) {
-        this.mValues = items;
+        int currentSize = mValues.size()+1;
+        //remove the current items
+        mValues.clear();
+        //tell the recycler view that all the old items are gone
+        notifyItemRangeRemoved(0, currentSize+1);
+
+        //add all the new items
+        //Collections.reverse(cardItemList); //we want to display newest first
+        mValues = items;
+        //tell the recycler view how many new items we added +1 for the footer
+        notifyItemRangeInserted(0, mValues.size()+1);
+    }
+
+    public void remove(int pos) {
+        if (!Utils.isBadPosSize(mValues,pos)) {
+            mValues.remove(pos);
+            notifyItemRemoved(pos);
+            notifyItemChanged(mValues.size()+1);
+        }
         notifyDataSetChanged();
     }
 
@@ -96,5 +115,10 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
             mIdView = (TextView) view.findViewById(R.id.id_text);
             mContentView = (TextView) view.findViewById(R.id.content);
         }
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return mValues.get(position).id;
     }
 }
