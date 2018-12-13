@@ -13,6 +13,9 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintSet;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +33,7 @@ import android.under_dash.addresses.search.models.Address;
 import android.under_dash.addresses.search.models.AddressResultList;
 import android.under_dash.addresses.search.models.AddressSearchList;
 import android.under_dash.addresses.search.view.adapters.AddressesSearchAdapter;
+import android.under_dash.addresses.search.view.fragments.AddressResultFragment;
 import android.util.Log;
 import android.view.View;
 
@@ -306,5 +310,16 @@ public class AddressSearchActivity extends Activity_ {
 //        String bestProvider = lm.getBestProvider(criteria, false);
 //        Location location = lm.getLastKnownLocation(bestProvider);
         return location;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(AddressResultFragment.TAG);
+        if(fragment != null ){
+            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+            //getSupportFragmentManager().popBackStack();
+            return;
+        }
+        super.onBackPressed();
     }
 }

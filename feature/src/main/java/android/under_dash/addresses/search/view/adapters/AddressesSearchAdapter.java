@@ -81,8 +81,8 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
         Bundle arguments = new Bundle();
         arguments.putString(AddressResultFragment.ARG_ITEM_ID, String.valueOf(item.id));
         AddressResultFragment fragment = new AddressResultFragment();
-        fragment.setArguments(arguments);
-        mParentActivity.getSupportFragmentManager().beginTransaction().add(android.R.id.content, fragment).commit();
+        fragment.setArguments(arguments);//.addToBackStack(AddressResultFragment.TAG)
+        mParentActivity.getSupportFragmentManager().beginTransaction().add(android.R.id.content, fragment,AddressResultFragment.TAG).commit();
 
 //        Bundle arguments = new Bundle();
 //        arguments.putString(AddressDetailListFragment.ARG_ITEM_ID, getIntent().getStringExtra(AddressDetailListFragment.ARG_ITEM_ID));

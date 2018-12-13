@@ -3,9 +3,12 @@ package android.under_dash.addresses.search.view.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.under_dash.addresses.search.old.AddressDetailActivity;
@@ -24,17 +27,21 @@ import android.widget.TextView;
  * in two-pane mode (on tablets) or a {@link AddressDetailActivity}
  * on handsets.
  */
-public class AddressResultFragment extends Fragment_ {
+public class AddressResultFragment extends Fragment_ {//implements AppBarLayout.OnOffsetChangedListener
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
      */
     public static final String ARG_ITEM_ID = "item_id";
+    public static final String TAG = AddressResultFragment.class.getSimpleName();
 
     /**
      * The dummy content this fragment is presenting.
      */
     private DummyContent.DummyItem mItem;
+    private AppBarLayout mAppBarLayout;
+    private SwipeRefreshLayout mSwipeRefresh;
+    private CollapsingToolbarLayout mCollapsingToolbar;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -89,9 +96,18 @@ public class AddressResultFragment extends Fragment_ {
             }
         });
 
-            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) view.findViewById(R.id.toolbar_layout);
-            if (appBarLayout != null) {
-                appBarLayout.setTitle("Result's");
+        mAppBarLayout = (AppBarLayout) view.findViewById(R.id.app_bar);
+        mSwipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshResultList);
+        mCollapsingToolbar = (CollapsingToolbarLayout) view.findViewById(R.id.toolbar_layout);
+
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//        recyclerView.setLayoutManager(layoutManager);
+
+
+
+            if (mCollapsingToolbar != null) {
+                mCollapsingToolbar.setTitle("Result's");
             }
 
 //        // Show the Up button in the action bar.
@@ -100,4 +116,26 @@ public class AddressResultFragment extends Fragment_ {
 //            actionBar.setDisplayHomeAsUpEnabled(true);
 //        }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //mAppBarLayout.addOnOffsetChangedListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //mAppBarLayout.removeOnOffsetChangedListener(this);
+    }
+
+//    @Override
+//    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+//        //mSwipeRefresh.setEnabled(verticalOffset == 0);
+////        if (mAppBarLayout.getHeight() + verticalOffset < 2 * ViewCompat.getMinimumHeight(mAppBarLayout)) {
+////            mSwipeRefresh.setEnabled(false);
+////        } else {
+////            mSwipeRefresh.setEnabled(true);
+////        }
+//    }
 }
