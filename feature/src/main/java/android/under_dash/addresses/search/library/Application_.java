@@ -36,10 +36,13 @@ import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.models.MyObjectBox;
 import android.util.Log;
 
+import java.io.InputStream;
 import java.util.stream.DoubleStream;
 
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
+import io.objectbox.BoxStoreBuilder;
+import io.objectbox.Factory;
 
 //import io.objectbox.BoxStore;
 //import io.objectbox.BoxStoreBuilder;
@@ -70,6 +73,15 @@ public class Application_ extends Application {
 	}
 
 	synchronized public static BoxStore getBoxStore(){
+//		BoxStoreBuilder builder = MyObjectBox.builder();
+//		Factory<InputStream> is = new Factory<InputStream>() {
+//			@Override
+//			public InputStream provide() throws Exception {
+//				InputStream is = get().getResources().getAssets().open("data.mdb");
+//				return is;
+//			}
+//		};
+//		sBoxStore = builder.initialDbFile(is).androidContext(get()).build();
 		if (sBoxStore==null){
 			sBoxStore = MyObjectBox.builder().androidContext(Application_.get()).build();
 		}

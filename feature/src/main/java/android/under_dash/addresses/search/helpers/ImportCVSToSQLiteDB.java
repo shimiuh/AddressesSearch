@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.models.Address;
 import android.under_dash.addresses.search.models.AddressResultList;
+import android.under_dash.addresses.search.models.AddressSearchList;
 import android.under_dash.addresses.search.models.Institution;
 import android.util.Log;
 import android.widget.Toast;
@@ -66,18 +67,24 @@ public class ImportCVSToSQLiteDB extends AsyncTask<String, String, String> {
                 App.getBoxStore().runInTxAsync(() -> {
                     String latLong = Utils.getLatLongFromLocation(acc_address);
                     //Log.e("shimi", "latLong = "+latLong);
-                    App.get().getBox(mClassDbToAdd).put(new AddressResultList(acc_name,acc_address,acc_website,latLong));
+                    if(mClassDbToAdd.isAssignableFrom(AddressResultList.class)){
+                        App.get().getBox(mClassDbToAdd).put(new AddressResultList(acc_name,acc_address,acc_website,latLong));
+                    }else if(mClassDbToAdd.isAssignableFrom(AddressSearchList.class)){
+                        App.get().getBox(mClassDbToAdd).put(new AddressSearchList(acc_name,acc_address,acc_website,latLong));
+                    }
+
                 }, (result, error) -> {
                     // transaction is done! do something?
                 });
                 //data=data+"Account_name:"+acc_name  +"  Account_web:"+acc_website+"\n" +"  Account_address:"+acc_address+"\n";
                 //Log.d("shimi", "doInBackground: "+"Read line: " + row);
-                //Log.d("shimi", "First column of line: " + row.getField(0));
+
             }
-            return data;
+            Log.d("shimi", "DB added  size = "+App.get().getBox(mClassDbToAdd).getAll().size());
+            return data="added";
 
         } catch (Exception e) {
-            Log.e("Error", "Error for importing file");
+            Log.e("shimi", "Error for importing file");
         }
         return data="";
 
@@ -91,7 +98,7 @@ public class ImportCVSToSQLiteDB extends AsyncTask<String, String, String> {
         }
 
         if (data.length()!=0){
-            //Toast.makeText(mContext, "File is built Successfully!"+"\n"+data, Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, "File is built Successfully! size = "+App.get().getBox(mClassDbToAdd).getAll().size(), Toast.LENGTH_LONG).show();
             //Log.d("shimi", "File is built Successfully!"+"\n"+data+"\n institutionDB = "+AppDatabase.get(mContext).institutionDao().getAll().toString());
         }else{
             Toast.makeText(mContext, "File fail to build", Toast.LENGTH_SHORT).show();
