@@ -57,9 +57,7 @@ public class AddressResultFragment extends Fragment_ {//implements AppBarLayout.
      * The dummy content this fragment is presenting.
      */
     private DummyContent.DummyItem mItem;
-    private AppBarLayout mAppBarLayout;
     private SwipeRefreshLayout mSwipeRefresh;
-    private CollapsingToolbarLayout mCollapsingToolbar;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -92,31 +90,25 @@ public class AddressResultFragment extends Fragment_ {//implements AppBarLayout.
         View rootView = inflater.inflate(R.layout.address_result_fragment, container, false);
 
 
-
-        // Show the dummy content as text in a TextView.
-        if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.address_detail)).setText(mItem.details);
-        }
-
-
         return rootView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         mRecyclerView = view.findViewById(R.id.address_list);
-        mSwipeLayout = view.findViewById(R.id.swipeRefreshAddressList);
+        mSwipeLayout = view.findViewById(R.id.swipeRefreshResultList);
         // Adding Listener
+        mSwipeLayout.setRefreshing(true);
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -129,19 +121,11 @@ public class AddressResultFragment extends Fragment_ {//implements AppBarLayout.
         int resId = R.anim.layout_animation_fall_down;
         mItemAnimation = AnimationUtils.loadLayoutAnimation(getContext(), resId);
 
-        mAppBarLayout = (AppBarLayout) view.findViewById(R.id.app_bar);
-        mSwipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshResultList);
-        mCollapsingToolbar = (CollapsingToolbarLayout) view.findViewById(R.id.toolbar_layout);
 
 //        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
 //        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 //        recyclerView.setLayoutManager(layoutManager);
 
-
-
-            if (mCollapsingToolbar != null) {
-                mCollapsingToolbar.setTitle("Result's");
-            }
 
 //        // Show the Up button in the action bar.
 //        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
