@@ -11,15 +11,29 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.under_dash.addresses.search.app.App;
+import android.under_dash.addresses.search.models.AddressResultList;
 import android.under_dash.addresses.search.old.AddressDetailActivity;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.dummy.DummyContent;
 import android.under_dash.addresses.search.library.ui.fragment.Fragment_;
 import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
+import android.under_dash.addresses.search.view.adapters.AddressesSearchAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.davidecirillo.multichoicerecyclerview.MultiChoiceToolbar;
+
+import java.util.ArrayList;
+
+import io.objectbox.Box;
 
 /**
  * A fragment representing a single Address detail screen.
@@ -34,6 +48,10 @@ public class AddressResultFragment extends Fragment_ {//implements AppBarLayout.
      */
     public static final String ARG_ITEM_ID = "item_id";
     public static final String TAG = AddressResultFragment.class.getSimpleName();
+    private AddressesSearchAdapter mAdapter;
+    private SwipeRefreshLayout mSwipeLayout;
+    private RecyclerView mRecyclerView;
+    private LayoutAnimationController mItemAnimation;
 
     /**
      * The dummy content this fragment is presenting.
@@ -96,6 +114,21 @@ public class AddressResultFragment extends Fragment_ {//implements AppBarLayout.
             }
         });
 
+        mRecyclerView = view.findViewById(R.id.address_list);
+        mSwipeLayout = view.findViewById(R.id.swipeRefreshAddressList);
+        // Adding Listener
+        mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateListData();
+            }
+        });
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        setupRecyclerView(mRecyclerView, toolbar);
+
+        int resId = R.anim.layout_animation_fall_down;
+        mItemAnimation = AnimationUtils.loadLayoutAnimation(getContext(), resId);
+
         mAppBarLayout = (AppBarLayout) view.findViewById(R.id.app_bar);
         mSwipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshResultList);
         mCollapsingToolbar = (CollapsingToolbarLayout) view.findViewById(R.id.toolbar_layout);
@@ -115,6 +148,41 @@ public class AddressResultFragment extends Fragment_ {//implements AppBarLayout.
 //        if (actionBar != null) {
 //            actionBar.setDisplayHomeAsUpEnabled(true);
 //        }
+    }
+
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView, Toolbar toolbar) {
+
+
+
+        mAdapter = new AddressesSearchAdapter(getActivity(), false);//DummyContent.ITEMS
+        mAdapter.setHasStableIds(true);
+        MultiChoiceToolbar multiChoiceToolbar = new MultiChoiceToolbar.Builder((AppCompatActivity)getActivity(), toolbar).setDefaultIcon(R.drawable.ic_delete_24dp, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(getApplicationContext(), " multiChoiceToolbar clicked",Toast.LENGTH_SHORT).show();
+            }
+        }).build();
+        mAdapter.setMultiChoiceToolbar(multiChoiceToolbar);
+        //adapter.setSingleClickMode(true);
+        recyclerView.setAdapter(mAdapter);
+        updateListData();
+    }
+
+    private void updateListData() {
+        mAdapter.setData(new ArrayList<AddressResultList>());
+        App.getUiHandler().postDelayed(new Runnable() {
+            @Override public void run() {
+                Box<AddressResultList> addressBox = App.getBox(AddressResultList.class);
+                mItemAnimation.getAnimation().reset();
+                mRecyclerView.setLayoutAnimation(mItemAnimation);
+                mAdapter.setData(addressBox.getAll());
+                mRecyclerView.scheduleLayoutAnimation();
+                mSwipeLayout.setRefreshing(false);
+                //mRecyclerView.invalidate();
+                //mRecyclerView.requestLayout();
+            }
+        }, 2000); // Delay in millis
+
     }
 
     @Override

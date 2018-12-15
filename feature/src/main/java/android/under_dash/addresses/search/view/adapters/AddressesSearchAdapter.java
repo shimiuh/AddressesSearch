@@ -1,6 +1,8 @@
 package android.under_dash.addresses.search.view.adapters;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.helpers.Utils;
@@ -21,11 +23,11 @@ import java.util.List;
 public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchAdapter.ViewHolder> {
 
 
-    private final AddressSearchActivity mParentActivity;
+    private final Activity mParentActivity;
     private List<? extends Address> mValues = new ArrayList<>();
     private final boolean mTwoPane;
 
-    public AddressesSearchAdapter(AddressSearchActivity parent, boolean twoPane) {
+    public AddressesSearchAdapter(Activity parent, boolean twoPane) {
         mParentActivity = parent;
         mTwoPane = twoPane;
     }
@@ -82,7 +84,7 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
         arguments.putString(AddressResultFragment.ARG_ITEM_ID, String.valueOf(item.id));
         AddressResultFragment fragment = new AddressResultFragment();
         fragment.setArguments(arguments);//.addToBackStack(AddressResultFragment.TAG)
-        mParentActivity.getSupportFragmentManager().beginTransaction().add(android.R.id.content, fragment,AddressResultFragment.TAG).commit();
+        ((AppCompatActivity)mParentActivity).getSupportFragmentManager().beginTransaction().add(android.R.id.content, fragment,AddressResultFragment.TAG).commit();
 
 //        Bundle arguments = new Bundle();
 //        arguments.putString(AddressDetailListFragment.ARG_ITEM_ID, getIntent().getStringExtra(AddressDetailListFragment.ARG_ITEM_ID));

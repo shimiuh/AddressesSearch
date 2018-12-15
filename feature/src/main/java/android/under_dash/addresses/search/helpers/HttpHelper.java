@@ -61,8 +61,9 @@ public class HttpHelper {
         if(startPointListOfList.size() == 0 ){
             return;
         }
-        List<String> startPointList = startPointListOfList.get(0);
+
         if(destinationListOfList.size() > 0) {
+            List<String> startPointList = startPointListOfList.get(0);
             List<String> destinationList = destinationListOfList.get(0);
             destinationListOfList.remove(0);
             getDistanceInfoAndAddInDb(getFormatDistanceInfo(startPointList), getFormatDistanceInfo(destinationList), () -> {
