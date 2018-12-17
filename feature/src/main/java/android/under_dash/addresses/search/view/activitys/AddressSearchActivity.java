@@ -252,10 +252,10 @@ public class AddressSearchActivity extends Activity_ {
     }
 
     private void updateListData() {
-        mAdapter.setData(new ArrayList<AddressResultList>());
+        mAdapter.setData(new ArrayList<AddressSearchList>());
         App.getUiHandler().postDelayed(new Runnable() {
             @Override public void run() {
-                Box<AddressResultList> addressBox = getBox(AddressResultList.class);
+                Box<AddressSearchList> addressBox = getBox(AddressSearchList.class);
                 mItemAnimation.getAnimation().reset();
                 mRecyclerView.setLayoutAnimation(mItemAnimation);
                 mAdapter.setData(addressBox.getAll());
