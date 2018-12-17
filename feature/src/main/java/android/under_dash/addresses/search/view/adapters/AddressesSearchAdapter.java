@@ -5,8 +5,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.under_dash.addresses.search.R;
+import android.under_dash.addresses.search.app.App;
+import android.under_dash.addresses.search.helpers.HttpHelper;
 import android.under_dash.addresses.search.helpers.Utils;
 import android.under_dash.addresses.search.models.Address;
+import android.under_dash.addresses.search.models.AddressResultList;
+import android.under_dash.addresses.search.models.AddressSearchList;
 import android.under_dash.addresses.search.view.fragments.AddressResultFragment;
 import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
 import android.view.LayoutInflater;
@@ -18,6 +22,8 @@ import com.davidecirillo.multichoicerecyclerview.MultiChoiceAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.objectbox.Box;
 
 
 public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchAdapter.ViewHolder> {
@@ -79,6 +85,17 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
         if(item == null){
             return;
         }
+        Box<AddressResultList> addressResultBox = App.getBox(AddressResultList.class);
+        List<AddressResultList> addressResultList = addressResultBox.getAll();
+
+        Box<AddressSearchList> addressSearchBox = App.getBox(AddressSearchList.class);
+        List<AddressSearchList> addressSearchList = addressSearchBox.getAll();
+
+        HttpHelper.getDistanceInfoAndAddInDb(addressSearchList, addressResultList, () -> {
+
+
+
+        });
         int addFragmentTo = mTwoPane ? R.id.address_detail_container : android.R.id.content;
         Bundle arguments = new Bundle();
         arguments.putString(AddressResultFragment.ARG_ITEM_ID, String.valueOf(item.id));

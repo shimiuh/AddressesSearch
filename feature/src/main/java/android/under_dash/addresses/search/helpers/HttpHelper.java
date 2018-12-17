@@ -31,8 +31,11 @@ public class HttpHelper {
     private static int sCount = 0;
     private static final String TAG = HttpHelper.class.getSimpleName();
 
+    public static void getDistanceInfoAndAddInDb(List<? extends Address> startPointList, List<? extends Address> destinationList) {
+        getDistanceInfoAndAddInDb(startPointList,destinationList,null);
+    }
 
-    public static void getDistanceInfoAndAddInDb(List<String> startPointList, List<String> destinationList) {
+    public static void getDistanceInfoAndAddInDb(List<? extends Address> startPointList, List<? extends Address> destinationList, Runnable onDone) {
 
         if(Looper.myLooper() == Looper.getMainLooper()){
             App.getBackgroundHandler().post(() -> {
@@ -42,46 +45,51 @@ public class HttpHelper {
         }
 
         int targetSize = 25;
-        List<List<String>> startPointListOfList = ListUtils.partition(startPointList, targetSize);
-        List<List<String>> destinationListOfList = ListUtils.partition(destinationList, targetSize);
+        List<? extends List<? extends Address>> startPointListOfList = ListUtils.partition(startPointList, targetSize);
+        List<? extends List<? extends Address>> destinationListOfList = ListUtils.partition(destinationList, targetSize);
 
-        List<List<String>> originDestinationListOfList = new ArrayList<>();
+        List<List<? extends Address>> originDestinationListOfList = new ArrayList<>();
         originDestinationListOfList.addAll(destinationListOfList);
         sCount = 0;
-        getDistanceInfoRecursion(startPointListOfList,destinationListOfList,originDestinationListOfList);
+        getDistanceInfoRecursion(startPointListOfList,destinationListOfList,originDestinationListOfList,onDone);
 
     }
 
-    private static void getDistanceInfoRecursion(final List<List<String>> startPointListOfList, final  List<List<String>> destinationListOfList,
-                                               final List<List<String>> originDestinationListOfList) {
+    private static void getDistanceInfoRecursion(final List<? extends List<? extends Address>> startPointListOfList,
+                        final  List<? extends List<? extends Address>> destinationListOfList,
+                        final List<? extends List<? extends Address>> originDestinationListOfList, Runnable onDone) {
         sCount ++;
         Log.d(TAG,"in getDistanceInfoRecursion sCount = "+sCount+" startPointListOfList.size = "+startPointListOfList.size()
                 +" destinationListOfList.size = "+destinationListOfList.size()
                 +" originDestinationListOfList.size = "+originDestinationListOfList.size());
         if(startPointListOfList.size() == 0 ){
+            if(onDone != null){
+                onDone.run();
+            }
+            Log.d("shimi","in getDistanceInfoRecursion END");
             return;
         }
 
         if(destinationListOfList.size() > 0) {
-            List<String> startPointList = startPointListOfList.get(0);
-            List<String> destinationList = destinationListOfList.get(0);
+            List<? extends Address> startPointList = startPointListOfList.get(0);
+            List<? extends Address> destinationList = destinationListOfList.get(0);
             destinationListOfList.remove(0);
             getDistanceInfoAndAddInDb(getFormatDistanceInfo(startPointList), getFormatDistanceInfo(destinationList), () -> {
-                getDistanceInfoRecursion(startPointListOfList, destinationListOfList,originDestinationListOfList);
+                getDistanceInfoRecursion(startPointListOfList, destinationListOfList,originDestinationListOfList,onDone);
             });
         }else{
             startPointListOfList.remove(0);
-            List<List<String>> newDestinationListOfList = new ArrayList<>();
+            List<List<? extends Address>>  newDestinationListOfList = new ArrayList<>();
             newDestinationListOfList.addAll(originDestinationListOfList);
-            getDistanceInfoRecursion(startPointListOfList, newDestinationListOfList,originDestinationListOfList);
+            getDistanceInfoRecursion(startPointListOfList, newDestinationListOfList,originDestinationListOfList,onDone);
         }
     }
 
-    private static String getFormatDistanceInfo(List<String> startPointList) {
+    private static String getFormatDistanceInfo(List<? extends Address> startPointList) {
         StringBuilder destination = new StringBuilder();
-        for (String address : startPointList) {
+        for (Address address : startPointList) {
             if (address != null) {
-                destination.append(address).append("|");
+                destination.append(address.latLong).append("|");
             }
         }
         return destination.toString();
@@ -89,6 +97,84 @@ public class HttpHelper {
 
 
     public static void getDistanceInfoAndAddInDb(String startPoint, String destination, Runnable onDone) {
+
+        // http://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY
+        //https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY&key=YOUR_API_KEY
+        Map<String, String> mapQuery = new HashMap<>();
+        mapQuery.put("units", "imperial");
+        mapQuery.put("origins", startPoint);
+        mapQuery.put("destinations", destination );//+ "|" + cities[1] + "|" + cities[2]
+        mapQuery.put("mode", "walking");
+        mapQuery.put("key", YOUR_API_KEY);
+//        mapQuery.put("destinations[1]", cities[1]);
+//        mapQuery.put("destinations[2]", cities[2]);
+        DistanceApiClient client = RestUtil.getInstance().getRetrofit().create(DistanceApiClient.class);
+
+        Call<DistanceResponse> call = client.getDistanceInfo(mapQuery);
+        call.enqueue(new Callback<DistanceResponse>() {
+            @Override
+            public void onResponse(Call<DistanceResponse> call, Response<DistanceResponse> response) {
+                DistanceResponse body = response.body();
+                if (body!= null){
+                    addRespondToDb(body);
+                }
+            }
+            @Override
+            public void onFailure(Call<DistanceResponse> call, Throwable t) {
+                Log.d("shimi","onFailure call = "+ (call == null ? "null" : call.toString()));
+            }
+
+            private void addRespondToDb(DistanceResponse body) {
+
+                if(Looper.myLooper() == Looper.getMainLooper()){
+                    App.getBackgroundHandler().post(() -> {
+                        addRespondToDb(body);
+                    });
+                    return;
+                }
+
+                List<String> originAddressesList = body.getOriginAddresses();
+                List<String> destinationAddressesList = body.getDestinationAddresses();
+                List<Row> rows = body.getRows();
+                for (int i = 0; i < rows.size() ; i++){
+                    String originAddress = originAddressesList.get(i);
+                    List<Element> elements = rows.get(i).getElements();
+
+                    for (int y = 0; y < elements.size(); y++) {
+                        String destinationAddress = destinationAddressesList.get(y);
+                        Element element = elements.get(y);
+
+                        App.getBackgroundHandler().post(() -> {
+                            //TODO: google is returning a eddied address so we are not finding in DB thus i am converting to latLong
+                            Box<Address> addressBox = App.get().getBox(Address.class);
+                            Address address = addressBox.query().equal(Address_.latLong, Utils.getLatLongFromLocation(destinationAddress)).build().findUnique();
+
+                            if(address != null){
+                                address.setDuration(element.getDuration().getValue());
+                                address.setDistance(element.getDistance().getValue());
+                                addressBox.put(address);
+                                Log.d("shimi", "getStartLatLong = "+destinationAddress+" Distance = "+element.getDuration().getValue()+
+                                        " Duration = "+element.getDistance().getValue()+" (address != null) = "+(address != null));
+                            }
+                        });
+                    }
+
+                }
+                if(onDone != null) {
+                    onDone.run();
+                }
+
+            }
+        });
+    }
+
+
+
+
+
+
+
+    public static void getDistanceInfoAndAddInDbOld(String startPoint, String destination, Runnable onDone) {
 
         // http://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY
         //https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY&key=YOUR_API_KEY
@@ -158,7 +244,7 @@ public class HttpHelper {
                         });
                     }
 
-                   // showTravelDistance("onResponse "+element.getDistance().getText() + "\n" + element.getDuration().getText());
+                    // showTravelDistance("onResponse "+element.getDistance().getText() + "\n" + element.getDuration().getText());
                 }else{
                     Log.d("shimi","onResponse response = "+(response == null ? "null" : response.toString()));
                     //showTravelDistance("onResponse response = "+(response == null ? "null" : response.toString()));

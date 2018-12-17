@@ -201,8 +201,8 @@ public class AddressSearchActivity extends Activity_ {
     private void initAddressData() {
 
         App.getBackgroundHandler().post(() -> {
-            Box<AddressResultList> addressBox = getBox(AddressResultList.class);
-            List<AddressResultList> addresses = addressBox.getAll();
+            Box<AddressSearchList> addressBox = getBox(AddressSearchList.class);
+            List<AddressSearchList> addresses = addressBox.getAll();
             //StringBuilder destination = new StringBuilder();
             List<String> destination = new ArrayList<>();
             if(addresses != null && addresses.size() > 0 && addresses.get(0).getDuration() == 0) {
@@ -217,7 +217,7 @@ public class AddressSearchActivity extends Activity_ {
                 }
 
                 Log.d("shimi", "in create addresses.size() = "+addresses.size()+ "  destination = "+destination.toString());
-                HttpHelper.getDistanceInfoAndAddInDb(destination,destination);
+                HttpHelper.getDistanceInfoAndAddInDb(addresses, addresses);
                 //HttpHelper.getDistanceInfoAndAddInDb("New+York+City,NY",destination.toString(),null);
             }else{
                 if(addresses != null) {
