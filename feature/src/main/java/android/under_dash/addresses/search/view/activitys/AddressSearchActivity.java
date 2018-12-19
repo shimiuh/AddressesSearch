@@ -102,9 +102,10 @@ public class AddressSearchActivity extends Activity_ {
                     Log.d("shimi", "in fab fab_result_list");
                     MyCSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
                         //TODO: send correct type
-                        App.get().getBox(AddressName.class).put(new AddressName(Constants.ADDRESS_RESULT));
-                        App.get().getBox(AddressName.class).put(new AddressName(Constants.ADDRESS_SEARCH));
-                        //AddressName AddressName = App.get().getBox(AddressName.class).query().equal(AddressName_.name,Constants.ADDRESS_RESULT).build().findUnique();
+
+                        App.getBox(AddressName.class).put(new AddressName(Constants.ADDRESS_RESULT));
+                        App.getBox(AddressName.class).put(new AddressName(Constants.ADDRESS_SEARCH));
+                        AddressName AddressName = App.getBox(AddressName.class).query().equal(AddressName_.name,Constants.ADDRESS_RESULT).build().findUnique();
                         //new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,AddressName).execute();
                     });
                 }else if(id == R.id.fab_search_list){

@@ -88,7 +88,7 @@ public class Application_ extends Application {
 		return sBoxStore;
 	}
 
-	public static <T> Box<T> getBox(Class clazz) {
+	public static <T> Box<T> getBox(Class<T>  clazz) {
 		return getBoxStore().boxFor(clazz);
 	}
 

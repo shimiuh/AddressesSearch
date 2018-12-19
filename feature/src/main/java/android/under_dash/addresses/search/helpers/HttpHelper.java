@@ -152,7 +152,7 @@ public class HttpHelper {
 
                         App.getBackgroundHandler().post(() -> {
                             //TODO: google is returning a eddied address so we are not finding in DB thus i am converting to latLong
-                            Box<Address> addressBox = App.get().getBox(Address.class);
+                            Box<Address> addressBox = App.getBox(Address.class);
                             Address address = addressBox.query().equal(Address_.latLong, Utils.getLatLongFromLocation(destinationAddress)).build().findUnique();
 
                             if(address != null){
@@ -216,7 +216,7 @@ public class HttpHelper {
 
                     List<String> list = body.getDestinationAddresses();
 
-                    Box<Address> addressBox = App.get().getBox(Address.class);
+                    Box<Address> addressBox = App.getBox(Address.class);
                     List<Address> addresses = addressBox.getAll();
                     Log.d("shimi","Rows size = "+body.getRows().size()+" Elements().size() = "+elements.size()+" list = "+elements.size()+" addressBox "+addresses.size());
 
@@ -287,7 +287,7 @@ public class HttpHelper {
 
                         App.getBackgroundHandler().post(() -> {
                             //TODO: google is returning a eddied address so we are not finding in DB thus i am converting to latLong
-                            Box<Address> addressBox = App.get().getBox(Address.class);
+                            Box<Address> addressBox = App.getBox(Address.class);
                             Address address = addressBox.query().equal(Address_.latLong, Utils.getLatLongFromLocation(destinationAddress)).build().findUnique();
 
                             if(address != null){

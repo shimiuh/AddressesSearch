@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:2684500700414003919",
-      "lastPropertyId": "7:4050846584499770725",
+      "lastPropertyId": "6:4875114053007134723",
       "name": "Address",
       "properties": [
         {
@@ -27,11 +27,6 @@
         {
           "id": "5:5646380027622913955",
           "name": "latLong"
-        },
-        {
-          "id": "7:4050846584499770725",
-          "indexId": "5:6161076122925435427",
-          "name": "addressNameId"
         }
       ],
       "relations": [
@@ -82,7 +77,6 @@
         },
         {
           "id": "2:2927360761370433476",
-          "indexId": "6:897457683108798728",
           "name": "name"
         },
         {
@@ -90,17 +84,12 @@
           "name": "fileLocation"
         }
       ],
-      "relations": [
-        {
-          "id": "3:49902855202628157",
-          "name": "addresses"
-        }
-      ]
+      "relations": []
     }
   ],
   "lastEntityId": "3:8605660825558390177",
-  "lastIndexId": "6:897457683108798728",
-  "lastRelationId": "3:49902855202628157",
+  "lastIndexId": "4:8861339391276773215",
+  "lastRelationId": "2:1336128903246243130",
   "lastSequenceId": "0:0",
   "modelVersion": 4,
   "modelVersionParserMinimum": 4,
