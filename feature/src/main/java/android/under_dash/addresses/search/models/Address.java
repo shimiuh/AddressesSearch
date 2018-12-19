@@ -3,6 +3,7 @@ package android.under_dash.addresses.search.models;
 
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
+import io.objectbox.relation.ToMany;
 
 @Entity
 public class Address {
@@ -14,6 +15,7 @@ public class Address {
     public String latLong;
     public int    distance;
     public int    duration;
+    //public ToMany<Address> addresses;
 
     public Address() {}
     public Address(String name, String address, String website,String latLong) {

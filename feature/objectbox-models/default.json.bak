@@ -37,7 +37,12 @@
           "name": "latLong"
         }
       ],
-      "relations": []
+      "relations": [
+        {
+          "id": "1:4754441379371845175",
+          "name": "addresses"
+        }
+      ]
     },
     {
       "id": "2:4373040749184947593",
@@ -73,7 +78,12 @@
           "name": "duration"
         }
       ],
-      "relations": []
+      "relations": [
+        {
+          "id": "3:3960557291628842567",
+          "name": "addresses"
+        }
+      ]
     },
     {
       "id": "3:7366011982040274519",
@@ -109,12 +119,17 @@
           "name": "duration"
         }
       ],
-      "relations": []
+      "relations": [
+        {
+          "id": "2:4661811594242171404",
+          "name": "addresses"
+        }
+      ]
     }
   ],
   "lastEntityId": "3:7366011982040274519",
   "lastIndexId": "0:0",
-  "lastRelationId": "0:0",
+  "lastRelationId": "3:3960557291628842567",
   "lastSequenceId": "0:0",
   "modelVersion": 4,
   "modelVersionParserMinimum": 4,

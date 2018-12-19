@@ -5,6 +5,7 @@ import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.app.DistanceApiClient;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -45,8 +46,11 @@ public class HttpHelper {
         }
 
         int targetSize = 25;
-        List<? extends List<? extends Address>> startPointListOfList = ListUtils.partition(startPointList, targetSize);
-        List<? extends List<? extends Address>> destinationListOfList = ListUtils.partition(destinationList, targetSize);
+        List<? extends List<? extends Address>> startPointListOfList = new ArrayList<>(ListUtils.partition(startPointList, targetSize));
+        List<? extends List<? extends Address>> destinationListOfList = new ArrayList<>(ListUtils.partition(destinationList, targetSize));
+
+//        List<? extends List<? extends Address>> startPointListOfList = ListUtils.partition(startPointList, targetSize);
+//        List<? extends List<? extends Address>> destinationListOfList = ListUtils.partition(destinationList, targetSize);
 
         List<List<? extends Address>> originDestinationListOfList = new ArrayList<>();
         originDestinationListOfList.addAll(destinationListOfList);
@@ -66,7 +70,7 @@ public class HttpHelper {
             if(onDone != null){
                 onDone.run();
             }
-            Log.d("shimi","in getDistanceInfoRecursion END");
+            Log.d(TAG,"in getDistanceInfoRecursion END");
             return;
         }
 
@@ -74,6 +78,8 @@ public class HttpHelper {
             List<? extends Address> startPointList = startPointListOfList.get(0);
             List<? extends Address> destinationList = destinationListOfList.get(0);
             destinationListOfList.remove(0);
+            //TODO: move next line in next call
+
             getDistanceInfoAndAddInDb(getFormatDistanceInfo(startPointList), getFormatDistanceInfo(destinationList), () -> {
                 getDistanceInfoRecursion(startPointListOfList, destinationListOfList,originDestinationListOfList,onDone);
             });
