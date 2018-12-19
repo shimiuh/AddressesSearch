@@ -4,6 +4,7 @@ package android.under_dash.addresses.search.models;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 import io.objectbox.relation.ToMany;
+import io.objectbox.relation.ToOne;
 
 @Entity
 public class Address {
@@ -13,16 +14,16 @@ public class Address {
     public String address;
     public String website;
     public String latLong;
-    public int    distance;
-    public int    duration;
-    //public ToMany<Address> addresses;
+    public ToMany<AddressMap> addressMaps;
+    public ToOne<AddressName> addressName;
 
     public Address() {}
-    public Address(String name, String address, String website,String latLong) {
+    public Address(String name, String address, String website,String latLong ,AddressName addressName) {
         this.name = name;
         this.address = address;
         this.website = website;
         this.latLong = latLong;
+        this.addressName.setTarget(addressName);
     }
 
     public Address(Address addressToCopy) {
@@ -30,8 +31,6 @@ public class Address {
         this.address = addressToCopy.address;
         this.website = addressToCopy.website;
         this.latLong = addressToCopy.latLong;
-        this.distance = addressToCopy.distance;
-        this.duration = addressToCopy.duration;
     }
 
 
@@ -62,22 +61,6 @@ public class Address {
         this.website = website;
     }
 
-    public int getDistance() {
-        return distance;
-    }
-
-    public void setDistance(int distance) {
-        this.distance = distance;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
     @Override
     public String toString() {
         return "Address{" +
@@ -85,17 +68,15 @@ public class Address {
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", website='" + website + '\'' +
-                ", distance=" + distance +
-                ", duration=" + duration +
                 '}';
     }
 
-    public AddressResultList result(){
+    public Address result(){
 
-        return (AddressResultList) this;
+        return (Address) this;
     }
-    public AddressSearchList search(){
+    public Address search(){
 
-        return (AddressSearchList) this;
+        return (Address) this;
     }
 }

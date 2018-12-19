@@ -9,8 +9,6 @@ import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.helpers.HttpHelper;
 import android.under_dash.addresses.search.helpers.Utils;
 import android.under_dash.addresses.search.models.Address;
-import android.under_dash.addresses.search.models.AddressResultList;
-import android.under_dash.addresses.search.models.AddressSearchList;
 import android.under_dash.addresses.search.view.fragments.AddressResultFragment;
 import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
 import android.view.LayoutInflater;
@@ -85,11 +83,11 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
         if(item == null){
             return;
         }
-        Box<AddressResultList> addressResultBox = App.getBox(AddressResultList.class);
-        List<AddressResultList> addressResultList = addressResultBox.getAll();
+        Box<Address> addressResultBox = App.getBox(Address.class);
+        List<Address> addressResultList = addressResultBox.getAll();//TODO: get only addressResultList
 
-        Box<AddressSearchList> addressSearchBox = App.getBox(AddressSearchList.class);
-        List<AddressSearchList> addressSearchList = addressSearchBox.getAll();
+        Box<Address> addressSearchBox = App.getBox(Address.class);
+        List<Address> addressSearchList = addressSearchBox.getAll();//TODO: get only addressSearchList
 
         HttpHelper.getDistanceInfoAndAddInDb(addressSearchList, addressResultList, () -> {
 

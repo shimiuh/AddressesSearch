@@ -2,9 +2,6 @@ package android.under_dash.addresses.search.helpers;
 
 import android.os.Looper;
 import android.under_dash.addresses.search.app.App;
-import android.under_dash.addresses.search.models.AddressResultList;
-import android.under_dash.addresses.search.models.AddressSearchList;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,23 +15,25 @@ public class DbUtils {
             return;
         }
 
-        Box<AddressSearchList> searchBox = App.getBox(AddressSearchList.class);
-        Box<AddressResultList> resultBox = App.getBox(AddressResultList.class);
-        List<AddressSearchList> searchList = searchBox.getAll();
-        List<AddressResultList> resultList = resultBox.getAll();
-        searchBox.removeAll();
-        resultBox.removeAll();
-        List<AddressSearchList> newSearchList = new ArrayList<>();
-        resultList.forEach(addressResult -> {
-            newSearchList.add(new AddressSearchList(addressResult));
-        });
+        //TODO: switch by addressName
 
-        List<AddressResultList> newResultList = new ArrayList<>();
-        searchList.forEach(addressSearchList -> {
-            newResultList.add(new AddressResultList(addressSearchList));
-        });
-        resultBox.put(newResultList);
-        searchBox.put(newSearchList);
+//        Box<AddressSearchList> searchBox = App.getBox(AddressSearchList.class);
+//        Box<AddressResultList> resultBox = App.getBox(AddressResultList.class);
+//        List<AddressSearchList> searchList = searchBox.getAll();
+//        List<AddressResultList> resultList = resultBox.getAll();
+//        searchBox.removeAll();
+//        resultBox.removeAll();
+//        List<AddressSearchList> newSearchList = new ArrayList<>();
+//        resultList.forEach(addressResult -> {
+//            newSearchList.add(new AddressSearchList(addressResult));
+//        });
+//
+//        List<AddressResultList> newResultList = new ArrayList<>();
+//        searchList.forEach(addressSearchList -> {
+//            newResultList.add(new AddressResultList(addressSearchList));
+//        });
+//        resultBox.put(newResultList);
+//        searchBox.put(newSearchList);
         if(onDone != null){
             onDone.run();
         }

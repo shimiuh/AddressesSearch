@@ -4,127 +4,104 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "1:3888336936047366039",
-      "lastPropertyId": "7:5151420767816449223",
+      "id": "1:782477533839094559",
+      "lastPropertyId": "6:4461664093176086049",
       "name": "Address",
       "properties": [
         {
-          "id": "1:147470399779839866",
+          "id": "1:5511777814594412079",
           "name": "id"
         },
         {
-          "id": "2:3780209882092813637",
+          "id": "2:8433370697369563615",
           "name": "name"
         },
         {
-          "id": "3:5734250974837805176",
+          "id": "3:8087858568688922405",
           "name": "address"
         },
         {
-          "id": "4:5222208504959431944",
+          "id": "4:1424627286415349563",
           "name": "website"
         },
         {
-          "id": "5:1663714073716957420",
+          "id": "5:4925470818763168056",
+          "name": "latLong"
+        },
+        {
+          "id": "6:4461664093176086049",
+          "indexId": "1:1343561056946046897",
+          "name": "addressNameId"
+        }
+      ],
+      "relations": [
+        {
+          "id": "1:4651039727060280627",
+          "name": "addressMaps"
+        }
+      ]
+    },
+    {
+      "id": "2:718071202343340057",
+      "lastPropertyId": "5:8781619579674362393",
+      "name": "AddressMap",
+      "properties": [
+        {
+          "id": "1:5424160137752412965",
+          "name": "id"
+        },
+        {
+          "id": "2:7623753878617525343",
+          "indexId": "2:7672924383578788157",
+          "name": "originLatLong"
+        },
+        {
+          "id": "3:8711920966400075608",
+          "indexId": "3:1786824361259034796",
+          "name": "destinationLatLong"
+        },
+        {
+          "id": "4:8706693084111822447",
           "name": "distance"
         },
         {
-          "id": "6:649044307525130738",
+          "id": "5:8781619579674362393",
           "name": "duration"
-        },
-        {
-          "id": "7:5151420767816449223",
-          "name": "latLong"
         }
       ],
       "relations": []
     },
     {
-      "id": "2:4373040749184947593",
-      "lastPropertyId": "7:7853961507393751527",
-      "name": "AddressSearchList",
+      "id": "3:7149844844021044208",
+      "lastPropertyId": "3:8646902619533502167",
+      "name": "AddressName",
       "properties": [
         {
-          "id": "1:8813572871041310764",
+          "id": "1:2747334353043392782",
           "name": "id"
         },
         {
-          "id": "2:4977990105051257162",
+          "id": "2:5826723228203944442",
+          "indexId": "4:8732464618935462649",
           "name": "name"
         },
         {
-          "id": "3:5683457438919237910",
-          "name": "address"
-        },
-        {
-          "id": "4:8790383349982646209",
-          "name": "website"
-        },
-        {
-          "id": "5:6222129184866768504",
-          "name": "latLong"
-        },
-        {
-          "id": "6:5783459275392682720",
-          "name": "distance"
-        },
-        {
-          "id": "7:7853961507393751527",
-          "name": "duration"
-        }
-      ],
-      "relations": []
-    },
-    {
-      "id": "3:7366011982040274519",
-      "lastPropertyId": "7:8076487180128483010",
-      "name": "AddressResultList",
-      "properties": [
-        {
-          "id": "1:7672276246076867214",
-          "name": "id"
-        },
-        {
-          "id": "2:3014579317305895971",
-          "name": "name"
-        },
-        {
-          "id": "3:9066429616502914933",
-          "name": "address"
-        },
-        {
-          "id": "4:826373130793772548",
-          "name": "website"
-        },
-        {
-          "id": "5:6288763722217285448",
-          "name": "latLong"
-        },
-        {
-          "id": "6:8590993971678238597",
-          "name": "distance"
-        },
-        {
-          "id": "7:8076487180128483010",
-          "name": "duration"
+          "id": "3:8646902619533502167",
+          "name": "fileLocation"
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "3:7366011982040274519",
-  "lastIndexId": "0:0",
-  "lastRelationId": "3:3960557291628842567",
+  "lastEntityId": "3:7149844844021044208",
+  "lastIndexId": "4:8732464618935462649",
+  "lastRelationId": "1:4651039727060280627",
   "lastSequenceId": "0:0",
   "modelVersion": 4,
   "modelVersionParserMinimum": 4,
   "retiredEntityUids": [],
   "retiredIndexUids": [],
   "retiredPropertyUids": [],
-  "retiredRelationUids": [
-    4754441379371845175,
-    3960557291628842567,
-    4661811594242171404
-  ],
+  "retiredRelationUids": [],
   "version": 1
 }

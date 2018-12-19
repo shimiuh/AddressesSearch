@@ -14,7 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.under_dash.addresses.search.app.App;
-import android.under_dash.addresses.search.models.AddressResultList;
+import android.under_dash.addresses.search.models.Address;
 import android.under_dash.addresses.search.old.AddressDetailActivity;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.dummy.DummyContent;
@@ -153,10 +153,10 @@ public class AddressResultFragment extends Fragment_ {//implements AppBarLayout.
     }
 
     private void updateListData() {
-        mAdapter.setData(new ArrayList<AddressResultList>());
+        mAdapter.setData(new ArrayList<Address>());
         App.getUiHandler().postDelayed(new Runnable() {
             @Override public void run() {
-                Box<AddressResultList> addressBox = App.getBox(AddressResultList.class);
+                Box<Address> addressBox = App.getBox(Address.class);
                 mItemAnimation.getAnimation().reset();
                 mRecyclerView.setLayoutAnimation(mItemAnimation);
                 mAdapter.setData(addressBox.getAll());

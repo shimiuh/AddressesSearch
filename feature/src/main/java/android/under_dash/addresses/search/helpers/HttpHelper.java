@@ -156,8 +156,8 @@ public class HttpHelper {
                             Address address = addressBox.query().equal(Address_.latLong, Utils.getLatLongFromLocation(destinationAddress)).build().findUnique();
 
                             if(address != null){
-                                address.setDuration(element.getDuration().getValue());
-                                address.setDistance(element.getDistance().getValue());
+                                //address.setDuration(element.getDuration().getValue());
+                                //address.setDistance(element.getDistance().getValue());
                                 addressBox.put(address);
                                 Log.d("shimi", "getStartLatLong = "+destinationAddress+" Distance = "+element.getDuration().getValue()+
                                         " Duration = "+element.getDistance().getValue()+" (address != null) = "+(address != null));
@@ -241,8 +241,8 @@ public class HttpHelper {
                             Address address = addressBox.query().equal(Address_.latLong, Utils.getLatLongFromLocation(destinationAddress)).build().findUnique();
 
                             if(address != null){
-                                address.setDuration(element.getDuration().getValue());
-                                address.setDistance(element.getDistance().getValue());
+                                //address.setDuration(element.getDuration().getValue());
+                                //address.setDistance(element.getDistance().getValue());
                                 addressBox.put(address);
                                 Log.d("shimi", "getStartLatLong = "+destinationAddress+" Distance = "+element.getDuration().getValue()+
                                         " Duration = "+element.getDistance().getValue()+" (address != null) = "+(address != null));
@@ -291,8 +291,8 @@ public class HttpHelper {
                             Address address = addressBox.query().equal(Address_.latLong, Utils.getLatLongFromLocation(destinationAddress)).build().findUnique();
 
                             if(address != null){
-                                address.setDuration(element.getDuration().getValue());
-                                address.setDistance(element.getDistance().getValue());
+                                //address.setDuration(element.getDuration().getValue());
+                                //address.setDistance(element.getDistance().getValue());
                                 addressBox.put(address);
                                 Log.d("shimi", "getStartLatLong = "+destinationAddress+" Distance = "+element.getDuration().getValue()+
                                         " Duration = "+element.getDistance().getValue()+" (address != null) = "+(address != null));

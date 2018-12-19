@@ -5,8 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.models.Address;
-import android.under_dash.addresses.search.models.AddressResultList;
-import android.under_dash.addresses.search.models.AddressSearchList;
+import android.under_dash.addresses.search.models.AddressName;
 import android.under_dash.addresses.search.models.Institution;
 import android.util.Log;
 import android.widget.Toast;
@@ -19,15 +18,15 @@ import de.siegmar.fastcsv.reader.CsvRow;
 
 public class ImportCVSToSQLiteDB extends AsyncTask<String, String, String> {
 
-    Class mClassDbToAdd;
+    AddressName mAddressName;
     Context mContext;
     File mFile = null;
     private ProgressDialog dialog;
 
-    public ImportCVSToSQLiteDB(Context context, File file, Class classDbToAdd) {
+    public ImportCVSToSQLiteDB(Context context, File file, AddressName addressName) {
         this.mContext=context;
         this.mFile=file;
-        this.mClassDbToAdd = classDbToAdd;
+        this.mAddressName = addressName;
     }
 
     @Override
@@ -48,7 +47,7 @@ public class ImportCVSToSQLiteDB extends AsyncTask<String, String, String> {
         Log.d(getClass().getName(), mFile.toString());
 
         App.getBoxStore().runInTxAsync(() -> {
-            App.get().getBox(mClassDbToAdd).removeAll();
+            App.get().getBox(Address.class).removeAll();//TODO: remove only addresses by mAddressName
         }, (result, error) -> {});
 
         try{
@@ -67,11 +66,7 @@ public class ImportCVSToSQLiteDB extends AsyncTask<String, String, String> {
                 App.getBoxStore().runInTxAsync(() -> {
                     String latLong = Utils.getLatLongFromLocation(acc_address);
                     //Log.e("shimi", "latLong = "+latLong);
-                    if(mClassDbToAdd.isAssignableFrom(AddressResultList.class)){
-                        App.get().getBox(mClassDbToAdd).put(new AddressResultList(acc_name,acc_address,acc_website,latLong));
-                    }else if(mClassDbToAdd.isAssignableFrom(AddressSearchList.class)){
-                        App.get().getBox(mClassDbToAdd).put(new AddressSearchList(acc_name,acc_address,acc_website,latLong));
-                    }
+                    App.get().getBox(Address.class).put(new Address(acc_name,acc_address,acc_website,latLong,mAddressName));
 
                 }, (result, error) -> {
                     // transaction is done! do something?
@@ -80,7 +75,7 @@ public class ImportCVSToSQLiteDB extends AsyncTask<String, String, String> {
                 //Log.d("shimi", "doInBackground: "+"Read line: " + row);
 
             }
-            Log.d("shimi", "DB added  size = "+App.get().getBox(mClassDbToAdd).getAll().size());
+            Log.d("shimi", "DB added  size = "+App.get().getBox(Address.class).getAll().size());
             return data="added";
 
         } catch (Exception e) {
@@ -98,7 +93,7 @@ public class ImportCVSToSQLiteDB extends AsyncTask<String, String, String> {
         }
 
         if (data.length()!=0){
-            Toast.makeText(mContext, "File is built Successfully! size = "+App.get().getBox(mClassDbToAdd).getAll().size(), Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, "File is built Successfully! size = "+App.get().getBox(Address.class).getAll().size(), Toast.LENGTH_LONG).show();
             //Log.d("shimi", "File is built Successfully!"+"\n"+data+"\n institutionDB = "+AppDatabase.get(mContext).institutionDao().getAll().toString());
         }else{
             Toast.makeText(mContext, "File fail to build", Toast.LENGTH_SHORT).show();

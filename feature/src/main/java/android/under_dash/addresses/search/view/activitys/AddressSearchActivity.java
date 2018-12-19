@@ -14,12 +14,12 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintSet;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.under_dash.addresses.search.app.Constants;
+import android.under_dash.addresses.search.models.AddressName;
 import android.under_dash.addresses.search.old.AddressDetailActivity;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
@@ -30,8 +30,6 @@ import android.under_dash.addresses.search.helpers.MyCSVFileReader;
 import android.under_dash.addresses.search.helpers.Utils;
 import android.under_dash.addresses.search.library.Activity_;
 import android.under_dash.addresses.search.models.Address;
-import android.under_dash.addresses.search.models.AddressResultList;
-import android.under_dash.addresses.search.models.AddressSearchList;
 import android.under_dash.addresses.search.view.adapters.AddressesSearchAdapter;
 import android.under_dash.addresses.search.view.fragments.AddressResultFragment;
 import android.util.Log;
@@ -102,12 +100,17 @@ public class AddressSearchActivity extends Activity_ {
                 }else if(id == R.id.fab_result_list){
                     Log.d("shimi", "in fab fab_result_list");
                     MyCSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
-                        new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,AddressResultList.class).execute();
+                        //TODO: send correct type
+                        App.get().getBox(AddressName.class).put(new AddressName(Constants.ADDRESS_RESULT));
+                        App.get().getBox(AddressName.class).put(new AddressName(Constants.ADDRESS_SEARCH));
+                        //AddressName AddressName = App.get().getBox(AddressName.class).query().equal(AddressName_.name,Constants.ADDRESS_RESULT).build().findUnique();
+                        //new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,AddressName).execute();
                     });
                 }else if(id == R.id.fab_search_list){
                     Log.d("shimi", "in fab fab_search_list");
                     MyCSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
-                        new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,AddressSearchList.class).execute();
+                        //TODO: send correct type
+                        //new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,Address.class).execute();
                     });
                 }else if(id == R.id.fab_swap){
                     Log.d("shimi", "in fab fab_swap");
@@ -176,9 +179,9 @@ public class AddressSearchActivity extends Activity_ {
         ClipData clip = clipboard.getPrimaryClip();
         if(clip != null){
             String address = clip.getItemAt(0).toString();
-            Box<AddressSearchList> searchBox = getBox(AddressSearchList.class);
+            Box<Address> searchBox = getBox(Address.class);
             String latLong = Utils.getLatLongFromLocation(address);
-            searchBox.put(new AddressSearchList("",address,"",latLong));
+            //searchBox.put(new Address("",address,"",latLong)); TODO: add addressName
         }
 
 
@@ -186,14 +189,14 @@ public class AddressSearchActivity extends Activity_ {
 
     }
 
-    private void removeAddress(AddressSearchList address) {
+    private void removeAddress(Address address) {
 
         if(Looper.myLooper() != Looper.getMainLooper()){
             App.getBackgroundHandler().post(() -> removeAddress(address));
             return;
         }
 
-        Box<AddressSearchList> searchBox = getBox(AddressSearchList.class);
+        Box<Address> searchBox = getBox(Address.class);
         searchBox.remove(address);
 
     }
@@ -201,11 +204,11 @@ public class AddressSearchActivity extends Activity_ {
     private void initAddressData() {
 
         App.getBackgroundHandler().post(() -> {
-            Box<AddressSearchList> addressBox = getBox(AddressSearchList.class);
-            List<AddressSearchList> addresses = addressBox.getAll();
+            Box<Address> addressBox = getBox(Address.class);
+            List<Address> addresses = addressBox.getAll();
             //StringBuilder destination = new StringBuilder();
             List<String> destination = new ArrayList<>();
-            if(addresses != null && addresses.size() > 0 && addresses.get(0).getDuration() == 0) {
+            if(addresses != null && addresses.size() > 0 ){//&& addresses.get(0).getDuration() == 0) {
 
                 //
                 for (Address address : addresses) {
@@ -224,7 +227,7 @@ public class AddressSearchActivity extends Activity_ {
                     Log.d("shimi", "in create else addresses.size() = "+addresses.size());
                     for (Address address : addresses) {
                         if (address != null) {
-                            Log.d("shimi", " Distance = "+address.getDistance()+" Duration = "+address.getDuration()+" latLong ="+address.latLong);
+                            //Log.d("shimi", " Distance = "+address.getDistance()+" Duration = "+address.getDuration()+" latLong ="+address.latLong);
                         }
                     }
                 }
@@ -252,10 +255,10 @@ public class AddressSearchActivity extends Activity_ {
     }
 
     private void updateListData() {
-        mAdapter.setData(new ArrayList<AddressSearchList>());
+        mAdapter.setData(new ArrayList<Address>());
         App.getUiHandler().postDelayed(new Runnable() {
             @Override public void run() {
-                Box<AddressSearchList> addressBox = getBox(AddressSearchList.class);
+                Box<Address> addressBox = getBox(Address.class);
                 mItemAnimation.getAnimation().reset();
                 mRecyclerView.setLayoutAnimation(mItemAnimation);
                 mAdapter.setData(addressBox.getAll());
