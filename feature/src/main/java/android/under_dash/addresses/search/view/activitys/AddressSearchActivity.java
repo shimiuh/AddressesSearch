@@ -19,12 +19,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.under_dash.addresses.search.app.Constants;
+import android.under_dash.addresses.search.helpers.SearchManager;
 import android.under_dash.addresses.search.models.AddressName;
 import android.under_dash.addresses.search.models.AddressName_;
 import android.under_dash.addresses.search.old.AddressDetailActivity;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
-import android.under_dash.addresses.search.helpers.DbUtils;
 import android.under_dash.addresses.search.helpers.HttpHelper;
 import android.under_dash.addresses.search.helpers.ImportCVSToSQLiteDB;
 import android.under_dash.addresses.search.helpers.MyCSVFileReader;
@@ -101,22 +101,27 @@ public class AddressSearchActivity extends Activity_ {
                     addAddressFromClip();
                     Toast.makeText(getApplicationContext(), " clicked!",Toast.LENGTH_SHORT).show();
                 }else if(id == R.id.fab_result_list){
-                    Log.d("shimi", "in fab fab_result_list");
+
                     MyCSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
-                        AddressName AddressName = App.getBox(AddressName.class).query().equal(AddressName_.name,Constants.ADDRESS_RESULT).build().findUnique();
-                        new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,AddressName).execute();
+                        AddressName resultAddressName = App.getBox(AddressName.class).get(SearchManager.get().getResultId());
+                        Log.d("shimi", "in fab fab_result_list resultAddressName = "+resultAddressName.getName());
+                        new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,resultAddressName, () -> {
+                            updateSearchListData();
+                        }).execute();
                     });
                 }else if(id == R.id.fab_search_list){
-                    Log.d("shimi", "in fab fab_search_list");
+
                     MyCSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
-                        AddressName AddressName = App.getBox(AddressName.class).query().equal(AddressName_.name,Constants.ADDRESS_SEARCH).build().findUnique();
-                        new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,AddressName).execute();
+                        AddressName searchAddressName = App.getBox(AddressName.class).get(SearchManager.get().getSearchId());
+                        Log.d("shimi", "in fab fab_search_list searchAddressName = "+searchAddressName.getName());
+                        new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,searchAddressName, () -> {
+                            updateSearchListData();
+                        }).execute();
                     });
                 }else if(id == R.id.fab_swap){
                     Log.d("shimi", "in fab fab_swap");
-                    DbUtils.swapLists(() -> {
-                        updateListData();
-                    });
+                    SearchManager.get().swapLists();
+                    updateSearchListData();
                 }
             }
         });
@@ -155,7 +160,7 @@ public class AddressSearchActivity extends Activity_ {
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                updateListData();
+                updateSearchListData();
             }
         });
 
@@ -171,8 +176,8 @@ public class AddressSearchActivity extends Activity_ {
     private void initAddressNameList() {
         App.getBackgroundHandler().post(() -> {
             if(App.getBox(AddressName.class).getAll().size() == 0) {
-                App.getBox(AddressName.class).put(new AddressName(Constants.ADDRESS_RESULT));
-                App.getBox(AddressName.class).put(new AddressName(Constants.ADDRESS_SEARCH));
+                SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName(Constants.ADDRESS_RESULT)));
+                SearchManager.get().setSearchId(App.getBox(AddressName.class).put(new AddressName(Constants.ADDRESS_SEARCH)));
             }
         });
     }
@@ -260,17 +265,20 @@ public class AddressSearchActivity extends Activity_ {
         mAdapter.setMultiChoiceToolbar(multiChoiceToolbar);
         //adapter.setSingleClickMode(true);
         recyclerView.setAdapter(mAdapter);
-        updateListData();
+        updateSearchListData();
     }
 
-    private void updateListData() {
+    private void updateSearchListData() {
+
+        mSwipeLayout.setRefreshing(true);
         mAdapter.setData(new ArrayList<Address>());
         App.getUiHandler().postDelayed(new Runnable() {
             @Override public void run() {
-                Box<Address> addressBox = getBox(Address.class);
+                AddressName searchAddressName = App.getBox(AddressName.class).get(SearchManager.get().getSearchId());
+                Log.i("shimi", "in updateSearchListData:  searchAddressName = "+searchAddressName.getName()+"  Addresses().size = "+searchAddressName.addresses.size());
                 mItemAnimation.getAnimation().reset();
                 mRecyclerView.setLayoutAnimation(mItemAnimation);
-                mAdapter.setData(addressBox.getAll());
+                mAdapter.setData(searchAddressName.addresses);
                 mRecyclerView.scheduleLayoutAnimation();
                 mSwipeLayout.setRefreshing(false);
                 //mRecyclerView.invalidate();

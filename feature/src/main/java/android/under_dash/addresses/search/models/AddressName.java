@@ -1,5 +1,10 @@
 package android.under_dash.addresses.search.models;
 
+import android.support.annotation.NonNull;
+
+import javax.annotation.Nonnull;
+
+import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 import io.objectbox.annotation.Index;
@@ -19,5 +24,21 @@ public class AddressName {
     @Index @Unique
     public String name;
     public String fileLocation;
+
     public ToMany<Address> addresses;
+
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getFileLocation() {
+        return fileLocation;
+    }
+//    public ToMany<Address> getAddresses() {
+//        return this.addresses;
+//    }
 }

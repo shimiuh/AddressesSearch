@@ -6,9 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
+import android.under_dash.addresses.search.app.Constants;
 import android.under_dash.addresses.search.helpers.HttpHelper;
 import android.under_dash.addresses.search.helpers.Utils;
 import android.under_dash.addresses.search.models.Address;
+import android.under_dash.addresses.search.models.AddressName;
+import android.under_dash.addresses.search.models.AddressName_;
 import android.under_dash.addresses.search.view.fragments.AddressResultFragment;
 import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
 import android.view.LayoutInflater;
@@ -83,11 +86,11 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
         if(item == null){
             return;
         }
-        Box<Address> addressResultBox = App.getBox(Address.class);
-        List<Address> addressResultList = addressResultBox.getAll();//TODO: get only addressResultList
+        AddressName resultAddressName = App.getBox(AddressName.class).query().equal(AddressName_.name,Constants.ADDRESS_RESULT).build().findUnique();
+        List<Address> addressResultList = resultAddressName.addresses;
 
-        Box<Address> addressSearchBox = App.getBox(Address.class);
-        List<Address> addressSearchList = addressSearchBox.getAll();//TODO: get only addressSearchList
+        AddressName searchAddressName = App.getBox(AddressName.class).query().equal(AddressName_.name,Constants.ADDRESS_SEARCH).build().findUnique();
+        List<Address> addressSearchList = searchAddressName.addresses;
 
         HttpHelper.getDistanceInfoAndAddInDb(addressSearchList, addressResultList, () -> {
 

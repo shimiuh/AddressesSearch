@@ -18,15 +18,17 @@ import de.siegmar.fastcsv.reader.CsvRow;
 
 public class ImportCVSToSQLiteDB extends AsyncTask<String, String, String> {
 
+    private final Runnable mOnDone;
     AddressName mAddressName;
     Context mContext;
     File mFile = null;
     private ProgressDialog dialog;
 
-    public ImportCVSToSQLiteDB(Context context, File file, AddressName addressName) {
+    public ImportCVSToSQLiteDB(Context context, File file, AddressName addressName, Runnable onDone) {
         this.mContext=context;
         this.mFile=file;
         this.mAddressName = addressName;
+        this.mOnDone = onDone;
     }
 
     @Override
@@ -45,10 +47,9 @@ public class ImportCVSToSQLiteDB extends AsyncTask<String, String, String> {
 
         String data="";
         Log.d(getClass().getName(), mFile.toString());
-
-        App.getBoxStore().runInTxAsync(() -> {
-            App.getBox(Address.class).removeAll();//TODO: remove only addresses by mAddressName
-        }, (result, error) -> {});
+        if(mAddressName.addresses.size() > 0) {
+            App.getBox(Address.class).remove(mAddressName.addresses);
+        }
 
         try{
             CsvReader csvReader = new CsvReader();
@@ -63,19 +64,14 @@ public class ImportCVSToSQLiteDB extends AsyncTask<String, String, String> {
 
                 Institution institution = new Institution(0,acc_name,acc_website,acc_address);
                 //AppDatabase.get(mContext).addInstitution(institution);
-                App.getBoxStore().runInTxAsync(() -> {
-                    String latLong = Utils.getLatLongFromLocation(acc_address);
-                    //Log.e("shimi", "latLong = "+latLong);
-                    App.getBox(Address.class).put(new Address(acc_name,acc_address,acc_website,latLong,mAddressName));
-
-                }, (result, error) -> {
-                    // transaction is done! do something?
-                });
+                String latLong = Utils.getLatLongFromLocation(acc_address);
+                //Log.e("shimi", "latLong = "+latLong);
+                Address.add(acc_name,acc_address,acc_website,latLong,mAddressName);
                 //data=data+"Account_name:"+acc_name  +"  Account_web:"+acc_website+"\n" +"  Account_address:"+acc_address+"\n";
                 //Log.d("shimi", "doInBackground: "+"Read line: " + row);
 
             }
-            Log.d("shimi", "DB added  size = "+App.getBox(Address.class).getAll().size());
+            Log.d("shimi", "DB added  size = "+mAddressName.addresses.size()+" "+App.getBox(Address.class).getAll().size());
             return data="added";
 
         } catch (Exception e) {
@@ -91,7 +87,9 @@ public class ImportCVSToSQLiteDB extends AsyncTask<String, String, String> {
         if (dialog.isShowing()){
             dialog.dismiss();
         }
-
+        if(mOnDone != null){
+            mOnDone.run();
+        }
         if (data.length()!=0){
             Toast.makeText(mContext, "File is built Successfully! size = "+App.getBox(Address.class).getAll().size(), Toast.LENGTH_LONG).show();
             //Log.d("shimi", "File is built Successfully!"+"\n"+data+"\n institutionDB = "+AppDatabase.get(mContext).institutionDao().getAll().toString());

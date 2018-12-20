@@ -1,6 +1,10 @@
 package android.under_dash.addresses.search.models;
 
 
+import android.under_dash.addresses.search.app.App;
+import android.util.Log;
+
+import io.objectbox.Box;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 import io.objectbox.relation.ToMany;
@@ -19,12 +23,15 @@ public class Address {
 
     public Address() {}
 
-    public Address(String name, String address, String website, String latLong , AddressName addressName) {
+    public Address(String name, String address, String website, String latLong) {
         this.name = name;
         this.address = address;
         this.website = website;
         this.latLong = latLong;
-        setAddressName(addressName);
+        //this.addressName.setTarget(addressName);
+        //this.addressName.setTargetId(addressName.getId());
+
+
     }
 
     public Address(Address addressToCopy) {
@@ -35,6 +42,19 @@ public class Address {
         this.latLong = addressToCopy.latLong;
         this.addressMaps = addressToCopy.addressMaps;
         this.addressName = addressToCopy.addressName;
+    }
+
+    public static Address add(String acc_name, String acc_address, String acc_website, String latLong, AddressName addressName) {
+        Box<Address> box = App.getBox(Address.class);
+        Address address = new Address(acc_name,acc_address,acc_website,latLong);
+        addressName.addresses.add(address);
+        //box.attach(address);
+        address.addressName.setAndPutTarget(addressName);
+        box.put(address);
+        Log.d("shimi","in add Address id = "+address.id+" addressName = "+address.addressName.getTarget().getName()+
+                " getAll().size = "+box.getAll().size()+" "+addressName.addresses.size());
+        App.getBox(AddressName.class).put(addressName);
+        return address;
     }
 
     public ToMany<AddressMap> getAddressMaps() {
