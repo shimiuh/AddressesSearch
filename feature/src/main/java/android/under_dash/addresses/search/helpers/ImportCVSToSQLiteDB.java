@@ -22,7 +22,7 @@ public class ImportCVSToSQLiteDB extends AsyncTask<String, String, String> {
     AddressName mAddressName;
     Context mContext;
     File mFile = null;
-    private ProgressDialog dialog;
+    private ProgressDialog mDialog;
 
     public ImportCVSToSQLiteDB(Context context, File file, AddressName addressName, Runnable onDone) {
         this.mContext=context;
@@ -34,12 +34,18 @@ public class ImportCVSToSQLiteDB extends AsyncTask<String, String, String> {
     @Override
     protected void onPreExecute()
     {
-        dialog=new ProgressDialog(mContext);
-        dialog.setTitle("Importing Data into SecureIt DataBase");
-        dialog.setMessage("Please wait...");
-        dialog.setCancelable(false);
-        dialog.setIcon(android.R.drawable.ic_dialog_info);
-        dialog.show();
+        mDialog =new ProgressDialog(mContext);
+        mDialog.setTitle("Importing Data into Secure DataBase");
+        mDialog.setMessage("Please wait...");
+        mDialog.setCancelable(false);
+        mDialog.setIcon(android.R.drawable.ic_dialog_info);
+        mDialog.show();
+    }
+
+    @Override
+    protected void onProgressUpdate(String... values) {
+        mDialog.setMessage("Please wait... "+values[0]);
+        super.onProgressUpdate(values);
     }
 
     @Override
@@ -49,6 +55,7 @@ public class ImportCVSToSQLiteDB extends AsyncTask<String, String, String> {
         Log.d(getClass().getName(), mFile.toString());
         if(mAddressName.addresses.size() > 0) {
             App.getBox(Address.class).remove(mAddressName.addresses);
+            mAddressName.addresses.applyChangesToDb();
         }
 
         try{
@@ -69,7 +76,7 @@ public class ImportCVSToSQLiteDB extends AsyncTask<String, String, String> {
                 Address.add(acc_name,acc_address,acc_website,latLong,mAddressName);
                 //data=data+"Account_name:"+acc_name  +"  Account_web:"+acc_website+"\n" +"  Account_address:"+acc_address+"\n";
                 //Log.d("shimi", "doInBackground: "+"Read line: " + row);
-
+                publishProgress(mAddressName.addresses.size()+" Added from "+csv.getRowCount());
             }
             Log.d("shimi", "DB added  size = "+mAddressName.addresses.size()+" "+App.getBox(Address.class).getAll().size());
             return data="added";
@@ -84,8 +91,8 @@ public class ImportCVSToSQLiteDB extends AsyncTask<String, String, String> {
     protected void onPostExecute(String data)
     {
 
-        if (dialog.isShowing()){
-            dialog.dismiss();
+        if (mDialog.isShowing()){
+            mDialog.dismiss();
         }
         if(mOnDone != null){
             mOnDone.run();
