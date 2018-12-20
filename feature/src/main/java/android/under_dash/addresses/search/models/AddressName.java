@@ -9,13 +9,14 @@ import io.objectbox.relation.ToMany;
 @Entity
 public class AddressName {
 
+    public AddressName() {}
     public AddressName(String name) {
         this.name = name;
     }
 
     @Id
     public long id;
-    @Index
+    @Index @Unique
     public String name;
     public String fileLocation;
     public ToMany<Address> addresses;

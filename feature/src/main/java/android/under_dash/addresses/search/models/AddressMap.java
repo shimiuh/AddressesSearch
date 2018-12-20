@@ -6,6 +6,9 @@ import io.objectbox.annotation.Index;
 
 @Entity
 public class AddressMap {
+
+    public AddressMap() {}
+
     @Id
     public long id;
     @Index

@@ -83,11 +83,13 @@ public class AddressSearchActivity extends Activity_ {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initAddressNameList();
         setContentView(R.layout.activity_address_list);
         requestPermissions();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
+
 
         SpringFabMenu fab = (SpringFabMenu)findViewById(R.id.fab);
         fab.setOnSpringFabMenuItemClickListener(new SpringFabMenu.OnSpringFabMenuItemClickListener() {
@@ -101,18 +103,14 @@ public class AddressSearchActivity extends Activity_ {
                 }else if(id == R.id.fab_result_list){
                     Log.d("shimi", "in fab fab_result_list");
                     MyCSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
-                        //TODO: send correct type
-
-                        App.getBox(AddressName.class).put(new AddressName(Constants.ADDRESS_RESULT));
-                        App.getBox(AddressName.class).put(new AddressName(Constants.ADDRESS_SEARCH));
                         AddressName AddressName = App.getBox(AddressName.class).query().equal(AddressName_.name,Constants.ADDRESS_RESULT).build().findUnique();
-                        //new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,AddressName).execute();
+                        new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,AddressName).execute();
                     });
                 }else if(id == R.id.fab_search_list){
                     Log.d("shimi", "in fab fab_search_list");
                     MyCSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
-                        //TODO: send correct type
-                        //new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,Address.class).execute();
+                        AddressName AddressName = App.getBox(AddressName.class).query().equal(AddressName_.name,Constants.ADDRESS_SEARCH).build().findUnique();
+                        new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,AddressName).execute();
                     });
                 }else if(id == R.id.fab_swap){
                     Log.d("shimi", "in fab fab_swap");
@@ -168,6 +166,15 @@ public class AddressSearchActivity extends Activity_ {
 
         //initAddressData();
 
+    }
+
+    private void initAddressNameList() {
+        App.getBackgroundHandler().post(() -> {
+            if(App.getBox(AddressName.class).getAll().size() == 0) {
+                App.getBox(AddressName.class).put(new AddressName(Constants.ADDRESS_RESULT));
+                App.getBox(AddressName.class).put(new AddressName(Constants.ADDRESS_SEARCH));
+            }
+        });
     }
 
     private void addAddressFromClip() {

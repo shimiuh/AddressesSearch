@@ -18,22 +18,43 @@ public class Address {
     public ToOne<AddressName> addressName;
 
     public Address() {}
-    public Address(String name, String address, String website,String latLong ,AddressName addressName) {
+
+    public Address(String name, String address, String website, String latLong , AddressName addressName) {
         this.name = name;
         this.address = address;
         this.website = website;
         this.latLong = latLong;
-        this.addressName.setTarget(addressName);
+        setAddressName(addressName);
     }
 
     public Address(Address addressToCopy) {
+        this.id = addressToCopy.id;
         this.name = addressToCopy.name;
         this.address = addressToCopy.address;
         this.website = addressToCopy.website;
         this.latLong = addressToCopy.latLong;
+        this.addressMaps = addressToCopy.addressMaps;
+        this.addressName = addressToCopy.addressName;
     }
 
+    public ToMany<AddressMap> getAddressMaps() {
+        return addressMaps;
+    }
 
+    public void setAddressMap(AddressMap addressMap) {
+        this.addressMaps.add(addressMap);
+    }
+    public AddressMap getAddressMap(long id) {
+        return addressMaps.getById(id);
+    }
+
+    public AddressName getAddressName() {
+        return addressName.getTarget();
+    }
+
+    public void setAddressName(AddressName addressName) {
+        this.addressName.setTarget(addressName);
+    }
 
     public String getLatLong() {return latLong; }
 
