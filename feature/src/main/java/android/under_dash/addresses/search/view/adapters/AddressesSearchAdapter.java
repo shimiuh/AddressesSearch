@@ -86,17 +86,17 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
         if(item == null){
             return;
         }
-        AddressName resultAddressName = App.getBox(AddressName.class).query().equal(AddressName_.name,Constants.ADDRESS_RESULT).build().findUnique();
-        List<Address> addressResultList = resultAddressName.addresses;
+//        AddressName resultAddressName = App.getBox(AddressName.class).query().equal(AddressName_.name,Constants.ADDRESS_RESULT).build().findUnique();
+//        List<Address> addressResultList = resultAddressName.addresses;
+//
+//        AddressName searchAddressName = App.getBox(AddressName.class).query().equal(AddressName_.name,Constants.ADDRESS_SEARCH).build().findUnique();
+//        List<Address> addressSearchList = searchAddressName.addresses;
 
-        AddressName searchAddressName = App.getBox(AddressName.class).query().equal(AddressName_.name,Constants.ADDRESS_SEARCH).build().findUnique();
-        List<Address> addressSearchList = searchAddressName.addresses;
-
-        HttpHelper.getDistanceInfoAndAddInDb(addressSearchList, addressResultList, () -> {
-
-
-
-        });
+//        HttpHelper.getDistanceInfoAndAddInDb(addressSearchList, addressResultList, () -> {
+//
+//
+//
+//        });
         int addFragmentTo = mTwoPane ? R.id.address_detail_container : android.R.id.content;
         Bundle arguments = new Bundle();
         arguments.putString(AddressResultFragment.ARG_ITEM_ID, String.valueOf(item.id));

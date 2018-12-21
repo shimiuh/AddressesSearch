@@ -25,7 +25,7 @@ public class Utils {
 
     public static String getLatLongFromLocation(final String locationAddress) {
         Geocoder geocoder = new Geocoder(App.get(), Locale.getDefault());
-        String result = null;
+        String result = "";
         try {
             List<Address> addressList = geocoder.getFromLocationName(locationAddress, 5);
             if (addressList != null && addressList.size() > 0) {

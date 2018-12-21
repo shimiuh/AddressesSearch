@@ -54,8 +54,8 @@ public class ImportCVSToSQLiteDB extends AsyncTask<String, String, String> {
         String data="";
         Log.d(getClass().getName(), mFile.toString());
         if(mAddressName.addresses.size() > 0) {
-            App.getBox(Address.class).remove(mAddressName.addresses);
-            mAddressName.addresses.applyChangesToDb();
+            //App.getBox(Address.class).remove(mAddressName.addresses);
+            //mAddressName.addresses.applyChangesToDb();
         }
 
         try{
@@ -71,12 +71,12 @@ public class ImportCVSToSQLiteDB extends AsyncTask<String, String, String> {
 
                 Institution institution = new Institution(0,acc_name,acc_website,acc_address);
                 //AppDatabase.get(mContext).addInstitution(institution);
-                String latLong = Utils.getLatLongFromLocation(acc_address);
+                //String latLong = Utils.getLatLongFromLocation(acc_address);
                 //Log.e("shimi", "latLong = "+latLong);
-                Address.add(acc_name,acc_address,acc_website,latLong,mAddressName);
+                Address.add(acc_name,acc_address,acc_website,mAddressName);
                 //data=data+"Account_name:"+acc_name  +"  Account_web:"+acc_website+"\n" +"  Account_address:"+acc_address+"\n";
                 //Log.d("shimi", "doInBackground: "+"Read line: " + row);
-                publishProgress(mAddressName.addresses.size()+" Added from "+csv.getRowCount());
+                publishProgress(mAddressName.addresses.size()+" Done out of "+csv.getRowCount());
             }
             Log.d("shimi", "DB added  size = "+mAddressName.addresses.size()+" "+App.getBox(Address.class).getAll().size());
             return data="added";

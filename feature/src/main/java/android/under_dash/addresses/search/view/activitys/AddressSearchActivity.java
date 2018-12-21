@@ -19,7 +19,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.under_dash.addresses.search.app.Constants;
+import android.under_dash.addresses.search.helpers.GoogleMapsMatrixApiService;
 import android.under_dash.addresses.search.helpers.SearchManager;
+import android.under_dash.addresses.search.models.AddressMap;
 import android.under_dash.addresses.search.models.AddressName;
 import android.under_dash.addresses.search.models.AddressName_;
 import android.under_dash.addresses.search.old.AddressDetailActivity;
@@ -98,13 +100,25 @@ public class AddressSearchActivity extends Activity_ {
                 int id = view.getId();
 
                 if(id == R.id.fab_clip){
+                    if(true){
+                        SearchManager.get().setResultId(1);
+                        SearchManager.get().setSearchId(2);
+                        App.getBox(AddressName.class).getAll().forEach(addressName -> {
+                            Log.i("shimi", "in AddressName.class).getAll().forEach : name "+addressName.name+"  id = "+addressName.id);
+                        });
+                        Log.i("shimi", "in GoogleMapsMatrixApiService.build: getSearchId "+SearchManager.get().getSearchId()+"  getResultId = "+SearchManager.get().getResultId());
+//                        GoogleMapsMatrixApiService.build(AddressSearchActivity.this,SearchManager.get().getSearchId(),SearchManager.get().getResultId(),() -> {
+//                            Log.i("shimi", "in GoogleMapsMatrixApiService onDone AddressMap size = " +App.getBox(AddressMap.class).getAll().size());
+//                        }).execute();
+                        return;
+                    }
                     addAddressFromClip();
                     Toast.makeText(getApplicationContext(), " clicked!",Toast.LENGTH_SHORT).show();
                 }else if(id == R.id.fab_result_list){
 
                     MyCSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
-                        AddressName resultAddressName = App.getBox(AddressName.class).get(SearchManager.get().getResultId());
-                        Log.d("shimi", "in fab fab_result_list resultAddressName = "+resultAddressName.getName());
+                        AddressName resultAddressName = App.getBox(AddressName.class).get(1);
+                        Log.d("shimi", "in fab fab_result_list resultAddressName = "+resultAddressName.name+" getResultId = "+SearchManager.get().getResultId());
                         new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,resultAddressName, () -> {
                             updateSearchListData();
                         }).execute();
@@ -112,8 +126,8 @@ public class AddressSearchActivity extends Activity_ {
                 }else if(id == R.id.fab_search_list){
 
                     MyCSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
-                        AddressName searchAddressName = App.getBox(AddressName.class).get(SearchManager.get().getSearchId());
-                        Log.d("shimi", "in fab fab_search_list searchAddressName = "+searchAddressName.getName());
+                        AddressName searchAddressName = App.getBox(AddressName.class).get(2);
+                        Log.d("shimi", "in fab fab_search_list searchAddressName = "+searchAddressName.name+" getSearchId = "+SearchManager.get().getSearchId());
                         new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,searchAddressName, () -> {
                             updateSearchListData();
                         }).execute();
@@ -275,7 +289,7 @@ public class AddressSearchActivity extends Activity_ {
         App.getUiHandler().postDelayed(new Runnable() {
             @Override public void run() {
                 AddressName searchAddressName = App.getBox(AddressName.class).get(SearchManager.get().getSearchId());
-                Log.i("shimi", "in updateSearchListData:  searchAddressName = "+searchAddressName.getName()+"  Addresses().size = "+searchAddressName.addresses.size());
+                Log.i("shimi", "in updateSearchListData:  searchAddressName = "+searchAddressName.name+"  Addresses().size = "+searchAddressName.addresses.size());
                 mItemAnimation.getAnimation().reset();
                 mRecyclerView.setLayoutAnimation(mItemAnimation);
                 mAdapter.setData(searchAddressName.addresses);

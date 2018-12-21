@@ -13,7 +13,6 @@ import java.util.Map;
 
 import android.under_dash.addresses.search.app.RestUtil;
 import android.under_dash.addresses.search.models.Address;
-import android.under_dash.addresses.search.models.Address_;
 import android.under_dash.addresses.search.models.DistanceResponse;
 import android.under_dash.addresses.search.models.Element;
 import android.under_dash.addresses.search.models.Row;
@@ -95,7 +94,7 @@ public class HttpHelper {
         StringBuilder destination = new StringBuilder();
         for (Address address : startPointList) {
             if (address != null) {
-                destination.append(address.latLong).append("|");
+                //destination.append(address.latLong).append("|");
             }
         }
         return destination.toString();
@@ -153,15 +152,15 @@ public class HttpHelper {
                         App.getBackgroundHandler().post(() -> {
                             //TODO: google is returning a eddied address so we are not finding in DB thus i am converting to latLong
                             Box<Address> addressBox = App.getBox(Address.class);
-                            Address address = addressBox.query().equal(Address_.latLong, Utils.getLatLongFromLocation(destinationAddress)).build().findUnique();
-
-                            if(address != null){
-                                //address.setDuration(element.getDuration().getValue());
-                                //address.setDistance(element.getDistance().getValue());
-                                addressBox.put(address);
-                                Log.d("shimi", "getStartLatLong = "+destinationAddress+" Distance = "+element.getDuration().getValue()+
-                                        " Duration = "+element.getDistance().getValue()+" (address != null) = "+(address != null));
-                            }
+//                            Address address = addressBox.query().equal(Address_.latLong, Utils.getLatLongFromLocation(destinationAddress)).build().findUnique();
+//
+//                            if(address != null){
+//                                //address.setDuration(element.getDuration().getValue());
+//                                //address.setDistance(element.getDistance().getValue());
+//                                addressBox.put(address);
+//                                Log.d("shimi", "getStartLatLong = "+destinationAddress+" Distance = "+element.getDuration().getValue()+
+//                                        " Duration = "+element.getDistance().getValue()+" (address != null) = "+(address != null));
+//                            }
                         });
                     }
 
@@ -228,7 +227,7 @@ public class HttpHelper {
                             String destinationAddress = list.get(i);
 
                             if (address != null) {
-                                Log.d("shimi", "destinationAddress = |"+Utils.getLatLongFromLocation(destinationAddress)+"| address =|"+address.latLong+"|");
+                                //Log.d("shimi", "destinationAddress = |"+Utils.getLatLongFromLocation(destinationAddress)+"| address =|"+address.latLong+"|");
                             }
                         }
                     }
@@ -238,15 +237,15 @@ public class HttpHelper {
 
                         App.getBackgroundHandler().post(() -> {
                             //TODO: google izs returning a edided address so we are not finding in DB
-                            Address address = addressBox.query().equal(Address_.latLong, Utils.getLatLongFromLocation(destinationAddress)).build().findUnique();
-
-                            if(address != null){
-                                //address.setDuration(element.getDuration().getValue());
-                                //address.setDistance(element.getDistance().getValue());
-                                addressBox.put(address);
-                                Log.d("shimi", "getStartLatLong = "+destinationAddress+" Distance = "+element.getDuration().getValue()+
-                                        " Duration = "+element.getDistance().getValue()+" (address != null) = "+(address != null));
-                            }
+//                            Address address = addressBox.query().equal(Address_.latLong, Utils.getLatLongFromLocation(destinationAddress)).build().findUnique();
+//
+//                            if(address != null){
+//                                //address.setDuration(element.getDuration().getValue());
+//                                //address.setDistance(element.getDistance().getValue());
+//                                addressBox.put(address);
+//                                Log.d("shimi", "getStartLatLong = "+destinationAddress+" Distance = "+element.getDuration().getValue()+
+//                                        " Duration = "+element.getDistance().getValue()+" (address != null) = "+(address != null));
+//                            }
                         });
                     }
 
@@ -288,15 +287,15 @@ public class HttpHelper {
                         App.getBackgroundHandler().post(() -> {
                             //TODO: google is returning a eddied address so we are not finding in DB thus i am converting to latLong
                             Box<Address> addressBox = App.getBox(Address.class);
-                            Address address = addressBox.query().equal(Address_.latLong, Utils.getLatLongFromLocation(destinationAddress)).build().findUnique();
-
-                            if(address != null){
-                                //address.setDuration(element.getDuration().getValue());
-                                //address.setDistance(element.getDistance().getValue());
-                                addressBox.put(address);
-                                Log.d("shimi", "getStartLatLong = "+destinationAddress+" Distance = "+element.getDuration().getValue()+
-                                        " Duration = "+element.getDistance().getValue()+" (address != null) = "+(address != null));
-                            }
+//                            Address address = addressBox.query().equal(Address_.latLong, Utils.getLatLongFromLocation(destinationAddress)).build().findUnique();
+//
+//                            if(address != null){
+//                                //address.setDuration(element.getDuration().getValue());
+//                                //address.setDistance(element.getDistance().getValue());
+//                                addressBox.put(address);
+//                                Log.d("shimi", "getStartLatLong = "+destinationAddress+" Distance = "+element.getDuration().getValue()+
+//                                        " Duration = "+element.getDistance().getValue()+" (address != null) = "+(address != null));
+//                            }
                         });
                     }
 
