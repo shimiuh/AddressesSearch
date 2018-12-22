@@ -26,19 +26,13 @@ public class AddressName {
     public String fileLocation;
 
     public ToMany<Address> addresses;
+    public ToMany<AddressListMap> addressListMaps;
 
     public long getId() {
         return id;
     }
 
-//    public String getName() {
-//        return name;
-//    }
-
-    public String getFileLocation() {
-        return fileLocation;
+    public ToMany<Address> getAddresses() {
+        return this.addresses;
     }
-//    public ToMany<Address> getAddresses() {
-//        return this.addresses;
-//    }
 }

@@ -1,7 +1,10 @@
 package android.under_dash.addresses.search.models;
 
+import android.support.annotation.NonNull;
 import android.under_dash.addresses.search.app.App;
 import android.util.Log;
+
+import java.util.Comparator;
 
 import io.objectbox.Box;
 import io.objectbox.annotation.Entity;
@@ -10,32 +13,40 @@ import io.objectbox.annotation.Index;
 import io.objectbox.relation.ToOne;
 
 @Entity
-public class AddressMap {
+public class AddressMap implements Comparable<AddressMap> {
 
     public AddressMap() {}
-    public AddressMap(int distance, int duration) {//String originLatLong, String destinationLatLong,
-//        this .originLatLong = originLatLong;
-//        this .destinationLatLong = destinationLatLong;
+    public AddressMap(int distance, int duration, String distanceText,String durationText) {//String originLatLong, String destinationLatLong,
         this .distance = distance;
         this .duration = duration;
+        this .distanceText = distanceText;
+        this .durationText = durationText;
     }
 
     @Id
     public long id;
     public ToOne<Address> originAddress;
     public ToOne<Address> destinationAddress;
-//    @Index
-//    public String originLatLong;
-//    @Index
-//    public String destinationLatLong;
+
     public int    distance;
     public int    duration;
-    //String originLatLong, String destinationLatLong,
-    public static AddressMap add(int distance, int duration, Address originAddress, Address destinationAddress) {
+    public String    distanceText;
+    public String    durationText;
+
+    public Address getOriginAddress() {
+        return this.originAddress.getTarget();
+    }
+
+    public Address getDestinationAddress() {
+        return this.destinationAddress.getTarget();
+    }
+
+
+    public static AddressMap add(int distance, int duration, String distanceText,String durationText, Address originAddress, Address destinationAddress) {
         Box<Address> addressBox = App.getBox(Address.class);
         Box<AddressMap> addressMapBox = App.getBox(AddressMap.class);
 
-        AddressMap addressMap = new AddressMap(distance, duration);
+        AddressMap addressMap = new AddressMap(distance, duration, distanceText, durationText);
         addressMapBox.put(addressMap);
         originAddress.addressMaps.add(addressMap);
         destinationAddress.addressMaps.add(addressMap);
@@ -51,5 +62,15 @@ public class AddressMap {
                 "\n addressMapBox.size = "+addressMapBox.getAll().size()+" "+originAddress.addressMaps.size()+
                 " distance = "+addressMap.distance+" duration = "+addressMap.duration);
         return addressMap;
+    }
+
+    @Override
+    public int compareTo(@NonNull AddressMap addressMap) {
+        return Comparators.DURATION.compare(this, addressMap);
+    }
+
+    public static class Comparators {
+        public static final Comparator<AddressMap> DISTANCE = (AddressMap o1, AddressMap o2) -> Integer.compare(o1.distance, o2.distance);
+        public static final Comparator<AddressMap> DURATION = (AddressMap o1, AddressMap o2) -> Integer.compare(o1.duration, o2.duration);
     }
 }

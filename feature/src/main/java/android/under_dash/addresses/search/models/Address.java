@@ -3,14 +3,10 @@ package android.under_dash.addresses.search.models;
 
 import android.under_dash.addresses.search.app.App;
 import android.util.Log;
-
-import java.util.List;
-
 import io.objectbox.Box;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 import io.objectbox.annotation.Unique;
-import io.objectbox.query.LazyList;
 import io.objectbox.relation.ToMany;
 import io.objectbox.relation.ToOne;
 
@@ -19,10 +15,8 @@ public class Address {
     @Id
     public long id;
     public String name;
-    @Unique
     public String address;
     public String website;
-    public String latLong;
     public ToMany<AddressMap> addressMaps;
     public ToOne<AddressName> addressName;
 
@@ -32,7 +26,6 @@ public class Address {
         this.name = name;
         this.address = address;
         this.website = website;
-        //this.latLong = latLong;
     }
 
     public Address(Address addressToCopy) {
@@ -40,7 +33,6 @@ public class Address {
         this.name = addressToCopy.name;
         this.address = addressToCopy.address;
         this.website = addressToCopy.website;
-        //this.latLong = addressToCopy.latLong;
         this.addressMaps = addressToCopy.addressMaps;
         this.addressName = addressToCopy.addressName;
     }
@@ -96,30 +88,22 @@ public class Address {
                 '}';
     }
 
-    public Address result(){
-
-        return (Address) this;
-    }
-    public Address search(){
-
-        return (Address) this;
-    }
-
     public static boolean add(String name, String str_address, String website, AddressName addressName) {
         boolean didAdd = false;
         Box<Address> box = App.getBox(Address.class);
-        Address oldAddress = box.query().equal(Address_.address, str_address).build().findUnique();
-        if(oldAddress != null) {
-            didAdd = true;
-            Address address = new Address(name, str_address, website);
-            addressName.addresses.add(address);
-            //box.attach(address);
-            address.addressName.setAndPutTarget(addressName);
-            box.put(address);
-            Log.d("shimi", "in add Address id = " + address.id + " addressName = " + address.addressName.getTarget().name +
-                    " getAll().size = " + box.getAll().size() + " " + addressName.addresses.size());
-            App.getBox(AddressName.class).put(addressName);
-        }
+//        Address oldAddress = box.query().equal(Address_.address, str_address).build().findUnique();
+//        if(oldAddress == null) {
+//
+//        }
+        didAdd = true;
+        Address address = new Address(name, str_address, website);
+        addressName.addresses.add(address);
+        //box.attach(address);
+        address.addressName.setAndPutTarget(addressName);
+        box.put(address);
+        Log.d("shimi", "in add Address id = " + address.id + " addressName = " + address.addressName.getTarget().name +
+                " getAll().size = " + box.getAll().size() + " " + addressName.addresses.size());
+        App.getBox(AddressName.class).put(addressName);
         return didAdd;
     }
 }

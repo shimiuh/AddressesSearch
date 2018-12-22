@@ -16,13 +16,16 @@ import android.support.v7.widget.Toolbar;
 import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.helpers.SearchManager;
 import android.under_dash.addresses.search.models.Address;
+import android.under_dash.addresses.search.models.AddressMap;
 import android.under_dash.addresses.search.models.AddressName;
 import android.under_dash.addresses.search.old.AddressDetailActivity;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.dummy.DummyContent;
 import android.under_dash.addresses.search.library.ui.fragment.Fragment_;
 import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
+import android.under_dash.addresses.search.view.adapters.AddressesResultAdapter;
 import android.under_dash.addresses.search.view.adapters.AddressesSearchAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +37,11 @@ import android.widget.Toast;
 import com.davidecirillo.multichoicerecyclerview.MultiChoiceToolbar;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import io.objectbox.Box;
+import io.objectbox.relation.ToMany;
 
 /**
  * A fragment representing a single Address detail screen.
@@ -50,7 +56,7 @@ public class AddressResultFragment extends Fragment_ {//implements AppBarLayout.
      */
     public static final String ARG_ITEM_ID = "item_id";
     public static final String TAG = AddressResultFragment.class.getSimpleName();
-    private AddressesSearchAdapter mAdapter;
+    private AddressesResultAdapter mAdapter;
     private SwipeRefreshLayout mSwipeLayout;
     private RecyclerView mRecyclerView;
     private LayoutAnimationController mItemAnimation;
@@ -71,19 +77,6 @@ public class AddressResultFragment extends Fragment_ {//implements AppBarLayout.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        if (getArguments().containsKey(ARG_ITEM_ID)) {
-//            // Load the dummy content specified by the fragment
-//            // arguments. In a real-world scenario, use a Loader
-//            // to load content from a content provider.
-////            mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
-////
-////            Activity activity = this.getActivity();
-////            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-////            if (appBarLayout != null) {
-////                appBarLayout.setTitle(mItem.content);
-////            }
-//        }
     }
 
     @Override
@@ -138,9 +131,7 @@ public class AddressResultFragment extends Fragment_ {//implements AppBarLayout.
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, Toolbar toolbar) {
 
-
-
-        mAdapter = new AddressesSearchAdapter(getActivity(), false);//DummyContent.ITEMS
+        mAdapter = new AddressesResultAdapter(getActivity(), false);//DummyContent.ITEMS
         mAdapter.setHasStableIds(true);
         MultiChoiceToolbar multiChoiceToolbar = new MultiChoiceToolbar.Builder((AppCompatActivity)getActivity(), toolbar).setDefaultIcon(R.drawable.ic_delete_24dp, new View.OnClickListener() {
             @Override
@@ -155,17 +146,36 @@ public class AddressResultFragment extends Fragment_ {//implements AppBarLayout.
     }
 
     private void updateListData() {
-        mAdapter.setData(new ArrayList<Address>());
+        mAdapter.setData(new ArrayList<AddressMap>());
         App.getUiHandler().postDelayed(new Runnable() {
             @Override public void run() {
-                AddressName resultAddressName = App.getBox(AddressName.class).get(SearchManager.get().getResultId());
-                mItemAnimation.getAnimation().reset();
-                mRecyclerView.setLayoutAnimation(mItemAnimation);
-                mAdapter.setData(resultAddressName.addresses);
-                mRecyclerView.scheduleLayoutAnimation();
-                mSwipeLayout.setRefreshing(false);
-                //mRecyclerView.invalidate();
-                //mRecyclerView.requestLayout();
+                Long id = null;
+                Bundle bundle = getArguments();
+                if(bundle != null && bundle.containsKey(ARG_ITEM_ID)) {
+                    id = bundle.getLong(ARG_ITEM_ID);
+                    Address searchAddress = App.getBox(Address.class).get(id);
+                    List<AddressMap> listMap = new ArrayList<>();
+                    ToMany<AddressMap> searchAddressMaps = searchAddress.addressMaps;
+                    Log.i("shimi", "run: in set DATA getResultId = "+SearchManager.get().getResultId());
+                    searchAddressMaps.forEach(addressMap -> {
+                        Log.i("shimi", "run: addressName.getTarget().id = "+addressMap.originAddress.getTarget().addressName.getTarget().id );
+                        if(addressMap.originAddress.getTarget().addressName.getTarget().id == SearchManager.get().getResultId()){
+                            listMap.add(addressMap);
+                        }
+                    });
+                    Log.i("shimi", "in set DATA listMap.size() = "+listMap.size());
+                    listMap.sort(AddressMap.Comparators.DURATION);
+                    mItemAnimation.getAnimation().reset();
+                    mRecyclerView.setLayoutAnimation(mItemAnimation);
+
+                    mAdapter.setData(listMap);
+                    mRecyclerView.scheduleLayoutAnimation();
+                    mSwipeLayout.setRefreshing(false);
+                    //mRecyclerView.invalidate();
+                    //mRecyclerView.requestLayout();
+                }else{
+                    Log.i("shimi", "run: bundle == null");
+                }
             }
         }, 2000); // Delay in millis
 

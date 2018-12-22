@@ -94,6 +94,11 @@ public class GoogleMapsMatrixApiService extends AsyncTask<String, String, String
         AddressName resultAddressName = App.getBox(AddressName.class).get(mDestinationAddressNameId );
         List<Address> destinationResultList = resultAddressName.addresses;
 
+        if(startPointSearchList.isEmpty() || destinationResultList.isEmpty()){
+            Log.e(TAG, "##### ONE LIST IS EMPTY ##### aborting calling");
+            return "";
+        }
+
 
         Log.i(TAG, "doInBackground: searchAddressName = "+ searchAddressName.id+searchAddressName.name+" resultAddressName = "+resultAddressName.id+resultAddressName.name);
         getDistanceInfoAndAddInDb(startPointSearchList, destinationResultList);
@@ -207,7 +212,7 @@ public class GoogleMapsMatrixApiService extends AsyncTask<String, String, String
         // http://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY
         //https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY&key=YOUR_API_KEY
         Map<String, String> mapQuery = new HashMap<>();
-        mapQuery.put("units", "imperial");
+        //mapQuery.put("units", "imperial"); metric is default
         mapQuery.put("origins", startPoint);
         mapQuery.put("destinations", destination );//+ "|" + cities[1] + "|" + cities[2]
         mapQuery.put("mode", "walking");
@@ -246,8 +251,7 @@ public class GoogleMapsMatrixApiService extends AsyncTask<String, String, String
 
                 //String originLatLong = "";
                 //String destinationLatLong = "";
-                int    distance = 0;
-                int    duration = 0;
+
 
                 //List<String> originAddressesList = body.getOriginAddresses();
                 //List<String> destinationAddressesList = body.getDestinationAddresses();
@@ -270,10 +274,11 @@ public class GoogleMapsMatrixApiService extends AsyncTask<String, String, String
                         Address destinationAddress = destinationList.get(y); //addressBox.query().equal(Address_.latLong, destinationLatLong).build().findUnique();
 
                         if(destinationAddress != null){
-                            distance = element.getDistance().getValue();
-                            duration = element.getDistance().getValue();
-                            AddressMap.add(distance, duration, originAddress, destinationAddress);
-
+                            int       distance = element.getDistance().getValue();
+                            int       duration = element.getDuration().getValue();
+                            String    distanceText = element.getDuration().getText();
+                            String    durationText = element.getDistance().getText();
+                            AddressMap.add(distance, duration, distanceText, durationText, originAddress,  destinationAddress);
 
                             Log.d(TAG, "getStartLatLong = "+destinationAddress+" Distance = "+element.getDuration().getValue()+
                                     " Duration = "+element.getDistance().getValue()+" (address != null) = "+(destinationAddress != null));

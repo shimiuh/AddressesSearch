@@ -99,7 +99,7 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
 //        });
         int addFragmentTo = mTwoPane ? R.id.address_detail_container : android.R.id.content;
         Bundle arguments = new Bundle();
-        arguments.putString(AddressResultFragment.ARG_ITEM_ID, String.valueOf(item.id));
+        arguments.putLong(AddressResultFragment.ARG_ITEM_ID, item.id);
         AddressResultFragment fragment = new AddressResultFragment();
         fragment.setArguments(arguments);//.addToBackStack(AddressResultFragment.TAG)
         ((AppCompatActivity)mParentActivity).getSupportFragmentManager().beginTransaction().add(android.R.id.content, fragment,AddressResultFragment.TAG).commit();

@@ -101,15 +101,15 @@ public class AddressSearchActivity extends Activity_ {
 
                 if(id == R.id.fab_clip){
                     if(true){
-                        SearchManager.get().setResultId(1);
-                        SearchManager.get().setSearchId(2);
+                        //SearchManager.get().setResultId(1);
+                        //SearchManager.get().setSearchId(2);
                         App.getBox(AddressName.class).getAll().forEach(addressName -> {
                             Log.i("shimi", "in AddressName.class).getAll().forEach : name "+addressName.name+"  id = "+addressName.id);
                         });
                         Log.i("shimi", "in GoogleMapsMatrixApiService.build: getSearchId "+SearchManager.get().getSearchId()+"  getResultId = "+SearchManager.get().getResultId());
-//                        GoogleMapsMatrixApiService.build(AddressSearchActivity.this,SearchManager.get().getSearchId(),SearchManager.get().getResultId(),() -> {
-//                            Log.i("shimi", "in GoogleMapsMatrixApiService onDone AddressMap size = " +App.getBox(AddressMap.class).getAll().size());
-//                        }).execute();
+                        GoogleMapsMatrixApiService.build(AddressSearchActivity.this,SearchManager.get().getSearchId(),SearchManager.get().getResultId(),() -> {
+                            Log.i("shimi", "in GoogleMapsMatrixApiService onDone AddressMap size = " +App.getBox(AddressMap.class).getAll().size());
+                        }).execute();
                         return;
                     }
                     addAddressFromClip();
@@ -117,7 +117,7 @@ public class AddressSearchActivity extends Activity_ {
                 }else if(id == R.id.fab_result_list){
 
                     MyCSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
-                        AddressName resultAddressName = App.getBox(AddressName.class).get(1);
+                        AddressName resultAddressName = App.getBox(AddressName.class).get(SearchManager.get().getResultId());
                         Log.d("shimi", "in fab fab_result_list resultAddressName = "+resultAddressName.name+" getResultId = "+SearchManager.get().getResultId());
                         new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,resultAddressName, () -> {
                             updateSearchListData();
@@ -126,7 +126,7 @@ public class AddressSearchActivity extends Activity_ {
                 }else if(id == R.id.fab_search_list){
 
                     MyCSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
-                        AddressName searchAddressName = App.getBox(AddressName.class).get(2);
+                        AddressName searchAddressName = App.getBox(AddressName.class).get(SearchManager.get().getSearchId());
                         Log.d("shimi", "in fab fab_search_list searchAddressName = "+searchAddressName.name+" getSearchId = "+SearchManager.get().getSearchId());
                         new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,searchAddressName, () -> {
                             updateSearchListData();
@@ -208,7 +208,6 @@ public class AddressSearchActivity extends Activity_ {
         if(clip != null){
             String address = clip.getItemAt(0).toString();
             Box<Address> searchBox = getBox(Address.class);
-            String latLong = Utils.getLatLongFromLocation(address);
             //searchBox.put(new Address("",address,"",latLong)); TODO: add addressName
         }
 
@@ -241,7 +240,6 @@ public class AddressSearchActivity extends Activity_ {
                 //
                 for (Address address : addresses) {
                     if (address != null) {
-                        destination.add(address.latLong);
                         //destination.append(address.latLong).append("|");
                         //Log.d("shimi", .toString());
                     }
