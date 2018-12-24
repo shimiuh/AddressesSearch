@@ -18,6 +18,7 @@ public class Address {
     public String address;
     public String website;
     public ToMany<AddressMap> addressMaps;
+    //public ToMany<ClosestByName> closestByName;
     public ToOne<AddressName> addressName;
 
     public Address() {}

@@ -26,7 +26,7 @@ public class AddressName {
     public String fileLocation;
 
     public ToMany<Address> addresses;
-    public ToMany<AddressListMap> addressListMaps;
+    //public ToMany<AddressListMap> addressListMaps;
 
     public long getId() {
         return id;

@@ -24,6 +24,7 @@ import android.under_dash.addresses.search.helpers.SearchManager;
 import android.under_dash.addresses.search.models.AddressMap;
 import android.under_dash.addresses.search.models.AddressName;
 import android.under_dash.addresses.search.models.AddressName_;
+import android.under_dash.addresses.search.models.SearchAddress;
 import android.under_dash.addresses.search.old.AddressDetailActivity;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
@@ -54,6 +55,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.objectbox.Box;
+import io.objectbox.relation.ToMany;
 
 /**
  * An activity representing a list of Addresses. This activity

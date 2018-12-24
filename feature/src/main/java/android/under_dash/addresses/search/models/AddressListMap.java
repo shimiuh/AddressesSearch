@@ -6,6 +6,7 @@ import android.util.Log;
 import io.objectbox.Box;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
+import io.objectbox.relation.ToMany;
 import io.objectbox.relation.ToOne;
 
 @Entity
@@ -18,7 +19,7 @@ class AddressListMap {
     @Id
     public long id;
     public int closestDistance;
-
+    public ToMany<AddressMap> mapedAddresses;
     public ToOne<AddressName> originAddressName;
     public ToOne<AddressName> destinationAddressName;
 

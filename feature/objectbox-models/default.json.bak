@@ -98,13 +98,43 @@
         {
           "id": "2:5499461168277904992",
           "name": "addresses"
+        },
+        {
+          "id": "3:4938742803613006394",
+          "name": "addressListMaps"
         }
       ]
+    },
+    {
+      "id": "4:5854889627375654582",
+      "lastPropertyId": "4:4878255882048256891",
+      "name": "AddressListMap",
+      "properties": [
+        {
+          "id": "1:7837784221761853776",
+          "name": "id"
+        },
+        {
+          "id": "2:9112362644467039830",
+          "name": "closestDistance"
+        },
+        {
+          "id": "3:5059615540109708809",
+          "indexId": "6:1234534485215657454",
+          "name": "originAddressNameId"
+        },
+        {
+          "id": "4:4878255882048256891",
+          "indexId": "7:1843550903169527377",
+          "name": "destinationAddressNameId"
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "3:7258893306479638037",
-  "lastIndexId": "5:1179436231886229825",
-  "lastRelationId": "2:5499461168277904992",
+  "lastEntityId": "4:5854889627375654582",
+  "lastIndexId": "7:1843550903169527377",
+  "lastRelationId": "3:4938742803613006394",
   "lastSequenceId": "0:0",
   "modelVersion": 4,
   "modelVersionParserMinimum": 4,
