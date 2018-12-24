@@ -5,17 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.under_dash.addresses.search.R;
-import android.under_dash.addresses.search.app.App;
-import android.under_dash.addresses.search.app.Constants;
-import android.under_dash.addresses.search.helpers.HttpHelper;
 import android.under_dash.addresses.search.helpers.Utils;
 import android.under_dash.addresses.search.models.Address;
-import android.under_dash.addresses.search.models.AddressName;
-import android.under_dash.addresses.search.models.AddressName_;
 import android.under_dash.addresses.search.models.SearchAddress;
 import android.under_dash.addresses.search.view.fragments.AddressResultFragment;
 import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +19,6 @@ import com.davidecirillo.multichoicerecyclerview.MultiChoiceAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.objectbox.Box;
 
 
 public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchAdapter.ViewHolder> {
@@ -78,9 +70,11 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        holder.mIdView.setText(mValues.get(position).address.name);
-        holder.mContentView.setText(mValues.get(position).address.address);
+        holder.mName.setText(mValues.get(position).address.name);
+        holder.mAddress.setText(mValues.get(position).address.address);
+        holder.mClosestDistance.setText(String.valueOf(mValues.get(position).closestDistance));
         holder.itemView.setTag(mValues.get(position).address);
+
     }
 
     private void onClick(View view) {
@@ -142,13 +136,15 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView mIdView;
-        final TextView mContentView;
+        final TextView mName;
+        final TextView mAddress;
+        final TextView mClosestDistance;
 
         ViewHolder(View view) {
             super(view);
-            mIdView = (TextView) view.findViewById(R.id.id_text);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mName = view.findViewById(R.id.id_text);
+            mAddress = view.findViewById(R.id.content);
+            mClosestDistance = view.findViewById(R.id.distance);
         }
     }
 
