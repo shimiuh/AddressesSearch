@@ -300,7 +300,7 @@ public class AddressSearchActivity extends Activity_ {
                 });
 
                 listMap.sort(AddressMap.Comparators.DURATION);
-                searchAddress.add(SearchAddress.make(address, listMap.get(0).distance));//listMap.get(0).distance
+                searchAddress.add(SearchAddress.make(address, listMap.get(0).distance,listMap.get(0).durationText));//listMap.get(0).distance
                 searchAddress.sort(SearchAddress.Comparators.DISTANCE);
             });
 

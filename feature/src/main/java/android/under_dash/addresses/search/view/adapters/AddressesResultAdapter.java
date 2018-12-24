@@ -102,10 +102,10 @@ public  class AddressesResultAdapter extends MultiChoiceAdapter<AddressesResultA
 
         ViewHolder(View view) {
             super(view);
-            mIdView = (TextView) view.findViewById(R.id.id_text);
-            mContentView = (TextView) view.findViewById(R.id.content);
-            mDuration = (TextView) view.findViewById(R.id.duration);
-            mDistance= (TextView) view.findViewById(R.id.distance);
+            mIdView = view.findViewById(R.id.name);
+            mContentView = view.findViewById(R.id.address);
+            mDuration = view.findViewById(R.id.duration);
+            mDistance= view.findViewById(R.id.distance);
         }
     }
 

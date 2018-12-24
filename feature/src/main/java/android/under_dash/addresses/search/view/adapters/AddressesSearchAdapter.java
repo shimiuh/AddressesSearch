@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.helpers.Utils;
 import android.under_dash.addresses.search.models.Address;
@@ -70,9 +71,11 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        holder.mName.setText(mValues.get(position).address.name);
+        if(!TextUtils.isEmpty(mValues.get(position).address.name)) {
+            holder.mName.setText(mValues.get(position).address.name);
+        }
         holder.mAddress.setText(mValues.get(position).address.address);
-        holder.mClosestDistance.setText(String.valueOf(mValues.get(position).closestDistance));
+        holder.mClosestDistance.setText(mValues.get(position).shortestDurationText);
         holder.itemView.setTag(mValues.get(position).address);
 
     }
@@ -142,8 +145,8 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
 
         ViewHolder(View view) {
             super(view);
-            mName = view.findViewById(R.id.id_text);
-            mAddress = view.findViewById(R.id.content);
+            mName = view.findViewById(R.id.name);
+            mAddress = view.findViewById(R.id.address);
             mClosestDistance = view.findViewById(R.id.distance);
         }
     }

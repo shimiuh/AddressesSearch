@@ -5,6 +5,7 @@
     android:layout_margin="10dp"
     android:orientation="horizontal">
     <!--android:foreground="?android:attr/selectableItemBackground"-->
+
     <ImageView
         android:id="@+id/id_image"
         android:layout_width="100dp"
@@ -16,24 +17,25 @@
 
 
     <TextView
-        android:id="@+id/id_text"
+        android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        android:paddingStart="110dp"
-        android:layout_margin="8dp"
-        android:text="Public bor of the town"
+        android:gravity="start"
+        android:layout_marginStart="118dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="2dp"
+        android:text="Address Name:"
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <TextView
-        android:id="@+id/content"
+        android:id="@+id/address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="30dp"
-        android:paddingStart="110dp"
+        android:gravity="start"
+        android:layout_marginStart="118dp"
+        android:layout_marginTop="32dp"
         android:maxLines="2"
-        android:text="5437 Creamlindy St brokalendry rood"
-        android:layout_margin="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem" />
 
     <LinearLayout
