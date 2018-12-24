@@ -33,20 +33,20 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
 
 
     private final Activity mParentActivity;
-    private List<? extends Address> mValues = new ArrayList<>();
+    private List<SearchAddress> mValues = new ArrayList<>();
     private final boolean mTwoPane;
 
     public AddressesSearchAdapter(Activity parent, boolean twoPane) {
         mParentActivity = parent;
         mTwoPane = twoPane;
     }
-    AddressesSearchAdapter(AddressSearchActivity parent, List<? extends Address> items, boolean twoPane) {
+    AddressesSearchAdapter(AddressSearchActivity parent, List<SearchAddress> items, boolean twoPane) {
         mParentActivity = parent;
         mTwoPane = twoPane;
         setData(items);
     }
 
-    public void setData(List<? extends Address> items) {
+    public void setData(List<SearchAddress> items) {
         int currentSize = mValues.size()+1;
         //remove the current items
         mValues.clear();
@@ -78,9 +78,9 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        holder.mIdView.setText(mValues.get(position).name);
-        holder.mContentView.setText(mValues.get(position).address);
-        holder.itemView.setTag(mValues.get(position));
+        holder.mIdView.setText(mValues.get(position).address.name);
+        holder.mContentView.setText(mValues.get(position).address.address);
+        holder.itemView.setTag(mValues.get(position).address);
     }
 
     private void onClick(View view) {
@@ -154,6 +154,6 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
 
     @Override
     public long getItemId(int position) {
-        return mValues.get(position).id;
+        return mValues.get(position).address.id;
     }
 }

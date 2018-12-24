@@ -177,7 +177,7 @@ public class AddressResultFragment extends Fragment_ {//implements AppBarLayout.
                     Log.i("shimi", "run: bundle == null");
                 }
             }
-        }, 2000); // Delay in millis
+        }, 500); // Delay in millis
 
     }
 

@@ -285,20 +285,35 @@ public class AddressSearchActivity extends Activity_ {
     private void updateSearchListData() {
 
         mSwipeLayout.setRefreshing(true);
-        mAdapter.setData(new ArrayList<Address>());
-        App.getUiHandler().postDelayed(new Runnable() {
-            @Override public void run() {
-                AddressName searchAddressName = App.getBox(AddressName.class).get(SearchManager.get().getSearchId());
-                Log.i("shimi", "in updateSearchListData:  searchAddressName = "+searchAddressName.name+"  Addresses().size = "+searchAddressName.addresses.size());
+        mAdapter.setData(new ArrayList<SearchAddress>());
+        List<SearchAddress> searchAddress = new ArrayList<>();
+        App.getBackgroundHandler().post(() -> {
+
+            AddressName searchAddressName = App.getBox(AddressName.class).get(SearchManager.get().getSearchId());
+            searchAddressName.addresses.forEach(address -> {
+                List<AddressMap> listMap = new ArrayList<>();
+                List<AddressMap> searchAddressMaps = address.addressMaps;
+                searchAddressMaps.forEach(addressMap -> {
+                    if(addressMap.originAddress.getTarget().addressName.getTarget().id == SearchManager.get().getResultId()){
+                        listMap.add(addressMap);
+                    }
+                });
+
+                listMap.sort(AddressMap.Comparators.DURATION);
+                searchAddress.add(SearchAddress.make(address, listMap.get(0).distance));//listMap.get(0).distance
+                searchAddress.sort(SearchAddress.Comparators.DISTANCE);
+            });
+
+            App.getUiHandler().postDelayed(() -> {
+                Log.i("shimi", "in updateSearchListData:  searchAddress.size= "+searchAddress.size());
                 mItemAnimation.getAnimation().reset();
                 mRecyclerView.setLayoutAnimation(mItemAnimation);
-                mAdapter.setData(searchAddressName.addresses);
+                mAdapter.setData(searchAddress);//searchAddressName.addresses
                 mRecyclerView.scheduleLayoutAnimation();
                 mSwipeLayout.setRefreshing(false);
-                //mRecyclerView.invalidate();
-                //mRecyclerView.requestLayout();
-            }
-        }, 2000); // Delay in millis
+            }, 500); // Delay in millis
+
+        });
 
     }
 
