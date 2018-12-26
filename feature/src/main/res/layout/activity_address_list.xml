@@ -1,147 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--android.support.constraint.motion.MotionLayout  app:layoutDescription="@xml/scene_01" android.support.constraint.ConstraintLayout -->
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/parent"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.activitys.AddressSearchActivity"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".view.activitys.AddressSearchActivity">
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
+    android:fitsSystemWindows="true">
+<!--android.support.constraint.motion.MotionLayout  app:layoutDescription="@xml/scene_01" android.support.constraint.ConstraintLayout -->
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
-            android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-    </android.support.design.widget.AppBarLayout>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:fitsSystemWindows="true"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </android.support.design.widget.AppBarLayout>
 
 
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshAddressList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:elevation="5dp"
-        android:layout_marginTop="?attr/actionBarSize"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintWidth_percent="0.5"
-        app:layout_anchorGravity="start">
-
-        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/address_list"
-            android:name="android.under_dash.addresses.search.AddressListFragment"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshAddressList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:elevation="5dp"
+            android:layout_marginTop="?attr/actionBarSize"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintWidth_percent="0.5"
+            app:layout_anchorGravity="start">
+
+            <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/address_list"
+                android:name="android.under_dash.addresses.search.AddressListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constrainedWidth="true"
+                android:outlineSpotShadowColor="@color/common_google_signin_btn_text_light"
+                android:outlineAmbientShadowColor="@color/common_google_signin_btn_text_light"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                android:layoutAnimation="@anim/layout_animation_fall_down"
+                tools:context="android.under_dash.addresses.search.view.activitys.AddressSearchActivity"
+                tools:listitem="@layout/address_list_content" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <FrameLayout
+            android:id="@+id/address_detail_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             app:layout_constrainedWidth="true"
-            android:outlineSpotShadowColor="@color/common_google_signin_btn_text_light"
-            android:outlineAmbientShadowColor="@color/common_google_signin_btn_text_light"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            android:layoutAnimation="@anim/layout_animation_fall_down"
-            tools:context="android.under_dash.addresses.search.view.activitys.AddressSearchActivity"
-            tools:listitem="@layout/address_list_content" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+            app:layout_constraintStart_toEndOf="@id/swipeRefreshAddressList"
+            app:layout_constraintWidth_percent="0.5"
+            android:background="@color/colorPrimary"
+            app:layout_anchorGravity="end" />
 
-    <FrameLayout
-        android:id="@+id/address_detail_container"
-        android:layout_width="wrap_content"
+
+
+        <!--<FrameLayout-->
+            <!--android:id="@+id/frameLayout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+
+            <!--<include layout="@layout/address_list" />-->
+        <!--</FrameLayout>-->
+
+
+        <com.rany.albeg.wein.springfabmenu.SpringFabMenu
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="40dp"
+            android:rotation="180"
+            app:sfm_expand_duration="400"
+            app:sfm_collapse_duration="400"
+            app:sfm_delay_expanding_menu_items="0"
+            app:layout_constraintEnd_toEndOf="@id/swipeRefreshAddressList"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="-50dp"
+            android:translationY="120dp">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_result_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:drawable/ic_menu_compass"
+                android:contentDescription="@string/fab_result_list"
+                app:fabSize="mini"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_search_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:drawable/ic_menu_search"
+                android:contentDescription="@string/fab_search_list"
+                app:fabSize="mini"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_clip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:drawable/ic_menu_save"
+                android:contentDescription="@string/fab_clip"
+                app:fabSize="mini"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_swap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:drawable/ic_menu_revert"
+                android:contentDescription="@string/fab_swap"
+                app:fabSize="mini"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+                android:contentDescription="@string/fab_clip"
+                app:fabSize="mini"/>
+
+        </com.rany.albeg.wein.springfabmenu.SpringFabMenu>
+
+        <!--<android.support.design.widget.FloatingActionButton-->
+            <!--android:id="@+id/fab"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintEnd_toEndOf="@id/address_list"-->
+            <!--android:layout_gravity="bottom|start"-->
+            <!--android:layout_marginStart="160dp"-->
+            <!--android:layout_marginBottom="16dp"-->
+            <!--app:srcCompat="@android:drawable/ic_dialog_email" />-->
+
+
+    </android.support.constraint.ConstraintLayout >
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintStart_toEndOf="@id/swipeRefreshAddressList"
-        app:layout_constraintWidth_percent="0.5"
-        android:background="@color/colorPrimary"
-        app:layout_anchorGravity="end" />
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true">
+        <fragment android:name="android.under_dash.addresses.search.view.fragments.ListNavFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"/>
+    </android.support.design.widget.NavigationView >
 
 
-
-    <!--<FrameLayout-->
-        <!--android:id="@+id/frameLayout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
-
-        <!--<include layout="@layout/address_list" />-->
-    <!--</FrameLayout>-->
-
-
-    <com.rany.albeg.wein.springfabmenu.SpringFabMenu
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="40dp"
-        android:rotation="180"
-        app:sfm_expand_duration="400"
-        app:sfm_collapse_duration="400"
-        app:sfm_delay_expanding_menu_items="0"
-        app:layout_constraintEnd_toEndOf="@id/swipeRefreshAddressList"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginEnd="-50dp"
-        android:translationY="120dp">
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_result_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/ic_menu_compass"
-            android:contentDescription="@string/fab_result_list"
-            app:fabSize="mini"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_search_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/ic_menu_search"
-            android:contentDescription="@string/fab_search_list"
-            app:fabSize="mini"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_clip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/ic_menu_save"
-            android:contentDescription="@string/fab_clip"
-            app:fabSize="mini"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_swap"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/ic_menu_revert"
-            android:contentDescription="@string/fab_swap"
-            app:fabSize="mini"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
-            android:contentDescription="@string/fab_clip"
-            app:fabSize="mini"/>
-
-    </com.rany.albeg.wein.springfabmenu.SpringFabMenu>
-
-    <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/fab"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="@id/address_list"-->
-        <!--android:layout_gravity="bottom|start"-->
-        <!--android:layout_marginStart="160dp"-->
-        <!--android:layout_marginBottom="16dp"-->
-        <!--app:srcCompat="@android:drawable/ic_dialog_email" />-->
-
-
-</android.support.constraint.ConstraintLayout >
+</android.support.v4.widget.DrawerLayout>

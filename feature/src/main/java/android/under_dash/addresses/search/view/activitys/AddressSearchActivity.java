@@ -15,7 +15,9 @@ import android.support.constraint.ConstraintSet;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.under_dash.addresses.search.app.Constants;
@@ -37,6 +39,7 @@ import android.under_dash.addresses.search.models.Address;
 import android.under_dash.addresses.search.view.adapters.AddressesSearchAdapter;
 import android.under_dash.addresses.search.view.fragments.AddressResultFragment;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import android.view.animation.AnimationUtils;
@@ -83,6 +86,8 @@ public class AddressSearchActivity extends Activity_ {
     private SwipeRefreshLayout mSwipeLayout;
     private RecyclerView mRecyclerView;
     private LayoutAnimationController mItemAnimation;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +98,22 @@ public class AddressSearchActivity extends Activity_ {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.string.dialog_ok, R.string.dialog_ok) {
 
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+            }
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+            }
+        };
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerToggle.syncState();
 
         SpringFabMenu fab = (SpringFabMenu)findViewById(R.id.fab);
         fab.setOnSpringFabMenuItemClickListener(new SpringFabMenu.OnSpringFabMenuItemClickListener() {
@@ -143,7 +163,7 @@ public class AddressSearchActivity extends Activity_ {
         });
 
         View detailContainer = findViewById(R.id.address_detail_container);
-        View parent = findViewById(R.id.parent);
+        View parent = findViewById(R.id.content_frame);
 
 
         if (findViewById(R.id.address_detail_container) != null) {
@@ -370,5 +390,31 @@ public class AddressSearchActivity extends Activity_ {
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState)
+    {
+        super.onPostCreate(savedInstanceState);
+        if(mDrawerToggle != null) {
+            mDrawerToggle.syncState();
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+        if(mDrawerToggle != null) {
+            mDrawerToggle.onConfigurationChanged(newConfig);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        if (mDrawerToggle != null && mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
