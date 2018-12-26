@@ -1,7 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="200dp"
     android:layout_height="match_parent"
     android:background="@color/green_fab">
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshAddressList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:elevation="5dp"
+        android:layout_marginTop="?attr/actionBarSize">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/addresses_list"
+            android:name="android.under_dash.addresses.search.AddressListFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constrainedWidth="true"
+            android:outlineSpotShadowColor="@color/common_google_signin_btn_text_light"
+            android:outlineAmbientShadowColor="@color/common_google_signin_btn_text_light"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            android:layoutAnimation="@anim/layout_animation_fall_down"
+            tools:context="android.under_dash.addresses.search.view.activitys.AddressSearchActivity"
+            tools:listitem="@layout/addresses_list_item" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </FrameLayout>
