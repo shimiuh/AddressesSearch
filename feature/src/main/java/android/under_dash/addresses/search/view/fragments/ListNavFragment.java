@@ -91,6 +91,13 @@ public class ListNavFragment extends Fragment_ {
         updateSearchListData();
     }
 
+    public void getSelected(){
+        for (int i = 0; i< mRecyclerView.getChildCount(); i++){
+            View v  = mRecyclerView.getChildAt(i);
+            RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(v);
+        }
+    }
+
     private void updateSearchListData() {
 
         mSwipeLayout.setRefreshing(true);

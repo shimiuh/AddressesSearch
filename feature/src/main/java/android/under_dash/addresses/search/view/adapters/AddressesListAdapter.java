@@ -1,30 +1,24 @@
 package android.under_dash.addresses.search.view.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.helpers.Utils;
-import android.under_dash.addresses.search.models.Address;
 import android.under_dash.addresses.search.models.AddressName;
-import android.under_dash.addresses.search.models.SearchAddress;
-import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
-import android.under_dash.addresses.search.view.fragments.AddressResultFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.davidecirillo.multichoicerecyclerview.MultiChoiceAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
-public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapter.ViewHolder> {
+public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapter.ViewHolder>{
 
 
     private final Context mParentActivity;
@@ -32,6 +26,7 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
 
     public AddressesListAdapter(Context context) {
         mParentActivity = context;
+        setSingleClickMode(true);
     }
 
     public void setData(List<AddressName> items) {
@@ -68,7 +63,8 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
         super.onBindViewHolder(holder, position);
         holder.mName.setText(mValues.get(position).name);
         holder.itemView.setTag(mValues.get(position));
-
+        holder.mCheckBox.setChecked(getSelectedItemList().contains(position));
+        holder.itemView.setAlpha(1);
     }
 
     private void onClick(View view) {
@@ -88,12 +84,17 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
         return mValues.size();
     }
 
+
     class ViewHolder extends RecyclerView.ViewHolder {
         final TextView mName;
+        private final CheckBox mCheckBox;
+        private final boolean mIsSelected = false;
 
         ViewHolder(View view) {
             super(view);
             mName = view.findViewById(R.id.listName);
+            mCheckBox = view.findViewById(R.id.listCheck);
+            mCheckBox.setClickable(false);
         }
     }
 
