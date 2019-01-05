@@ -8,7 +8,8 @@
     <string name="fab_swap">Swap list\'s</string>
 
     <string name="list_result_button">For result</string>
-    <string name="upload_a_list">Upload a list</string>
+    <string name="search_list">Search list:</string>
+    <string name="result_list">Result list:</string>
     <string name="list_get_info">Start compare</string>
     <string name="add_to_search">Add to search</string>
     <string name="add_to_result">Add to result</string>
