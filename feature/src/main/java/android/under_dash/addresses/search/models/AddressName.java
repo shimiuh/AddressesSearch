@@ -24,6 +24,8 @@ public class AddressName {
     @Index @Unique
     public String name;
     public String fileLocation;
+    public boolean isSearchSelected;
+    public boolean isResultSelected;
 
     public ToMany<Address> addresses;
     //public ToMany<AddressListMap> addressListMaps;
@@ -35,4 +37,13 @@ public class AddressName {
     public ToMany<Address> getAddresses() {
         return this.addresses;
     }
+
+    public void setSearchSelected(boolean searchSelected) {
+        isSearchSelected = searchSelected;
+    }
+
+    public void setResultSelected(boolean resultSelected) {
+        isResultSelected = resultSelected;
+    }
+
 }

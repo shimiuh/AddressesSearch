@@ -1,6 +1,5 @@
 package android.under_dash.addresses.search.view.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,7 +24,10 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
-import com.davidecirillo.multichoicerecyclerview.MultiChoiceToolbar;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexWrap;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +69,13 @@ public class ListNavFragment extends Fragment_ {
         });
 
         setupRecyclerView(mRecyclerView);
+
+        //RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.search_list);
+        //FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(view.getContext());
+        //layoutManager.setFlexWrap(FlexWrap.WRAP);
+        //layoutManager.setFlexDirection(FlexDirection.ROW);
+        //layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+        //recyclerView.setLayoutManager(layoutManager);
 
 
 

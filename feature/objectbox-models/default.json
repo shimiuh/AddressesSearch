@@ -77,7 +77,7 @@
     },
     {
       "id": "3:7258893306479638037",
-      "lastPropertyId": "3:230858422662222481",
+      "lastPropertyId": "5:5742215748490536371",
       "name": "AddressName",
       "properties": [
         {
@@ -92,6 +92,14 @@
         {
           "id": "3:230858422662222481",
           "name": "fileLocation"
+        },
+        {
+          "id": "4:9141988136615335823",
+          "name": "isSearchSelected"
+        },
+        {
+          "id": "5:5742215748490536371",
+          "name": "isResultSelected"
         }
       ],
       "relations": [
