@@ -86,7 +86,7 @@ public class ListNavFragment extends Fragment_ {
 
 
 
-        mAdapter = new AddressesListAdapter(getContext());//DummyContent.ITEMS
+        mAdapter = new AddressesListAdapter(getContext(),0);//DummyContent.ITEMS
         mAdapter.setHasStableIds(true);
 //        MultiChoiceToolbar multiChoiceToolbar = new MultiChoiceToolbar.Builder(getActivity(), toolbar).setDefaultIcon(R.drawable.ic_delete_24dp, new View.OnClickListener() {
 //            @Override

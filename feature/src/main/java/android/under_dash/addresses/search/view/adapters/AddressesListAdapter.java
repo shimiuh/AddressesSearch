@@ -3,6 +3,7 @@ package android.under_dash.addresses.search.view.adapters;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.under_dash.addresses.search.R;
+import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.helpers.Utils;
 import android.under_dash.addresses.search.models.AddressName;
 import android.view.LayoutInflater;
@@ -17,16 +18,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import io.objectbox.Box;
+
 
 public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapter.ViewHolder>{
 
 
+    private static final int SELECTED_TYPE_SEARCH = 0;
+    private static final int SELECTED_TYPE_RESULT = 1;
     private final Context mParentActivity;
+    private int mSelectedType;
     private List<AddressName> mValues = new ArrayList<>();
 
-    public AddressesListAdapter(Context context) {
+    public AddressesListAdapter(Context context, int selectedType) {
         mParentActivity = context;
+        mSelectedType = selectedType;
         setSingleClickMode(true);
+    }
+
+    public void setSelectedType(int selectedType) {
+        mSelectedType = selectedType;
+        notifyDataSetChanged();
     }
 
     public void setData(List<AddressName> items) {
@@ -63,18 +75,25 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
         super.onBindViewHolder(holder, position);
         holder.mName.setText(mValues.get(position).name);
         holder.itemView.setTag(mValues.get(position));
-        holder.mCheckBox.setChecked(getSelectedItemList().contains(position));
+        boolean isSelected =  mSelectedType == SELECTED_TYPE_SEARCH ? mValues.get(position).isSearchSelected : mValues.get(position).isResultSelected;
+        holder.mCheckBox.setChecked(isSelected);
         holder.itemView.setAlpha(1);
     }
 
-    private void onClick(View view) {
-
+    private void onClick(ViewHolder holder, final int position) {
+        boolean isSelected =  getSelectedItemList().contains(position);
+        if(mSelectedType == SELECTED_TYPE_SEARCH){
+            mValues.get(position).setSearchSelected(isSelected);
+        }else{
+            mValues.get(position).setResultSelected(isSelected);
+        }
+        //Box<AddressName> box = App.getBox(AddressName.class).put();
     }
 
     @Override
     protected View.OnClickListener defaultItemViewClickListener(ViewHolder holder, final int position) {
         return v -> {
-            AddressesListAdapter.this.onClick(holder.itemView);
+            AddressesListAdapter.this.onClick(holder, position);
         };
     }
 
