@@ -70,7 +70,7 @@ public class ListNavFragment extends Fragment_ {
 
         setupRecyclerView(mRecyclerView);
 
-        //RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.search_list);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.search_list);
         //FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(view.getContext());
         //layoutManager.setFlexWrap(FlexWrap.WRAP);
         //layoutManager.setFlexDirection(FlexDirection.ROW);
