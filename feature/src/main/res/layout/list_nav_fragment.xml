@@ -14,16 +14,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:padding="15dp"
+            android:padding="8dp"
             android:textColor="@color/md_grey_600"
-            android:text="@string/upload_a_list"/>
-        <Button
-            android:layout_width="wrap_content"
+            android:text="@string/search_list"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/search_list"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            style="@style/AppTheme.Buttons"
-            android:text="@string/list_result_button"/>
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            android:layoutAnimation="@anim/layout_animation_fall_down"
+            tools:context="android.under_dash.addresses.search.view.activitys.AddressSearchActivity"
+            tools:listitem="@layout/addresses_list_item" />
     </FrameLayout>
 
     <FrameLayout
@@ -35,18 +37,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/md_red_200"
-            android:layout_gravity="center_vertical"
-            android:padding="15dp"
+            android:padding="8dp"
             android:textColor="@color/md_grey_600"
-            android:text="@string/add_to_result"/>
+            android:text="@string/result_list"/>
 
-        <Button
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/result_list"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            style="@style/AppTheme.Buttons"
-            android:text="@string/add_to_result"/>
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            android:layoutAnimation="@anim/layout_animation_fall_down"
+            tools:context="android.under_dash.addresses.search.view.activitys.AddressSearchActivity"
+            tools:listitem="@layout/addresses_list_item" />
+
     </FrameLayout>
 
     <View
@@ -54,7 +57,7 @@
         android:layout_height="2dp"
         android:backgroundTint="@color/common_google_signin_btn_text_light_default"
         android:layout_margin="20dp"
-        android:layout_marginTop="250dp"/>
+        android:layout_marginTop="275dp"/>
 
 
     <android.support.v4.widget.SwipeRefreshLayout

@@ -9,7 +9,7 @@ import android.under_dash.addresses.search.models.Institution;
 import android.under_dash.addresses.search.models.SearchList;
 import android.under_dash.addresses.search.models.SearchResult;
 
-@Database(entities = {Institution.class, SearchList.class, SearchResult.class }, version = 11)
+@Database(entities = {Institution.class, SearchList.class, SearchResult.class }, version = 11, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase mInstance;
     private static final String DB_NAME = "institution.db";

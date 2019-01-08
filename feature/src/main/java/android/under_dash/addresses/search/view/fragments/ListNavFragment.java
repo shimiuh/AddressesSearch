@@ -1,6 +1,5 @@
 package android.under_dash.addresses.search.view.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,7 +24,10 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
-import com.davidecirillo.multichoicerecyclerview.MultiChoiceToolbar;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexWrap;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +70,13 @@ public class ListNavFragment extends Fragment_ {
 
         setupRecyclerView(mRecyclerView);
 
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.search_list);
+        //FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(view.getContext());
+        //layoutManager.setFlexWrap(FlexWrap.WRAP);
+        //layoutManager.setFlexDirection(FlexDirection.ROW);
+        //layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+        //recyclerView.setLayoutManager(layoutManager);
+
 
 
     }
@@ -77,7 +86,7 @@ public class ListNavFragment extends Fragment_ {
 
 
 
-        mAdapter = new AddressesListAdapter(getContext());//DummyContent.ITEMS
+        mAdapter = new AddressesListAdapter(getContext(),0);//DummyContent.ITEMS
         mAdapter.setHasStableIds(true);
 //        MultiChoiceToolbar multiChoiceToolbar = new MultiChoiceToolbar.Builder(getActivity(), toolbar).setDefaultIcon(R.drawable.ic_delete_24dp, new View.OnClickListener() {
 //            @Override

@@ -6,10 +6,10 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity(tableName    = "search_results",
+@Entity(tableName    = "search_results")
         //indices      = {@Index("name"),@Index(value = {"search_list_id", "institution_id"})},
-        foreignKeys  = {@ForeignKey(entity = SearchList.class, parentColumns = "id", childColumns = "search_list_id"),
-                        @ForeignKey(entity = Institution.class, parentColumns = "id", childColumns = "institution_id")})
+//        foreignKeys  = {@ForeignKey(entity = SearchList.class, parentColumns = "id", childColumns = "search_list_id"),
+//                        @ForeignKey(entity = Institution.class, parentColumns = "id", childColumns = "institution_id")})
 
 public class SearchResult {
 

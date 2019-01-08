@@ -18,7 +18,6 @@ public class Address {
     public String address;
     public String website;
     public ToMany<AddressMap> addressMaps;
-    //public ToMany<ClosestByName> closestByName;
     public ToOne<AddressName> addressName;
 
     public Address() {}
@@ -27,15 +26,6 @@ public class Address {
         this.name = name;
         this.address = address;
         this.website = website;
-    }
-
-    public Address(Address addressToCopy) {
-        this.id = addressToCopy.id;
-        this.name = addressToCopy.name;
-        this.address = addressToCopy.address;
-        this.website = addressToCopy.website;
-        this.addressMaps = addressToCopy.addressMaps;
-        this.addressName = addressToCopy.addressName;
     }
 
     public ToMany<AddressMap> getAddressMaps() {
