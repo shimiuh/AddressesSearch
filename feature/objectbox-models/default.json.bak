@@ -98,10 +98,6 @@
         {
           "id": "2:5499461168277904992",
           "name": "addresses"
-        },
-        {
-          "id": "3:4938742803613006394",
-          "name": "addressListMaps"
         }
       ]
     },
@@ -129,12 +125,38 @@
           "name": "destinationAddressNameId"
         }
       ],
+      "relations": [
+        {
+          "id": "4:475310467037054493",
+          "name": "mapedAddresses"
+        }
+      ]
+    },
+    {
+      "id": "5:5371772079931799045",
+      "lastPropertyId": "3:1617839899861325272",
+      "name": "ClosestByName",
+      "properties": [
+        {
+          "id": "1:3391115533386261463",
+          "name": "id"
+        },
+        {
+          "id": "2:7429145080817875432",
+          "name": "closestDistance"
+        },
+        {
+          "id": "3:1617839899861325272",
+          "indexId": "8:1375903002637701281",
+          "name": "addressNameId"
+        }
+      ],
       "relations": []
     }
   ],
-  "lastEntityId": "4:5854889627375654582",
-  "lastIndexId": "7:1843550903169527377",
-  "lastRelationId": "3:4938742803613006394",
+  "lastEntityId": "5:5371772079931799045",
+  "lastIndexId": "8:1375903002637701281",
+  "lastRelationId": "4:475310467037054493",
   "lastSequenceId": "0:0",
   "modelVersion": 4,
   "modelVersionParserMinimum": 4,
@@ -143,6 +165,8 @@
     4419429889101867015
   ],
   "retiredPropertyUids": [],
-  "retiredRelationUids": [],
+  "retiredRelationUids": [
+    4938742803613006394
+  ],
   "version": 1
 }
