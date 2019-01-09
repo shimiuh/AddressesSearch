@@ -6,6 +6,7 @@ import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.helpers.Utils;
 import android.under_dash.addresses.search.models.AddressName;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,19 +22,26 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import io.objectbox.Box;
 
 
-public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapter.ViewHolder>{
+public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapter.ViewHolder> implements MultiChoiceAdapter.Listener {
 
 
-    private static final int SELECTED_TYPE_SEARCH = 0;
-    private static final int SELECTED_TYPE_RESULT = 1;
+    public static final int SELECTED_TYPE_SEARCH = 0;
+    public static final int SELECTED_TYPE_RESULT = 1;
     private final Context mParentActivity;
+    private final OnSelectionChange mOnSelectionChange;
     private int mSelectedType;
     private List<AddressName> mValues = new ArrayList<>();
 
-    public AddressesListAdapter(Context context, int selectedType) {
+    public interface OnSelectionChange{
+        void onSelectionUpdate();
+    }
+
+    public AddressesListAdapter(Context context, int selectedType, OnSelectionChange onSelectionChange) {
         mParentActivity = context;
         mSelectedType = selectedType;
+        mOnSelectionChange = onSelectionChange;
         setSingleClickMode(true);
+        setMultiChoiceSelectionListener(this);
     }
 
     public void setSelectedType(int selectedType) {
@@ -80,27 +88,60 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
         holder.itemView.setAlpha(1);
     }
 
-    private void onClick(ViewHolder holder, final int position) {
-        boolean isSelected =  getSelectedItemList().contains(position);
-        if(mSelectedType == SELECTED_TYPE_SEARCH){
-            mValues.get(position).setSearchSelected(isSelected);
-        }else{
-            mValues.get(position).setResultSelected(isSelected);
-        }
-        //Box<AddressName> box = App.getBox(AddressName.class).put();
-    }
-
-    @Override
-    protected View.OnClickListener defaultItemViewClickListener(ViewHolder holder, final int position) {
-        return v -> {
-            AddressesListAdapter.this.onClick(holder, position);
-        };
-    }
+//    private void onClick(ViewHolder holder, final int position) {
+//        boolean isSelected =  getSelectedItemList().contains(position);
+//        Log.d("shimi", "onClick() called with: mSelectedType = [" + mSelectedType + "], isSelected = [" + isSelected + "]");
+//        if(mSelectedType == SELECTED_TYPE_SEARCH){
+//            mValues.get(position).setSearchSelected(isSelected);
+//        }else{
+//            mValues.get(position).setResultSelected(isSelected);
+//        }
+//        //Box<AddressName> box = App.getBox(AddressName.class).put();
+//    }
+//
+//    @Override
+//    protected View.OnClickListener defaultItemViewClickListener(ViewHolder holder, final int position) {
+//        return v -> {
+//            Log.d("shimi", "defaultItemViewClickListener() called with: position = [" + position + "]");
+//            AddressesListAdapter.this.onClick(holder, position);
+//        };
+//    }
 
 
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    @Override
+    public void OnItemSelected(int selectedPosition, int itemSelectedCount, int allItemCount) {
+        setItemSelected(selectedPosition,true);
+    }
+
+    @Override
+    public void OnItemDeselected(int deselectedPosition, int itemSelectedCount, int allItemCount) {
+        setItemSelected(deselectedPosition,false);
+    }
+
+    @Override
+    public void OnSelectAll(int itemSelectedCount, int allItemCount) {
+
+    }
+
+    @Override
+    public void OnDeselectAll(int itemSelectedCount, int allItemCount) {
+
+    }
+
+    private void setItemSelected(int selectedPosition, boolean isSelected) {
+        if(mSelectedType == SELECTED_TYPE_SEARCH){
+            mValues.get(selectedPosition).setSearchSelected(isSelected);
+        }else{
+            mValues.get(selectedPosition).setResultSelected(isSelected);
+        }
+        if(mOnSelectionChange != null){
+            mOnSelectionChange.onSelectionUpdate();
+        }
     }
 
 
@@ -114,6 +155,10 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
             mName = view.findViewById(R.id.listName);
             mCheckBox = view.findViewById(R.id.listCheck);
             mCheckBox.setClickable(false);
+            view.setOnClickListener(v -> {
+                Log.d("shimi", "ViewHolder() called with: position = [" + getAdapterPosition() + "]");
+                //AddressesListAdapter.this.onClick(holder, position);
+            });
         }
     }
 

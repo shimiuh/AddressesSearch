@@ -1,6 +1,7 @@
 package android.under_dash.addresses.search.models;
 
 import android.support.annotation.NonNull;
+import android.under_dash.addresses.search.app.App;
 
 import javax.annotation.Nonnull;
 
@@ -40,10 +41,16 @@ public class AddressName {
 
     public void setSearchSelected(boolean searchSelected) {
         isSearchSelected = searchSelected;
+        update();
     }
 
     public void setResultSelected(boolean resultSelected) {
         isResultSelected = resultSelected;
+        update();
+    }
+
+    private void update() {
+        App.getBoxStore().runInTx(() -> App.getBox(AddressName.class).put(this) );
     }
 
 }
