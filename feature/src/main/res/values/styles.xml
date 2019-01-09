@@ -9,4 +9,11 @@
         <item name="android:textColor">@color/md_white_1000</item>
 
     </style>
+
+    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+
+        <item name="colorAccent">@color/md_green_200</item>
+        <item name="android:textColorSecondary">@color/md_green_500</item>
+
+    </style>
 </resources>
