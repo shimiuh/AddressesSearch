@@ -73,7 +73,7 @@ public  class TagAdapter  extends RecyclerView.Adapter<TagAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if(position == 0){
-            ((FlexboxLayoutManager.LayoutParams) holder.itemView.getLayoutParams()).setMarginStart(UiUtils.pixToDp(90));
+            ((FlexboxLayoutManager.LayoutParams) holder.itemView.getLayoutParams()).setMarginStart(UiUtils.pixToDp(115));
         }
         holder.mName.setText(mValues.get(position).name);
         holder.itemView.setTag(mValues.get(position));
