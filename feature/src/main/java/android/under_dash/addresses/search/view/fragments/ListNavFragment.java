@@ -150,14 +150,6 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
     private void updateSearchTagData() {
         Box<AddressName> box = App.getBox(AddressName.class);
         List<AddressName> searchList = box.query().equal(AddressName_.isSearchSelected, true).build().find();
-        searchList.add(new AddressName("Test"));
-        searchList.add(new AddressName("Check"));
-        searchList.add(new AddressName("To"));
-        searchList.add(new AddressName("Why This Day"));
-        searchList.add(new AddressName("Test"));
-        searchList.add(new AddressName("Check"));
-        searchList.add(new AddressName("To"));
-        searchList.add(new AddressName("Why This Day"));
         mItemAnimation.getAnimation().reset();
         mTagSearchRecycler.setLayoutAnimation(mItemAnimation);
         mSearchTagAdapter.setSelectedType(AddressesListAdapter.SELECTED_TYPE_SEARCH);
@@ -168,10 +160,6 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
     private void updateResultTagData() {
         Box<AddressName> box = App.getBox(AddressName.class);
         List<AddressName> resultList = box.query().equal(AddressName_.isResultSelected, true).build().find();
-        resultList.add(new AddressName("Test"));
-        resultList.add(new AddressName("Check"));
-        resultList.add(new AddressName("To"));
-        resultList.add(new AddressName("Why This Day"));
         mItemAnimation.getAnimation().reset();
         mTagResultRecycler.setLayoutAnimation(mItemAnimation);
         mResultTagAdapter.setSelectedType(AddressesListAdapter.SELECTED_TYPE_RESULT);

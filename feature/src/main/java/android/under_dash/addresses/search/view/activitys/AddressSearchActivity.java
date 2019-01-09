@@ -214,6 +214,16 @@ public class AddressSearchActivity extends Activity_ {
             if(App.getBox(AddressName.class).getAll().size() == 0) {
                 SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName(Constants.ADDRESS_RESULT)));
                 SearchManager.get().setSearchId(App.getBox(AddressName.class).put(new AddressName(Constants.ADDRESS_SEARCH)));
+                SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("Stores in NY")));
+                SearchManager.get().setSearchId(App.getBox(AddressName.class).put(new AddressName("Shops")));
+                SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("Toys")));
+                SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("Food mark st")));
+                SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("Chabad")));
+                SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("Signings")));
+                SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("Churches")));
+                SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("Mask")));
+                SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("Try me out")));
+                SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("All")));
             }
         });
     }

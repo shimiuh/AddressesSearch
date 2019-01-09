@@ -38,7 +38,7 @@ public class SharedPrefManager {
         return mAppinfoPrefs.getLong(KRY_RESULT_ID, 1);
     }
     public void setResultId(Long id) {
-        mAppinfoPrefs.edit().putLong(KRY_RESULT_ID, id).commit();
+        mAppinfoPrefs.edit().putLong(KRY_RESULT_ID, id).apply();
         Log.d("shimi"," in setResultId id = "+id+"  getResultId() = "+getResultId());
     }
 
@@ -46,7 +46,7 @@ public class SharedPrefManager {
         return mAppinfoPrefs.getLong(KRY_SEARCH_ID, 2);
     }
     public void setSearchId(Long id) {
-        mAppinfoPrefs.edit().putLong(KRY_SEARCH_ID, id).commit();
+        mAppinfoPrefs.edit().putLong(KRY_SEARCH_ID, id).apply();
         Log.d("shimi"," in setSearchId id = "+id+"  getSearchId() = "+getSearchId());
     }
 }
