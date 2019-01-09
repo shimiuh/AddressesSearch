@@ -81,7 +81,8 @@
             android:id="@+id/tag_search_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            android:layout_marginTop="4dp"
+            app:layoutManager="android.under_dash.addresses.search.managers.FlexWrapLayoutManager"
             android:layoutAnimation="@anim/layout_animation_fall_down"
             tools:context="android.under_dash.addresses.search.view.activitys.AddressSearchActivity"
             tools:listitem="@layout/addresses_list_item" />
@@ -106,7 +107,8 @@
             android:id="@+id/tag_result_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            android:layout_marginTop="4dp"
+            app:layoutManager="android.under_dash.addresses.search.managers.FlexWrapLayoutManager"
             android:layoutAnimation="@anim/layout_animation_fall_down"
             tools:context="android.under_dash.addresses.search.view.activitys.AddressSearchActivity"
             tools:listitem="@layout/addresses_list_item" />

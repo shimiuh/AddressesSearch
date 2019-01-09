@@ -128,15 +128,10 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
 
     private void setTagLists(View view) {
 
-
-        FlexboxLayoutManager layoutManager = getFlexboxLayoutManager(view.getContext());
-        mTagSearchRecycler.setLayoutManager(layoutManager);
         mSearchTagAdapter = new TagAdapter(view.getContext(),AddressesListAdapter.SELECTED_TYPE_SEARCH,this);
         mTagSearchRecycler.setAdapter(mSearchTagAdapter);
 
 
-        layoutManager = getFlexboxLayoutManager(view.getContext());
-        mTagResultRecycler.setLayoutManager(layoutManager);
         mResultTagAdapter = new TagAdapter(view.getContext(),AddressesListAdapter.SELECTED_TYPE_RESULT,this);
         mTagResultRecycler.setAdapter(mResultTagAdapter);
 
@@ -163,7 +158,6 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
         searchList.add(new AddressName("Check"));
         searchList.add(new AddressName("To"));
         searchList.add(new AddressName("Why This Day"));
-        mSearchTagAdapter.setData(new ArrayList<AddressName>());
         mItemAnimation.getAnimation().reset();
         mTagSearchRecycler.setLayoutAnimation(mItemAnimation);
         mSearchTagAdapter.setSelectedType(AddressesListAdapter.SELECTED_TYPE_SEARCH);
@@ -178,7 +172,6 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
         resultList.add(new AddressName("Check"));
         resultList.add(new AddressName("To"));
         resultList.add(new AddressName("Why This Day"));
-        mResultTagAdapter.setData(new ArrayList<AddressName>());
         mItemAnimation.getAnimation().reset();
         mTagResultRecycler.setLayoutAnimation(mItemAnimation);
         mResultTagAdapter.setSelectedType(AddressesListAdapter.SELECTED_TYPE_RESULT);
@@ -205,7 +198,6 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
     private void updateSearchListData(int selectedType) {
 
         mSwipeLayout.setRefreshing(true);
-        mAdapter.setData(new ArrayList<AddressName>());
         List<AddressName> addressNames = App.getBox(AddressName.class).getAll();
         Log.i("shimi", "in updateSearchListData:  addressNames.size= "+addressNames.size());
         mItemAnimation.getAnimation().reset();
@@ -219,13 +211,5 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
     @Override
     public void onSelectionUpdate() {
         updateData();
-    }
-
-    private FlexboxLayoutManager getFlexboxLayoutManager(Context context) {
-        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(context);
-        layoutManager.setFlexWrap(FlexWrap.WRAP);
-        layoutManager.setFlexDirection(FlexDirection.ROW);
-        layoutManager.setJustifyContent(JustifyContent.FLEX_START);
-        return layoutManager;
     }
 }
