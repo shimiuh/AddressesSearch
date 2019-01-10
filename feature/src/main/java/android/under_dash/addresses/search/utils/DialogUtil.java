@@ -3,6 +3,7 @@ package android.under_dash.addresses.search.utils;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.res.Resources;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
@@ -26,6 +27,11 @@ import android.widget.TextView;
 import java.util.Locale;
 
 public class DialogUtil extends AlertDialog.Builder {
+
+
+    public interface OnInputListener{
+        void onTextInput(String text);
+    }
 
     protected static final int BOTTOM_PADDING = 8;
     protected int mColor;
@@ -73,56 +79,54 @@ public class DialogUtil extends AlertDialog.Builder {
     public android.support.v7.app.AlertDialog create() {
 
         final AlertDialog mDialog =  super.create();
-        mDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Resources resources = getContext().getResources();
-                int divierId = resources.getIdentifier("android:id/titleDivider", null, null);
-                View divider = mDialog.findViewById(divierId);
-                if(divider != null) {
-                    divider.setVisibility(View.GONE);
-                }
-                ListView listView = mDialog.getListView();
-                if(listView != null) {
-                    mDialog.getListView().setDividerHeight(0);
-                    mDialog.getListView().setPadding(0, 0, 0, UiUtils.pixToDp(BOTTOM_PADDING));
-                }
-                int width = resources.getDimensionPixelSize(R.dimen.dialog_width);
-                mDialog.getWindow().setLayout( width, ActionBar.LayoutParams.WRAP_CONTENT);
-                Button negativeButton = mDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        mDialog.setOnShowListener(dialog -> {
+            Resources resources = getContext().getResources();
+            int divierId = resources.getIdentifier("android:id/titleDivider", null, null);
+            View divider = mDialog.findViewById(divierId);
+            if(divider != null) {
+                divider.setVisibility(View.GONE);
+            }
+            ListView listView = mDialog.getListView();
+            if(listView != null) {
+                mDialog.getListView().setDividerHeight(0);
+                mDialog.getListView().setPadding(0, 0, 0, UiUtils.pixToDp(BOTTOM_PADDING));
+            }
+            int width = resources.getDimensionPixelSize(R.dimen.dialog_width);
+            mDialog.getWindow().setLayout( width, ActionBar.LayoutParams.WRAP_CONTENT);
+            Button negativeButton = mDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
 
-                if(negativeButton != null) {
-                    negativeButton.setTextColor(mColor);
-                    negativeButton.setText((negativeButton.getText().toString()).toUpperCase(Locale.getDefault()));
+            if(negativeButton != null) {
+                negativeButton.setTextColor(mColor);
+                negativeButton.setText((negativeButton.getText().toString()).toUpperCase(Locale.getDefault()));
+            }
+            Button positiveButton = mDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            if(positiveButton != null) {
+                positiveButton.setTextColor(mColor);
+                positiveButton.setText((positiveButton.getText().toString()).toUpperCase(Locale.getDefault()));
+            }
+            Button neutralButton = mDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+            if(neutralButton != null) {
+                neutralButton.setTextColor(mColor);
+                neutralButton.setText((neutralButton.getText().toString()).toUpperCase(Locale.getDefault()));
+            }
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                int customPanelId = resources.getIdentifier("android:id/customPanel", null, null);
+                View customPanel = mDialog.findViewById(customPanelId);
+                if(customPanel != null) {
+                    customPanel.setPadding(0, 0, 0, (int) UiUtils.pixToDp(10));
                 }
-                Button positiveButton = mDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                if(positiveButton != null) {
-                    positiveButton.setTextColor(mColor);
-                    positiveButton.setText((positiveButton.getText().toString()).toUpperCase(Locale.getDefault()));
-                }
-                Button neutralButton = mDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                if(neutralButton != null) {
-                    neutralButton.setTextColor(mColor);
-                    neutralButton.setText((neutralButton.getText().toString()).toUpperCase(Locale.getDefault()));
-                }
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                    int customPanelId = resources.getIdentifier("android:id/customPanel", null, null);
-                    View customPanel = mDialog.findViewById(customPanelId);
-                    if(customPanel != null) {
-                        customPanel.setPadding(0, 0, 0, (int) UiUtils.pixToDp(10));
-                    }
-                }
+            }
 
-                int messageId = resources.getIdentifier("android:id/message", null, null);
+            int messageId = resources.getIdentifier("android:id/message", null, null);
 
-                if (messageId > 0) {
-                    TextView dialogMessage = (TextView) mDialog.findViewById(messageId);
-                    if (dialogMessage != null) {
-                        dialogMessage.setMovementMethod(LinkMovementMethod.getInstance());
-                        dialogMessage.setLinkTextColor(mColor);
-                        dialogMessage.setPadding(dialogMessage.getPaddingLeft(),UiUtils.pixToDp(15),dialogMessage.getPaddingRight(),dialogMessage.getPaddingBottom());
-                    }
+            if (messageId > 0) {
+                TextView dialogMessage = (TextView) mDialog.findViewById(messageId);
+                if (dialogMessage != null) {
+                    dialogMessage.setMovementMethod(LinkMovementMethod.getInstance());
+                    dialogMessage.setLinkTextColor(mColor);
+                    dialogMessage.setPadding(dialogMessage.getPaddingLeft(),UiUtils.pixToDp(15),dialogMessage.getPaddingRight(),dialogMessage.getPaddingBottom());
                 }
+            }
 
 
 //                will set the dialog BG color
@@ -130,79 +134,50 @@ public class DialogUtil extends AlertDialog.Builder {
 //                        .getChildAt(1) // ie the view titleDivider
 //                        .setBackgroundColor(mColor);
 
-                if(mRunOnShow != null) {
-                    mRunOnShow.run();
-                }
+            if(mRunOnShow != null) {
+                mRunOnShow.run();
             }
         });
         return mDialog;
     }
 
-
-    public static Dialog show(int title, int message, Integer negativeButton, DialogInterface.OnClickListener negativeListener, Integer positiveButton,
-                                    DialogInterface.OnClickListener positiveLstener, Integer neutralButton,
-                                    DialogInterface.OnClickListener neutralLstener, Context context){
-        return show(title, message, negativeButton,negativeListener, positiveButton,positiveLstener, neutralButton,  neutralLstener, null,  context, false);
+    public static Dialog show(Context context, int title, int message, Integer positiveButton, OnInputListener inputListener, Integer input) {
+        return show(context,title, message, R.string.cancel ,positiveButton, null,null,  null, null, inputListener,input, false);
     }
 
-    public static Dialog show(int title, int message, Integer negativeButton, DialogInterface.OnClickListener negativeListener, Integer positiveButton,
-                                    DialogInterface.OnClickListener positiveLstener, Context context){
-        return show(title, message, negativeButton,negativeListener, positiveButton,positiveLstener, null,  null, null,  context, false);
+    public static Dialog show(Context context, int title, int message, Integer negativeButton, Integer positiveButton,
+                              OnClickListener positiveListener, String input,boolean addProgress) {
+        return show(context,title, message, negativeButton,positiveButton, null,null,  positiveListener, null, null,null, false);
     }
 
-    public static Dialog show(int title, int message, Integer negativeButton,Integer positiveButton,
-                                    DialogInterface.OnClickListener listener, String input, Context context,boolean addProgress){
-        return show(title, message, negativeButton,listener, positiveButton,null,  null,  null,input,  context, addProgress);
-    }
+    public static Dialog show(Context context, int title, int message, Integer negativeButton, Integer positiveButton, Integer neutralButton,
+                              OnClickListener negativeListener, OnClickListener positiveListener,OnClickListener neutralListener, OnInputListener inputListener,
+                              Integer input,boolean addProgress) {
 
-    public static Dialog show(int title, int message, Integer negativeButton,Integer positiveButton,
-                                    DialogInterface.OnClickListener positiveLstener, Context context){
-        return show(title, message, negativeButton,null, positiveButton,positiveLstener,  null,  null,null, context, false);
-    }
-
-    public static Dialog show(int title, String message, Integer negativeButton,Integer positiveButton,
-                                    DialogInterface.OnClickListener positiveLstener, Context context){
-        return show(title, message, negativeButton,null, positiveButton,positiveLstener,  null,  null,null, context, false);
-    }
-
-    public static Dialog show(int title, int message, Integer negativeButton, DialogInterface.OnClickListener negativeListener, Integer positiveButton,
-                                    DialogInterface.OnClickListener positiveLstener, Integer neutralButton,
-                                    DialogInterface.OnClickListener neutralLstener, String input, Context context,boolean addProgress) {
-
-        return show(
-                title,
-                message > 0 ? context.getResources().getText(message).toString() : null,
-                negativeButton,
-                negativeListener,
-                positiveButton,
-                positiveLstener,
-                neutralButton,
-                neutralLstener,
-                input,
-                context,
-                addProgress
-        );
-    }
-
-    public static Dialog show(int title, String message, Integer negativeButton, DialogInterface.OnClickListener negativeListener, Integer positiveButton,
-                                    DialogInterface.OnClickListener positiveLstener, Integer neutralButton,
-                                    DialogInterface.OnClickListener neutralLstener, String input, Context context,boolean addProgress) {
+        final EditText[] editText = new EditText[1];
 
         DialogUtil builder = new DialogUtil(context);
         if(title > 0) {
             builder.setTitle(title);
         }
-        if(message != null) {
+        if(message > 0) {//message > 0 ? context.getResources().getText(message).toString() : null,
             builder.setMessage(message);
         }
 
 
         if(positiveButton != null) {
-            builder.setPositiveButton(positiveButton, positiveLstener);
+            builder.setPositiveButton(positiveButton, (dialog, which) -> {
+                if(positiveListener != null) {
+                    positiveListener.onClick(dialog, which);
+                }
+                if(inputListener != null) {
+                    inputListener.onTextInput(editText[0].getText().toString());
+                }
+            });
         }
 
         if(neutralButton != null) {
-            builder.setNeutralButton(neutralButton, neutralLstener);
+            builder.setNeutralButton(neutralButton, neutralListener);
         }
 
         if(negativeButton != null) {
@@ -212,11 +187,11 @@ public class DialogUtil extends AlertDialog.Builder {
         int pad = UiUtils.pixToDp(22);
         if(input != null){
             FrameLayout frame = new FrameLayout(context);
-            EditText editText = new EditText(context);
-            editText.setId(Constants.DIALOG_EDIT_TEXT_ID);
+            editText[0] = new EditText(context);
+            editText[0].setId(Constants.DIALOG_EDIT_TEXT_ID);
             frame.setPadding(pad,0,pad,0);
-            editText.setHint(input);
-            frame.addView(editText);
+            editText[0].setHint(input);
+            frame.addView(editText[0]);
             builder.setView(frame);
         }else if(addProgress){ //pass null to get a progress
             ProgressBar progress = new ProgressBar(context);

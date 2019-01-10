@@ -1,6 +1,7 @@
 package android.under_dash.addresses.search.view.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,9 +9,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
+import android.under_dash.addresses.search.helpers.ImportCVSToSQLiteDB;
+import android.under_dash.addresses.search.helpers.MyCSVFileReader;
+import android.under_dash.addresses.search.helpers.SearchManager;
 import android.under_dash.addresses.search.library.ui.fragment.Fragment_;
 import android.under_dash.addresses.search.models.AddressName;
 import android.under_dash.addresses.search.models.AddressName_;
+import android.under_dash.addresses.search.utils.DialogUtil;
+import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
 import android.under_dash.addresses.search.view.adapters.AddressesListAdapter;
 import android.under_dash.addresses.search.view.adapters.TagAdapter;
 import android.util.Log;
@@ -67,9 +73,19 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
         mSwipeLayout = view.findViewById(R.id.swipeRefreshAddressList);
         mResultTagCheckBox = view.findViewById(R.id.result_tag_check_box);
         mSearchTagCheckBox = view.findViewById(R.id.search_tag_check_box);
-
-
-
+        view.findViewById(R.id.add_list_file).setOnClickListener(v -> {
+            DialogUtil.show(getActivity(),R.string.set_address_name, R.string.set_address_name,R.string.set_address_name,
+                        text -> {
+                            Log.i("shimi", "onViewCreated: text = "+text);
+                            MyCSVFileReader.openDialogToReadCSV(getActivity(), pathFile -> {
+                                AddressName resultAddressName = App.getBox(AddressName.class).get(SearchManager.get().getResultId());
+                                Log.d("shimi", "in fab fab_result_list resultAddressName = "+resultAddressName.name+" getResultId = "+SearchManager.get().getResultId());
+                                new ImportCVSToSQLiteDB(getActivity(),pathFile,resultAddressName, () -> {
+                                    updateData();
+                                }).execute();
+                            });
+                        }, R.string.set_address_name);
+        });
 
         setupRecyclerView();
         setTagLists(view);
