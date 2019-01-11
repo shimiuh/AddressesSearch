@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.helpers.ImportCVSToSQLiteDB;
@@ -32,6 +33,7 @@ import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,17 +76,7 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
         mResultTagCheckBox = view.findViewById(R.id.result_tag_check_box);
         mSearchTagCheckBox = view.findViewById(R.id.search_tag_check_box);
         view.findViewById(R.id.add_list_file).setOnClickListener(v -> {
-            DialogUtil.show(getActivity(),R.string.set_address_name, R.string.set_address_name,R.string.set_address_name,
-                        text -> {
-                            Log.i("shimi", "onViewCreated: text = "+text);
-                            MyCSVFileReader.openDialogToReadCSV(getActivity(), pathFile -> {
-                                AddressName resultAddressName = App.getBox(AddressName.class).get(SearchManager.get().getResultId());
-                                Log.d("shimi", "in fab fab_result_list resultAddressName = "+resultAddressName.name+" getResultId = "+SearchManager.get().getResultId());
-                                new ImportCVSToSQLiteDB(getActivity(),pathFile,resultAddressName, () -> {
-                                    updateData();
-                                }).execute();
-                            });
-                        }, R.string.set_address_name);
+            addListDialog();
         });
 
         setupRecyclerView();
@@ -121,6 +113,45 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
             updateData();
         });
 
+    }
+
+    private void addListDialog() {
+
+        DialogUtil.show(getActivity(),R.string.set_address_name, R.string.set_address_name,R.string.set_address_name,
+                (dialog, listName) -> {
+                    if(TextUtils.isEmpty(listName)){
+                        dialog.dismiss();
+                        return;
+                    }
+                    Log.i("shimi", "in addListDialog : name = -"+listName+"-"+listName.length());
+                    List<AddressName> addressName = App.getBox(AddressName.class).find(AddressName_.name,listName);
+                    //AddressName address = App.getBox(AddressName.class).query().equal(AddressName_.name,listName).build().findFirst();
+
+                    if(addressName.size() > 0 ){
+                        DialogUtil.show(getContext(),R.string.this_list_exsisets, R.string.this_list_exsisets_mesage,
+                                R.string.this_list_exsisets_action,R.string.this_list_exsisets_regret,(dialog2, which) -> {
+                                    importAddressesFromFile(addressName.get(0));
+                                },(dialog2, which) -> {
+                                    dialog.dismiss();
+                                    addListDialog();
+                                });
+                    }else{
+                        AddressName name = new AddressName(listName);
+                        name.update();
+                        importAddressesFromFile(name);
+                    }
+
+                }, R.string.set_address_name);
+
+    }
+
+    private void importAddressesFromFile(AddressName addressName) {
+        MyCSVFileReader.openDialogToReadCSV(getActivity(), pathFile -> {
+            Log.d("shimi", "in fab fab_result_list resultAddressName = "+addressName.name+" getResultId = "+SearchManager.get().getResultId());
+            new ImportCVSToSQLiteDB(getActivity(),pathFile,addressName, () -> {
+                updateData();
+            }).execute();
+        });
     }
 
     private void updateData() {

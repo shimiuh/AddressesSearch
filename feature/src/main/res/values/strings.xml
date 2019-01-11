@@ -16,4 +16,8 @@
     <string name="add_list">Add list</string>
     <string name="cancel">Cancel</string>
     <string name="set_address_name">Set address name</string>
+    <string name="this_list_exsisets">This list exsisets</string>
+    <string name="this_list_exsisets_mesage">Do you want to combind the too</string>
+    <string name="this_list_exsisets_action">Compind list\'s</string>
+    <string name="this_list_exsisets_regret">Chang list name</string>
 </resources>

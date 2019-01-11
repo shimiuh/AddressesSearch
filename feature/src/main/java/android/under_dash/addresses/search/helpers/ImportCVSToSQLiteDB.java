@@ -53,10 +53,6 @@ public class ImportCVSToSQLiteDB extends AsyncTask<String, String, String> {
 
         String data="";
         Log.d(getClass().getName(), mFile.toString());
-        if(mAddressName.addresses.size() > 0) {
-            App.getBox(Address.class).remove(mAddressName.addresses);
-            mAddressName.addresses.applyChangesToDb();
-        }
 
         try{
             CsvReader csvReader = new CsvReader();

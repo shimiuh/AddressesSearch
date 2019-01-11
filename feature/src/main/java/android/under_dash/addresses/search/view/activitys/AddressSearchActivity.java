@@ -318,15 +318,18 @@ public class AddressSearchActivity extends Activity_ {
         mAdapter.setData(new ArrayList<SearchAddress>());
         List<SearchAddress> searchAddress = new ArrayList<>();
         App.getBackgroundHandler().post(() -> {
-
-            AddressName searchAddressName = App.getBox(AddressName.class).get(SearchManager.get().getSearchId());
-            searchAddressName.addresses.forEach(address -> {
+            List<Address> addresses =  Address.getAllSearchSelected();
+            addresses.forEach(address -> {
                 List<AddressMap> listMap = new ArrayList<>();
                 List<AddressMap> searchAddressMaps = address.addressMaps;
+                //TODO: check if you can query this list
                 searchAddressMaps.forEach(addressMap -> {
-                    if(addressMap.originAddress.getTarget().addressName.getTarget().id == SearchManager.get().getResultId()){
-                        listMap.add(addressMap);
-                    }
+                    addressMap.originAddress.getTarget().addressNames.forEach(addressName -> {
+                        Log.i("shimi", "run: addressName.id = "+addressName.id);
+                        if(addressName.isResultSelected && !listMap.contains(addressMap)){
+                            listMap.add(addressMap);
+                        }
+                    });
                 });
 
                 listMap.sort(AddressMap.Comparators.DURATION);

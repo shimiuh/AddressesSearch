@@ -155,13 +155,29 @@ public class AddressResultFragment extends Fragment_ {//implements AppBarLayout.
                     id = bundle.getLong(ARG_ITEM_ID);
                     Address searchAddress = App.getBox(Address.class).get(id);
                     List<AddressMap> listMap = new ArrayList<>();
+
+//                    This will work but is more work
+//                    List<Address> list = Address.getAllResultSelected();
+//                    Long finalId = id;
+//                    list.forEach(address ->{
+//                        address.addressMaps.forEach(addressMap ->{
+//                            if(addressMap.originAddress.getTarget().id == finalId){
+//                                listMap.add(addressMap);
+//                            }
+//                        });
+//                    });
+
                     ToMany<AddressMap> searchAddressMaps = searchAddress.addressMaps;
                     Log.i("shimi", "run: in set DATA getResultId = "+SearchManager.get().getResultId());
+                    //TODO: check if you can query this list
                     searchAddressMaps.forEach(addressMap -> {
-                        Log.i("shimi", "run: addressName.getTarget().id = "+addressMap.originAddress.getTarget().addressName.getTarget().id );
-                        if(addressMap.originAddress.getTarget().addressName.getTarget().id == SearchManager.get().getResultId()){
-                            listMap.add(addressMap);
-                        }
+                        addressMap.originAddress.getTarget().addressNames.forEach(addressName -> {
+                            Log.i("shimi", "run: addressName.id = "+addressName.id);
+                            if(addressName.isResultSelected && !listMap.contains(addressMap)){
+                                listMap.add(addressMap);
+                            }
+                        });
+
                     });
                     Log.i("shimi", "in set DATA listMap.size() = "+listMap.size());
                     listMap.sort(AddressMap.Comparators.DURATION);

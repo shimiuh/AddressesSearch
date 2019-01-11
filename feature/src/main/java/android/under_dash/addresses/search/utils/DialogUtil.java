@@ -30,7 +30,7 @@ public class DialogUtil extends AlertDialog.Builder {
 
 
     public interface OnInputListener{
-        void onTextInput(String text);
+        void onTextInput(DialogInterface dialog, String text);
     }
 
     protected static final int BOTTOM_PADDING = 8;
@@ -150,6 +150,11 @@ public class DialogUtil extends AlertDialog.Builder {
         return show(context,title, message, negativeButton,positiveButton, null,null,  positiveListener, null, null,null, false);
     }
 
+    public static Dialog show(Context context, int title, int message, Integer positiveButton, Integer neutralButton,
+                              OnClickListener positiveListener,OnClickListener neutralListener) {
+        return show(context,title, message, null,positiveButton, neutralButton,null,  positiveListener, neutralListener, null,null, false);
+    }
+
     public static Dialog show(Context context, int title, int message, Integer negativeButton, Integer positiveButton, Integer neutralButton,
                               OnClickListener negativeListener, OnClickListener positiveListener,OnClickListener neutralListener, OnInputListener inputListener,
                               Integer input,boolean addProgress) {
@@ -171,7 +176,7 @@ public class DialogUtil extends AlertDialog.Builder {
                     positiveListener.onClick(dialog, which);
                 }
                 if(inputListener != null) {
-                    inputListener.onTextInput(editText[0].getText().toString());
+                    inputListener.onTextInput(dialog, editText[0].getText().toString());
                 }
             });
         }

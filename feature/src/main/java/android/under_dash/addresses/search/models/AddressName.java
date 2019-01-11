@@ -49,7 +49,7 @@ public class AddressName {
         update();
     }
 
-    private void update() {
+    public void update() {
         App.getBoxStore().runInTx(() -> App.getBox(AddressName.class).put(this) );
     }
 
