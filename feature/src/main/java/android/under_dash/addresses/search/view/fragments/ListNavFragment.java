@@ -10,16 +10,19 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
+import android.under_dash.addresses.search.app.Constants;
 import android.under_dash.addresses.search.helpers.ImportCVSToSQLiteDB;
 import android.under_dash.addresses.search.helpers.MyCSVFileReader;
 import android.under_dash.addresses.search.helpers.SearchManager;
 import android.under_dash.addresses.search.library.ui.fragment.Fragment_;
+import android.under_dash.addresses.search.models.Address;
 import android.under_dash.addresses.search.models.AddressName;
 import android.under_dash.addresses.search.models.AddressName_;
 import android.under_dash.addresses.search.utils.DialogUtil;
 import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
 import android.under_dash.addresses.search.view.adapters.AddressesListAdapter;
 import android.under_dash.addresses.search.view.adapters.TagAdapter;
+import android.under_dash.addresses.search.view.customUI.LoadingTextView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +30,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexWrap;
@@ -52,6 +56,7 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
     private RecyclerView mTagResultRecycler;
     private CheckBox mSearchTagCheckBox;
     private CheckBox mResultTagCheckBox;
+    private LoadingTextView mCostTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +73,7 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
         super.onViewCreated(view, savedInstanceState);
         int resId = R.anim.layout_animation_fall_down;
         mItemAnimation = AnimationUtils.loadLayoutAnimation(getContext(), resId);
-
+        mCostTextView = view.findViewById(R.id.cost);
         mRecyclerView = view.findViewById(R.id.addresses_list);
         mTagSearchRecycler= view.findViewById(R.id.tag_search_list);
         mTagResultRecycler = view.findViewById(R.id.tag_result_list);
@@ -158,6 +163,14 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
         int selectedType = getSelectedTagType();
         updateSearchListData(selectedType);
         updateTagData(selectedType);
+        mCostTextView.setLoading(true);
+        mCostTextView.setText(getString(R.string.price, getSelectedListCost()));
+        App.getUiHandler().postDelayed(() -> mCostTextView.setLoading(false),1000);
+    }
+
+    private int getSelectedListCost() {
+        int elements = (int) ((Address.getAllResultSelected().size() * Address.getAllSearchSelected().size()) * Constants.COST_PER_ELEMENT);
+        return elements;
     }
 
     private int getSelectedTagType() {
