@@ -4,6 +4,10 @@
     <!-- google's material design colours from
     http://www.google.com/design/spec/style/color.html#color-ui-color-palette -->
 
+    <color name="colorAccent">@color/md_light_blue_900</color>
+    <color name="colorPrimary">#4285f4</color>
+    <color name="colorPrimaryDark">#1976D2</color>
+
     <!--reds-->
     <color name="md_red_50">#FFEBEE</color>
     <color name="md_red_100">#FFCDD2</color>

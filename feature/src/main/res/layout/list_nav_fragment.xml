@@ -39,7 +39,7 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshAddressList"
         android:layout_marginTop="80dp"
-        android:layout_marginBottom="325dp"
+        android:layout_marginBottom="315dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="8dp"
@@ -60,16 +60,6 @@
             tools:listitem="@layout/addresses_list_item" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="320dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:background="@color/common_google_signin_btn_text_light_default"/>
 
     <FrameLayout
         android:layout_width="match_parent"
