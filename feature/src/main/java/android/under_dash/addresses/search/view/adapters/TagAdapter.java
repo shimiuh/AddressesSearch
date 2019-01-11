@@ -13,8 +13,6 @@ import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
-
-import com.davidecirillo.multichoicerecyclerview.MultiChoiceAdapter;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.obsez.android.lib.filechooser.internals.UiUtil;
 

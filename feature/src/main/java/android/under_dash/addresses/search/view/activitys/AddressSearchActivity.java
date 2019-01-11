@@ -37,6 +37,7 @@ import android.under_dash.addresses.search.helpers.Utils;
 import android.under_dash.addresses.search.library.Activity_;
 import android.under_dash.addresses.search.models.Address;
 import android.under_dash.addresses.search.view.adapters.AddressesSearchAdapter;
+import android.under_dash.addresses.search.view.adapters.multiChoice.MultiChoiceToolbar;
 import android.under_dash.addresses.search.view.fragments.AddressResultFragment;
 import android.util.Log;
 import android.view.MenuItem;
@@ -46,7 +47,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
-import com.davidecirillo.multichoicerecyclerview.MultiChoiceToolbar;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;

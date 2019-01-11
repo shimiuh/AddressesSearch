@@ -9,13 +9,13 @@ import android.under_dash.addresses.search.helpers.Utils;
 import android.under_dash.addresses.search.models.Address;
 import android.under_dash.addresses.search.models.AddressMap;
 import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
+import android.under_dash.addresses.search.view.adapters.multiChoice.MultiChoiceAdapter;
 import android.under_dash.addresses.search.view.fragments.AddressResultFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.davidecirillo.multichoicerecyclerview.MultiChoiceAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

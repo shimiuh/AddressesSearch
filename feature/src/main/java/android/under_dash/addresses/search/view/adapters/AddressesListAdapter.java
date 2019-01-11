@@ -6,14 +6,13 @@ import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.helpers.Utils;
 import android.under_dash.addresses.search.models.AddressName;
+import android.under_dash.addresses.search.view.adapters.multiChoice.MultiChoiceAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-
-import com.davidecirillo.multichoicerecyclerview.MultiChoiceAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +30,7 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
     private final OnSelectionChange mOnSelectionChange;
     private int mSelectedType;
     private List<AddressName> mValues = new ArrayList<>();
+    int mCreationPosition;
 
     public interface OnSelectionChange{
         void onSelectionUpdate();
@@ -53,6 +53,7 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
         int currentSize = mValues.size()+1;
         //remove the current items
         mValues.clear();
+        mCreationPosition = 0;
         //tell the recycler view that all the old items are gone
         notifyItemRangeRemoved(0, currentSize+1);
 
@@ -86,7 +87,10 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
         boolean isSelected =  mSelectedType == SELECTED_TYPE_SEARCH ? mValues.get(position).isSearchSelected : mValues.get(position).isResultSelected;
         holder.mCheckBox.setChecked(isSelected);
         holder.itemView.setAlpha(1);
+        setSelect(position, isSelected);
     }
+
+
 
 //    private void onClick(ViewHolder holder, final int position) {
 //        boolean isSelected =  getSelectedItemList().contains(position);
@@ -134,6 +138,13 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
     }
 
     private void setItemSelected(int selectedPosition, boolean isSelected) {
+
+//        boolean isSelectedDB = mSelectedType == SELECTED_TYPE_SEARCH ? mValues.get(selectedPosition).isSearchSelected : mValues.get(selectedPosition).isResultSelected;
+//
+//        if(isSelectedDB && !isSelected){
+//            setSelect(selectedPosition, isSelectedDB);
+//            return;
+//        }
         if(mSelectedType == SELECTED_TYPE_SEARCH){
             mValues.get(selectedPosition).setSearchSelected(isSelected);
         }else{
@@ -152,6 +163,7 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
 
         ViewHolder(View view) {
             super(view);
+
             mName = view.findViewById(R.id.listName);
             mCheckBox = view.findViewById(R.id.listCheck);
             mCheckBox.setClickable(false);
@@ -159,6 +171,13 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
                 Log.d("shimi", "ViewHolder() called with: position = [" + getAdapterPosition() + "]");
                 //AddressesListAdapter.this.onClick(holder, position);
             });
+            int position = mCreationPosition;
+            Log.d("shimi", "ViewHolder() called with: position = [" + getAdapterPosition() + "] mCreationPosition = "+mCreationPosition+" ");
+            if (!Utils.isBadPosSize(mValues,position)) {
+                boolean isSelectedDB = mSelectedType == SELECTED_TYPE_SEARCH ? mValues.get(position).isSearchSelected : mValues.get(position).isResultSelected;
+                setSelect(position, isSelectedDB);
+            }
+            mCreationPosition++;
         }
     }
 

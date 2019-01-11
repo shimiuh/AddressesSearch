@@ -25,6 +25,7 @@ import android.under_dash.addresses.search.library.ui.fragment.Fragment_;
 import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
 import android.under_dash.addresses.search.view.adapters.AddressesResultAdapter;
 import android.under_dash.addresses.search.view.adapters.AddressesSearchAdapter;
+import android.under_dash.addresses.search.view.adapters.multiChoice.MultiChoiceToolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,8 +34,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.davidecirillo.multichoicerecyclerview.MultiChoiceToolbar;
 
 import java.util.ArrayList;
 import java.util.Collections;
