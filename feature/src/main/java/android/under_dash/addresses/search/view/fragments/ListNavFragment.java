@@ -1,7 +1,5 @@
 package android.under_dash.addresses.search.view.fragments;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,12 +12,15 @@ import android.under_dash.addresses.search.app.Constants;
 import android.under_dash.addresses.search.helpers.ImportCVSToSQLiteDB;
 import android.under_dash.addresses.search.helpers.MyCSVFileReader;
 import android.under_dash.addresses.search.helpers.SearchManager;
+import android.under_dash.addresses.search.helpers.Work;
 import android.under_dash.addresses.search.library.ui.fragment.Fragment_;
 import android.under_dash.addresses.search.models.Address;
+import android.under_dash.addresses.search.models.AddressMap;
+import android.under_dash.addresses.search.models.AddressMap_;
 import android.under_dash.addresses.search.models.AddressName;
 import android.under_dash.addresses.search.models.AddressName_;
+import android.under_dash.addresses.search.models.Address_;
 import android.under_dash.addresses.search.utils.DialogUtil;
-import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
 import android.under_dash.addresses.search.view.adapters.AddressesListAdapter;
 import android.under_dash.addresses.search.view.adapters.TagAdapter;
 import android.under_dash.addresses.search.view.customUI.LoadingTextView;
@@ -30,16 +31,9 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.CheckBox;
-import android.widget.TextView;
 
-import com.google.android.flexbox.FlexDirection;
-import com.google.android.flexbox.FlexWrap;
-import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.flexbox.JustifyContent;
-
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import io.objectbox.Box;
 
@@ -164,13 +158,29 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
         updateSearchListData(selectedType);
         updateTagData(selectedType);
         mCostTextView.setLoading(true);
-        mCostTextView.setText(getString(R.string.price, getSelectedListCost()));
-        App.getUiHandler().postDelayed(() -> mCostTextView.setLoading(false),1000);
+
+        Work.job(this::getSelectedListCost).onUiDelayed(cost -> {
+            mCostTextView.setLoading(false);
+            mCostTextView.setText(getString(R.string.price,(int)cost));
+        },100);
+
     }
 
     private int getSelectedListCost() {
-        int elements = (int) ((Address.getAllResultSelected().size() * Address.getAllSearchSelected().size()) * Constants.COST_PER_ELEMENT);
-        return elements;
+        AtomicInteger elements = new AtomicInteger();
+        List<Address> searchAddresses = Address.getAllSearchSelected();
+        List<Address> resultAddresses = Address.getAllResultSelected();
+        searchAddresses.forEach(address -> {
+            resultAddresses.forEach(address1 -> {
+                if(Address.isLinked(address,address1)){
+                    elements.getAndIncrement();
+                }
+
+            });
+        });
+        //elements.set((int) ((resultAddresses.size() * searchAddresses.size()) * Constants.COST_PER_ELEMENT));
+        int total = (int) (elements.get() * Constants.COST_PER_ELEMENT);
+        return (int) (total + (total * 0.1f));
     }
 
     private int getSelectedTagType() {

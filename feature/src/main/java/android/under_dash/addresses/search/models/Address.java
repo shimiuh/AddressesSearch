@@ -33,6 +33,12 @@ public class Address {
         this.website = website;
     }
 
+    public static boolean isLinked(Address originAddress, Address destinationAddress) {
+        return App.getBox(AddressMap.class).query().link(AddressMap_.originAddress).equal(Address_.address,originAddress.address).
+                and().link(AddressMap_.destinationAddress).equal(Address_.address,destinationAddress.address).build().findFirst()
+                != null;
+    }
+
     public ToMany<AddressMap> getAddressMaps() {
         return addressMaps;
     }
