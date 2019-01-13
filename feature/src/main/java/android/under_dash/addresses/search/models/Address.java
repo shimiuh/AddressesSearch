@@ -9,9 +9,11 @@ import java.util.List;
 
 import io.objectbox.Box;
 import io.objectbox.Property;
+import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 import io.objectbox.annotation.Unique;
+import io.objectbox.query.QueryBuilder;
 import io.objectbox.relation.ToMany;
 import io.objectbox.relation.ToOne;
 
@@ -31,12 +33,6 @@ public class Address {
         this.name = name;
         this.address = address;
         this.website = website;
-    }
-
-    public static boolean isLinked(Address originAddress, Address destinationAddress) {
-        return App.getBox(AddressMap.class).query().link(AddressMap_.originAddress).equal(Address_.address,originAddress.address).
-                and().link(AddressMap_.destinationAddress).equal(Address_.address,destinationAddress.address).build().findFirst()
-                != null;
     }
 
     public ToMany<AddressMap> getAddressMaps() {
@@ -124,6 +120,22 @@ public class Address {
             addresses.addAll(addressName.addresses);
         });
         return addresses;
+    }
+
+    public static boolean isLinked(Address originAddress, Address destinationAddress) {
+        //AddressMap test = App.getBox(AddressMap.class).query().equal(AddressMap_.originAddress.targetInfo.getEntityId(),).build().findFirst();
+        //builder = App.getBox(Address.class).query().equals(Address_.address, originAddress.address);
+        //Address test = builder.link(AddressMap_.originAddress).equal(Address_.address, originAddress.address).build().findFirst();
+       // Log.i("shimi", "isLinked: test = "+test);
+        QueryBuilder<Address> builder = App.getBox(Address.class).query();
+        builder.link(Address_.addressMaps).equal(AddressMap_.origAddress,originAddress.address).and()
+                .equal(AddressMap_.destAddress,destinationAddress.address);
+
+        //QueryBuilder<Address> destinationBuilder = App.getBox(Address.class).query();
+        //originBuilder.link(Address_.addressMaps).equal(AddressMap_.destAddress,destinationAddress.address);
+        //QueryBuilder<Address> destinationBuilder = App.getBox(Address.class).query().link(Address_.addressMaps).equal(AddressMap_.destAddress,destinationAddress.address);
+        //QueryBuilder<Address> test = builder.link(AddressMap_.originAddress);
+        return builder.build().findFirst() != null;
     }
 
 }

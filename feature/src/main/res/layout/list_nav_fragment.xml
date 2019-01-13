@@ -138,6 +138,7 @@
 
 
         <Button
+            android:id="@+id/start_compare"
             style="@style/AppTheme.Buttons"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

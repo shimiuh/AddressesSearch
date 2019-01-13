@@ -47,22 +47,22 @@ public class GoogleMapsMatrixApiService extends AsyncTask<String, String, String
     private int mCount = 0;
     private int mTotal = 0;
     private final Runnable mOnDone;
-    private Long mStartPointAddressNameId;
+    private List<Address> mStartPointAddresses;
+    private List<Address> mDestinationAddresses;
     private Context mContext;
-    private Long mDestinationAddressNameId;
     private ProgressDialog mDialog;
     private boolean isGettingInfo;
     private long mLastCallToApi;
 
 
-    public static GoogleMapsMatrixApiService build(Context context, Long startPointAddressNameId, Long destinationAddressNameId, Runnable onDone){
+    public static GoogleMapsMatrixApiService build(Context context, List<Address> startPointAddressNameId, List<Address> destinationAddressNameId, Runnable onDone){
         return new GoogleMapsMatrixApiService(context, startPointAddressNameId,  destinationAddressNameId,  onDone);
     }
 
-    public GoogleMapsMatrixApiService(Context context, Long startPointAddressNameId, Long destinationAddressNameId, Runnable onDone) {
+    public GoogleMapsMatrixApiService(Context context, List<Address> startPointAddresses, List<Address> destinationAddresses, Runnable onDone) {
         this.mContext = context;
-        this.mStartPointAddressNameId  = startPointAddressNameId;
-        this.mDestinationAddressNameId = destinationAddressNameId;
+        this.mStartPointAddresses  = startPointAddresses;
+        this.mDestinationAddresses = destinationAddresses;
         this.mOnDone = onDone;
         mLastCallToApi = 0;
     }
@@ -88,20 +88,15 @@ public class GoogleMapsMatrixApiService extends AsyncTask<String, String, String
     protected String doInBackground(String... params) {
 
         String data="";
-        AddressName searchAddressName = App.getBox(AddressName.class).get(mStartPointAddressNameId);
-        List<Address> startPointSearchList = searchAddressName.addresses;
 
-        AddressName resultAddressName = App.getBox(AddressName.class).get(mDestinationAddressNameId );
-        List<Address> destinationResultList = resultAddressName.addresses;
-
-        if(startPointSearchList.isEmpty() || destinationResultList.isEmpty()){
+        if(mStartPointAddresses.isEmpty() || mDestinationAddresses.isEmpty()){
             Log.e(TAG, "##### ONE LIST IS EMPTY ##### aborting calling");
             return "";
         }
 
 
-        Log.i(TAG, "doInBackground: searchAddressName = "+ searchAddressName.id+searchAddressName.name+" resultAddressName = "+resultAddressName.id+resultAddressName.name);
-        getDistanceInfoAndAddInDb(startPointSearchList, destinationResultList);
+        Log.i(TAG, "doInBackground: mStartPointAddresses.size() = "+ mStartPointAddresses.size()+" mDestinationAddresses.size() = "+mDestinationAddresses.size());
+        getDistanceInfoAndAddInDb(mStartPointAddresses, mDestinationAddresses);
         isGettingInfo = true;
         while (isGettingInfo){
             try {

@@ -23,17 +23,16 @@
         {
           "id": "4:228716137710064207",
           "name": "website"
-        },
-        {
-          "id": "5:8304827675097755335",
-          "indexId": "2:2952067483341714173",
-          "name": "addressNameId"
         }
       ],
       "relations": [
         {
           "id": "1:8211178100446539120",
           "name": "addressMaps"
+        },
+        {
+          "id": "5:441791832608417727",
+          "name": "addressNames"
         }
       ]
     },
@@ -164,15 +163,18 @@
   ],
   "lastEntityId": "5:5371772079931799045",
   "lastIndexId": "8:1375903002637701281",
-  "lastRelationId": "4:475310467037054493",
+  "lastRelationId": "5:441791832608417727",
   "lastSequenceId": "0:0",
   "modelVersion": 4,
   "modelVersionParserMinimum": 4,
   "retiredEntityUids": [],
   "retiredIndexUids": [
-    4419429889101867015
+    4419429889101867015,
+    2952067483341714173
   ],
-  "retiredPropertyUids": [],
+  "retiredPropertyUids": [
+    8304827675097755335
+  ],
   "retiredRelationUids": [
     4938742803613006394
   ],

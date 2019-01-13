@@ -1,43 +1,48 @@
 package android.under_dash.addresses.search.helpers;
 
+import android.support.annotation.NonNull;
 import android.under_dash.addresses.search.app.App;
 
 
 
 public class Work {
 
-    Object res;
+    Job mJob;
 
     public interface Job{
         Object run();
     }
     public interface Done{
-        void run(Object object);
+        void onDone(Object object);
     }
 
     private Work(Job job) {
-        App.getBackgroundHandler().post(() -> {
-            res = job.run();
-        });
+        this.mJob = job;
     }
 
     public void onUi(Done workOnUI){
-        App.getUiHandler().post(() -> {
-            workOnUI.run(res);
+        App.getBackgroundHandler().post(() -> {
+            Object object = mJob.run();
+            App.getUiHandler().post(() -> {
+                workOnUI.onDone(object);
+            });
         });
     }
 
-    public void onUiDelayed(Done workOnUI, long delayMillis){
-        App.getUiHandler().postDelayed(() -> {
-            workOnUI.run(castObject(res.getClass(),res));
-        },delayMillis);
+    public void onUiDelayed(@NonNull Done workOnUI, long delayMillis){
+        App.getBackgroundHandler().post(() -> {
+            Object object = mJob.run();
+            App.getUiHandler().postDelayed(() -> {
+                workOnUI.onDone(object);
+            },delayMillis);
+        });
     }
 
     public static Work job(Job job){
         return new Work(job);
     }
 
-    private <T> T castObject(Class<T> clazz, Object object) {
-        return (T) object;
-    }
+//    private <T> T castObject(Class<T> clazz, Object object) {
+//        return (T) object;
+//    }
 }

@@ -23,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.under_dash.addresses.search.app.Constants;
 import android.under_dash.addresses.search.helpers.GoogleMapsMatrixApiService;
 import android.under_dash.addresses.search.helpers.SearchManager;
+import android.under_dash.addresses.search.helpers.Work;
 import android.under_dash.addresses.search.models.AddressMap;
 import android.under_dash.addresses.search.models.AddressName;
 import android.under_dash.addresses.search.models.AddressName_;
@@ -92,6 +93,7 @@ public class AddressSearchActivity extends Activity_ {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //App.getBox(AddressName.class).removeAll();
         initAddressNameList();
         setContentView(R.layout.activity_address_list);
         requestPermissions();
@@ -123,15 +125,8 @@ public class AddressSearchActivity extends Activity_ {
 
                 if(id == R.id.fab_clip){
                     if(true){
-                        //SearchManager.get().setResultId(1);
-                        //SearchManager.get().setSearchId(2);
-                        App.getBox(AddressName.class).getAll().forEach(addressName -> {
-                            Log.i("shimi", "in AddressName.class).getAll().forEach : name "+addressName.name+"  id = "+addressName.id);
-                        });
-                        Log.i("shimi", "in GoogleMapsMatrixApiService.build: getSearchId "+SearchManager.get().getSearchId()+"  getResultId = "+SearchManager.get().getResultId());
-                        GoogleMapsMatrixApiService.build(AddressSearchActivity.this,SearchManager.get().getSearchId(),SearchManager.get().getResultId(),() -> {
-                            Log.i("shimi", "in GoogleMapsMatrixApiService onDone AddressMap size = " +App.getBox(AddressMap.class).getAll().size());
-                        }).execute();
+                        searchListes(App.getBox(AddressName.class).get(SearchManager.get().getSearchId()).addresses,
+                                App.getBox(AddressName.class).get(SearchManager.get().getResultId()).addresses);
                         return;
                     }
                     addAddressFromClip();
@@ -209,11 +204,23 @@ public class AddressSearchActivity extends Activity_ {
 
     }
 
+    public void searchListes(List<Address> startPointAddresses, List<Address> destinationAddresses) {
+        App.getBox(AddressName.class).getAll().forEach(addressName -> {
+            Log.i("shimi", "in AddressName.class).getAll().forEach : name "+addressName.name+"  id = "+addressName.id);
+        });
+
+        Log.i("shimi", "in GoogleMapsMatrixApiService.build: getSearchId "+SearchManager.get().getSearchId()+"  getResultId = "+SearchManager.get().getResultId());
+        GoogleMapsMatrixApiService.build(AddressSearchActivity.this,startPointAddresses,destinationAddresses,() -> {
+            Log.i("shimi", "in GoogleMapsMatrixApiService onDone AddressMap size = " +App.getBox(AddressMap.class).getAll().size());
+        }).execute();
+    }
+
     private void initAddressNameList() {
+        if(true){
+            return;
+        }
         App.getBackgroundHandler().post(() -> {
             if(App.getBox(AddressName.class).getAll().size() == 0) {
-                SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName(Constants.ADDRESS_RESULT)));
-                SearchManager.get().setSearchId(App.getBox(AddressName.class).put(new AddressName(Constants.ADDRESS_SEARCH)));
                 SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("Stores in NY")));
                 SearchManager.get().setSearchId(App.getBox(AddressName.class).put(new AddressName("Shops")));
                 SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("Toys")));
@@ -317,36 +324,43 @@ public class AddressSearchActivity extends Activity_ {
         mSwipeLayout.setRefreshing(true);
         mAdapter.setData(new ArrayList<SearchAddress>());
         List<SearchAddress> searchAddress = new ArrayList<>();
-        App.getBackgroundHandler().post(() -> {
+        Work.job(() -> {
             List<Address> addresses =  Address.getAllSearchSelected();
+            if(addresses.size()<=0){
+                return false;
+            }
             addresses.forEach(address -> {
                 List<AddressMap> listMap = new ArrayList<>();
                 List<AddressMap> searchAddressMaps = address.addressMaps;
-                //TODO: check if you can query this list
-                searchAddressMaps.forEach(addressMap -> {
-                    addressMap.originAddress.getTarget().addressNames.forEach(addressName -> {
-                        Log.i("shimi", "run: addressName.id = "+addressName.id);
-                        if(addressName.isResultSelected && !listMap.contains(addressMap)){
-                            listMap.add(addressMap);
-                        }
+                if(searchAddressMaps.size() > 0){
+                    //TODO: check if you can query this list
+                    searchAddressMaps.forEach(addressMap -> {
+                        addressMap.originAddress.getTarget().addressNames.forEach(addressName -> {
+                            Log.i("shimi", "run: addressName.id = " + addressName.id);
+                            if (addressName.isResultSelected && !listMap.contains(addressMap)) {
+                                listMap.add(addressMap);
+                            }
+                        });
                     });
-                });
+                    if(listMap.size() > 0 ) {
+                        listMap.sort(AddressMap.Comparators.DURATION);
+                        searchAddress.add(SearchAddress.make(address, listMap.get(0).distance, listMap.get(0).durationText));//listMap.get(0).distance
+                        searchAddress.sort(SearchAddress.Comparators.DISTANCE);
+                    }
+                }
 
-                listMap.sort(AddressMap.Comparators.DURATION);
-                searchAddress.add(SearchAddress.make(address, listMap.get(0).distance,listMap.get(0).durationText));//listMap.get(0).distance
-                searchAddress.sort(SearchAddress.Comparators.DISTANCE);
-            });
+            }); return true;
 
-            App.getUiHandler().postDelayed(() -> {
-                Log.i("shimi", "in updateSearchListData:  searchAddress.size= "+searchAddress.size());
+        }).onUiDelayed(object -> {
+            if((boolean)object) {
+                Log.i("shimi", "in updateSearchListData:  searchAddress.size= " + searchAddress.size());
                 mItemAnimation.getAnimation().reset();
                 mRecyclerView.setLayoutAnimation(mItemAnimation);
                 mAdapter.setData(searchAddress);//searchAddressName.addresses
                 mRecyclerView.scheduleLayoutAnimation();
                 mSwipeLayout.setRefreshing(false);
-            }, 500); // Delay in millis
-
-        });
+            }
+        },500);
 
     }
 

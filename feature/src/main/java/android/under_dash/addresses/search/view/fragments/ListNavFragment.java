@@ -21,6 +21,7 @@ import android.under_dash.addresses.search.models.AddressName;
 import android.under_dash.addresses.search.models.AddressName_;
 import android.under_dash.addresses.search.models.Address_;
 import android.under_dash.addresses.search.utils.DialogUtil;
+import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
 import android.under_dash.addresses.search.view.adapters.AddressesListAdapter;
 import android.under_dash.addresses.search.view.adapters.TagAdapter;
 import android.under_dash.addresses.search.view.customUI.LoadingTextView;
@@ -32,6 +33,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.CheckBox;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -51,6 +53,8 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
     private CheckBox mSearchTagCheckBox;
     private CheckBox mResultTagCheckBox;
     private LoadingTextView mCostTextView;
+    List<Address> mSearchAddressesForFetch = new ArrayList<>();
+    List<Address> mResultAddressesForFetch = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +80,10 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
         mSearchTagCheckBox = view.findViewById(R.id.search_tag_check_box);
         view.findViewById(R.id.add_list_file).setOnClickListener(v -> {
             addListDialog();
+        });
+
+        view.findViewById(R.id.start_compare).setOnClickListener(v -> {
+            ((AddressSearchActivity)getActivity()).searchListes(mSearchAddressesForFetch,mResultAddressesForFetch);
         });
 
         setupRecyclerView();
@@ -135,9 +143,9 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
                                     addListDialog();
                                 });
                     }else{
-                        AddressName name = new AddressName(listName);
-                        name.update();
-                        importAddressesFromFile(name);
+                        AddressName newAddressName = new AddressName(listName);
+                        newAddressName.update();
+                        importAddressesFromFile(newAddressName);
                     }
 
                 }, R.string.set_address_name);
@@ -162,18 +170,34 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
         Work.job(this::getSelectedListCost).onUiDelayed(cost -> {
             mCostTextView.setLoading(false);
             mCostTextView.setText(getString(R.string.price,(int)cost));
-        },100);
+        },1);
+
+    }
+    private List<List<Address>> getSelectedListsNotMapped() {
+        List<Address> searchAddresses = Address.getAllSearchSelected();
+        List<Address> resultAddresses = Address.getAllResultSelected();
+        return new ArrayList<List<Address>>();
 
     }
 
+
     private int getSelectedListCost() {
+        mSearchAddressesForFetch.clear();
+        mResultAddressesForFetch.clear();
         AtomicInteger elements = new AtomicInteger();
         List<Address> searchAddresses = Address.getAllSearchSelected();
         List<Address> resultAddresses = Address.getAllResultSelected();
         searchAddresses.forEach(address -> {
             resultAddresses.forEach(address1 -> {
-                if(Address.isLinked(address,address1)){
+                if(!Address.isLinked(address,address1)){
                     elements.getAndIncrement();
+                    if(!mSearchAddressesForFetch.contains(address)) {
+                        mSearchAddressesForFetch.add(address);
+                    }
+                    if(!mResultAddressesForFetch.contains(address1)) {
+                        mResultAddressesForFetch.add(address1);
+                    }
+
                 }
 
             });

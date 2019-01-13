@@ -38,7 +38,7 @@
     },
     {
       "id": "2:237557932958009642",
-      "lastPropertyId": "7:5004946822726341859",
+      "lastPropertyId": "9:5208650296325835221",
       "name": "AddressMap",
       "properties": [
         {
@@ -70,6 +70,14 @@
           "id": "7:5004946822726341859",
           "indexId": "4:6593200381749948173",
           "name": "destinationAddressId"
+        },
+        {
+          "id": "8:5221211901822213342",
+          "name": "origAddress"
+        },
+        {
+          "id": "9:5208650296325835221",
+          "name": "destAddress"
         }
       ],
       "relations": []

@@ -7,6 +7,7 @@ import android.util.Log;
 import java.util.Comparator;
 
 import io.objectbox.Box;
+import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 import io.objectbox.annotation.Index;
@@ -16,16 +17,23 @@ import io.objectbox.relation.ToOne;
 public class AddressMap implements Comparable<AddressMap> {
 
     public AddressMap() {}
-    public AddressMap(int distance, int duration, String distanceText,String durationText) {//String originLatLong, String destinationLatLong,
+    public AddressMap(int distance, int duration, String distanceText,String durationText,String origAddress, String destAddress) {//String originLatLong, String destinationLatLong,
         this .distance = distance;
         this .duration = duration;
         this .distanceText = distanceText;
         this .durationText = durationText;
+        this.origAddress = origAddress;
+        this.destAddress = destAddress;
     }
+
+    public String    origAddress;
+    public String    destAddress;
 
     @Id
     public long id;
+    @Backlink(to = "addressMaps")
     public ToOne<Address> originAddress;
+    @Backlink(to = "addressMaps")
     public ToOne<Address> destinationAddress;
 
     public int    distance;
@@ -46,7 +54,7 @@ public class AddressMap implements Comparable<AddressMap> {
         Box<Address> addressBox = App.getBox(Address.class);
         Box<AddressMap> addressMapBox = App.getBox(AddressMap.class);
 
-        AddressMap addressMap = new AddressMap(distance, duration, distanceText, durationText);
+        AddressMap addressMap = new AddressMap(distance, duration, distanceText, durationText, originAddress.address, destinationAddress.address);
         addressMapBox.put(addressMap);
         originAddress.addressMaps.add(addressMap);
         destinationAddress.addressMaps.add(addressMap);
