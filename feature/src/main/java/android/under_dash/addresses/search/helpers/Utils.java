@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -42,6 +43,10 @@ public class Utils {
 
     public static boolean isBadPosSize(List mList, int position) {
         return mList == null || position < 0 || position >= mList.size();
+    }
+
+    public static String convertCents(int cost) {
+       return NumberFormat.getCurrencyInstance(Locale.US).format(cost / 100.0);
     }
 
     //for without "Resource leak: '<unassigned Closeable value>' is never closed" warning, something like this

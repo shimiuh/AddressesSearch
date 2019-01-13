@@ -20,5 +20,5 @@
     <string name="this_list_exsisets_mesage">Do you want to combined the too</string>
     <string name="this_list_exsisets_action">Combined list\'s</string>
     <string name="this_list_exsisets_regret">Chang list name</string>
-    <string name="price">Search cost: %1$d</string>
+    <string name="price">Search cost: %1$s</string>
 </resources>

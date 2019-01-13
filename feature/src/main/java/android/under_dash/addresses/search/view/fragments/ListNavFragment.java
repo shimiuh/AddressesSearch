@@ -12,6 +12,7 @@ import android.under_dash.addresses.search.app.Constants;
 import android.under_dash.addresses.search.helpers.ImportCVSToSQLiteDB;
 import android.under_dash.addresses.search.helpers.MyCSVFileReader;
 import android.under_dash.addresses.search.helpers.SearchManager;
+import android.under_dash.addresses.search.helpers.Utils;
 import android.under_dash.addresses.search.helpers.Work;
 import android.under_dash.addresses.search.library.ui.fragment.Fragment_;
 import android.under_dash.addresses.search.models.Address;
@@ -33,8 +34,10 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.CheckBox;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import io.objectbox.Box;
@@ -169,7 +172,7 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
 
         Work.job(this::getSelectedListCost).onUiDelayed(cost -> {
             mCostTextView.setLoading(false);
-            mCostTextView.setText(getString(R.string.price,(int)cost));
+            mCostTextView.setText(getString(R.string.price,Utils.convertCents((int)cost)));
         },1);
 
     }
@@ -203,7 +206,7 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
             });
         });
         //elements.set((int) ((resultAddresses.size() * searchAddresses.size()) * Constants.COST_PER_ELEMENT));
-        int total = (int) (elements.get() * Constants.COST_PER_ELEMENT);
+        long total = (int) (Constants.COST_PER_ELEMENT * elements.get());
         return (int) (total + (total * 0.1f));
     }
 
