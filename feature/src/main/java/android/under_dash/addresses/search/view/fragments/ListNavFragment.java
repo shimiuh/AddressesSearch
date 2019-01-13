@@ -33,6 +33,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -86,7 +87,12 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
         });
 
         view.findViewById(R.id.start_compare).setOnClickListener(v -> {
-            ((AddressSearchActivity)getActivity()).searchListes(mSearchAddressesForFetch,mResultAddressesForFetch);
+            if(mSearchAddressesForFetch.size()> 0 && mResultAddressesForFetch.size() > 0) {
+                ((AddressSearchActivity) getActivity()).searchListes(mSearchAddressesForFetch, mResultAddressesForFetch);
+            }else {
+                int textId  = mResultAddressesForFetch.size() > 0 ? R.string.no_search_to_do :R.string.add_result_for_search;
+                Toast.makeText(getContext(),textId,Toast.LENGTH_SHORT).show();
+            }
         });
 
         setupRecyclerView();

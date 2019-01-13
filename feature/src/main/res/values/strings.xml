@@ -21,4 +21,6 @@
     <string name="this_list_exsisets_action">Combined list\'s</string>
     <string name="this_list_exsisets_regret">Chang list name</string>
     <string name="price">Search cost: %1$s</string>
+    <string name="no_search_to_do">All listes are fetched</string>
+    <string name="add_result_for_search">Add a result list to search</string>
 </resources>
