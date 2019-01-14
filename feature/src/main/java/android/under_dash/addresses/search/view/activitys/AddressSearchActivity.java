@@ -188,6 +188,7 @@ public class AddressSearchActivity extends Activity_ {
         mTwoPane = false;
         mRecyclerView = findViewById(R.id.address_list);
         mSwipeLayout = findViewById(R.id.swipeRefreshAddressList);
+        mSwipeLayout.setRefreshing(false);
         // Adding Listener
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

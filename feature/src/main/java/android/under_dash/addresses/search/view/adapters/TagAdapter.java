@@ -58,8 +58,9 @@ public  class TagAdapter  extends RecyclerView.Adapter<TagAdapter.ViewHolder>{
             mValues.remove(pos);
             notifyItemRemoved(pos);
             notifyItemChanged(mValues.size()+1);
+            notifyDataSetChanged();
         }
-        notifyDataSetChanged();
+
     }
 
     @Override

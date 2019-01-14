@@ -53,4 +53,7 @@ public class AddressName {
         App.getBoxStore().runInTx(() -> App.getBox(AddressName.class).put(this) );
     }
 
+    public void remove() {
+        App.getBoxStore().runInTx(() -> App.getBox(AddressName.class).remove(this ));
+    }
 }

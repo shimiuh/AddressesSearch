@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.under_dash.addresses.search.R;
@@ -302,5 +303,15 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
     @Override
     public void onSelectionUpdate() {
         updateData();
+    }
+
+    @Override
+    public void onShowList(AddressName AddressName) {
+        Bundle arguments = new Bundle();
+        arguments.putLong(AddressResultFragment.ARG_ITEM_ID, AddressName.id);
+        DisplayAddressesFragment fragment = new DisplayAddressesFragment();
+        fragment.setArguments(arguments);//.addToBackStack(AddressResultFragment.TAG)
+        ((AppCompatActivity)getActivity()).getSupportFragmentManager().beginTransaction().add(android.R.id.content, fragment,DisplayAddressesFragment.TAG).addToBackStack(DisplayAddressesFragment.TAG).commit();
+
     }
 }

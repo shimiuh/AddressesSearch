@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.helpers.Utils;
 import android.under_dash.addresses.search.models.Address;
-import android.under_dash.addresses.search.models.AddressMap;
+import android.under_dash.addresses.search.models.SearchAddress;
 import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
 import android.under_dash.addresses.search.view.adapters.multiChoice.MultiChoiceAdapter;
 import android.under_dash.addresses.search.view.fragments.AddressResultFragment;
@@ -16,29 +17,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 
-public  class AddressesResultAdapter extends MultiChoiceAdapter<AddressesResultAdapter.ViewHolder> {
+public  class DisplayAddressesAdapter extends MultiChoiceAdapter<DisplayAddressesAdapter.ViewHolder> {
 
 
     private final Activity mParentActivity;
-    private List<AddressMap> mValues = new ArrayList<>();
-    private final boolean mTwoPane;
+    private List<Address> mValues = new ArrayList<>();
 
-    public AddressesResultAdapter(Activity parent, boolean twoPane) {
+    public DisplayAddressesAdapter(Activity parent) {
         mParentActivity = parent;
-        mTwoPane = twoPane;
     }
-    public AddressesResultAdapter(AddressSearchActivity parent, List<AddressMap> items, boolean twoPane) {
+    DisplayAddressesAdapter(AddressSearchActivity parent, List<Address> items, boolean twoPane) {
         mParentActivity = parent;
-        mTwoPane = twoPane;
         setData(items);
     }
 
-    public void setData(List<AddressMap> items) {
+    public void setData(List<Address> items) {
         int currentSize = mValues.size()+1;
         //remove the current items
         mValues.clear();
@@ -63,28 +60,32 @@ public  class AddressesResultAdapter extends MultiChoiceAdapter<AddressesResultA
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.address_result_content, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.address_list_content, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        holder.mIdView.setText(mValues.get(position).getDestinationAddress().name);
-        holder.mContentView.setText(mValues.get(position).getDestinationAddress().address);
-        holder.mDistance.setText(mValues.get(position).distanceText);
-        holder.mDuration.setText(mValues.get(position).durationText);
-        holder.itemView.setTag(mValues.get(position));
+        if(!TextUtils.isEmpty(mValues.get(position).name)) {
+            holder.mName.setText(mValues.get(position).name);
+        }
+        holder.mAddress.setText(mValues.get(position).address);
+        holder.itemView.setTag(mValues.get(position).address);
+
     }
 
     private void onClick(View view) {
-
+        Address item = (Address) view.getTag();
+        if(item == null){
+            return;
+        }
     }
 
     @Override
     protected View.OnClickListener defaultItemViewClickListener(ViewHolder holder, final int position) {
         return v -> {
-            AddressesResultAdapter.this.onClick(holder.itemView);
+            DisplayAddressesAdapter.this.onClick(holder.itemView);
         };
     }
 
@@ -95,17 +96,15 @@ public  class AddressesResultAdapter extends MultiChoiceAdapter<AddressesResultA
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView mIdView;
-        final TextView mContentView;
-        final TextView mDuration;
-        final TextView mDistance;
+        final TextView mName;
+        final TextView mAddress;
+        final TextView mClosestDistance;
 
         ViewHolder(View view) {
             super(view);
-            mIdView = view.findViewById(R.id.name);
-            mContentView = view.findViewById(R.id.address);
-            mDuration = view.findViewById(R.id.duration);
-            mDistance= view.findViewById(R.id.distance);
+            mName = view.findViewById(R.id.name);
+            mAddress = view.findViewById(R.id.address);
+            mClosestDistance = view.findViewById(R.id.distance);
         }
     }
 

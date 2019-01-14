@@ -35,6 +35,7 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
 
     public interface OnSelectionChange{
         void onSelectionUpdate();
+        void onShowList(AddressName addressName);
     }
 
     public AddressesListAdapter(Context context, int selectedType, OnSelectionChange onSelectionChange) {
@@ -70,8 +71,8 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
             mValues.remove(pos);
             notifyItemRemoved(pos);
             notifyItemChanged(mValues.size()+1);
+            notifyDataSetChanged();
         }
-        notifyDataSetChanged();
     }
 
     @Override
@@ -161,7 +162,6 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
         final CheckBox mName;
         private final ImageButton mRemove;
         private final ImageButton mShow;
-        private final boolean mIsSelected = false;
 
         ViewHolder(View view) {
             super(view);
@@ -169,15 +169,18 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
             mName = view.findViewById(R.id.listName);
             mRemove = view.findViewById(R.id.listRemove);
             mRemove.setOnClickListener(v -> {
-
+                int pos = getAdapterPosition();
+                mValues.get(pos).remove();
+                remove(pos);
+                if(mOnSelectionChange != null){
+                    mOnSelectionChange.onSelectionUpdate();
+                }
             });
             mShow = view.findViewById(R.id.listShow);
             mShow.setOnClickListener(v -> {
-
-            });
-            view.setOnClickListener(v -> {
-                Log.d("shimi", "ViewHolder() called with: position = [" + getAdapterPosition() + "]");
-                //AddressesListAdapter.this.onClick(holder, position);
+                if(mOnSelectionChange != null){
+                    mOnSelectionChange.onShowList(mValues.get(getAdapterPosition()));
+                }
             });
             int position = mCreationPosition;
             Log.d("shimi", "ViewHolder() called with: position = [" + getAdapterPosition() + "] mCreationPosition = "+mCreationPosition+" ");

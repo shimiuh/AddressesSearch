@@ -58,8 +58,8 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
             mValues.remove(pos);
             notifyItemRemoved(pos);
             notifyItemChanged(mValues.size()+1);
+            notifyDataSetChanged();
         }
-        notifyDataSetChanged();
     }
 
     @Override
