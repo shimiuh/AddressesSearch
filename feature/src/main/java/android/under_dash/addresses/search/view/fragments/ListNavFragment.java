@@ -86,6 +86,10 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
         view.findViewById(R.id.add_list_file).setOnClickListener(v -> {
             addListDialog();
         });
+        view.findViewById(R.id.add_list_web).setOnClickListener(v -> {
+            addListDialog();
+        });
+
 
         view.findViewById(R.id.start_compare).setOnClickListener(v -> {
             if(mSearchAddressesForFetch.size()> 0 && mResultAddressesForFetch.size() > 0) {

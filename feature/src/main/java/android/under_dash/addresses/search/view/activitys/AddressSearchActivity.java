@@ -254,7 +254,6 @@ public class AddressSearchActivity extends Activity_ {
 
 
 
-
     }
 
     private void removeAddress(Address address) {
