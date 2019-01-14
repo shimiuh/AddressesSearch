@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -85,7 +86,7 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
         holder.mName.setText(mValues.get(position).name);
         holder.itemView.setTag(mValues.get(position));
         boolean isSelected =  mSelectedType == SELECTED_TYPE_SEARCH ? mValues.get(position).isSearchSelected : mValues.get(position).isResultSelected;
-        holder.mCheckBox.setChecked(isSelected);
+        holder.mName.setChecked(isSelected);
         holder.itemView.setAlpha(1);
         setSelect(position, isSelected);
     }
@@ -157,16 +158,23 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView mName;
-        private final CheckBox mCheckBox;
+        final CheckBox mName;
+        private final ImageButton mRemove;
+        private final ImageButton mShow;
         private final boolean mIsSelected = false;
 
         ViewHolder(View view) {
             super(view);
 
             mName = view.findViewById(R.id.listName);
-            mCheckBox = view.findViewById(R.id.listCheck);
-            mCheckBox.setClickable(false);
+            mRemove = view.findViewById(R.id.listRemove);
+            mRemove.setOnClickListener(v -> {
+
+            });
+            mShow = view.findViewById(R.id.listShow);
+            mShow.setOnClickListener(v -> {
+
+            });
             view.setOnClickListener(v -> {
                 Log.d("shimi", "ViewHolder() called with: position = [" + getAdapterPosition() + "]");
                 //AddressesListAdapter.this.onClick(holder, position);

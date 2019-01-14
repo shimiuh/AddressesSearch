@@ -21,6 +21,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.under_dash.addresses.search.app.Constants;
+import android.under_dash.addresses.search.app.SharedPrefManager;
 import android.under_dash.addresses.search.helpers.GoogleMapsMatrixApiService;
 import android.under_dash.addresses.search.helpers.SearchManager;
 import android.under_dash.addresses.search.helpers.Work;
@@ -31,7 +32,6 @@ import android.under_dash.addresses.search.models.SearchAddress;
 import android.under_dash.addresses.search.old.AddressDetailActivity;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
-import android.under_dash.addresses.search.helpers.HttpHelper;
 import android.under_dash.addresses.search.helpers.ImportCVSToSQLiteDB;
 import android.under_dash.addresses.search.helpers.MyCSVFileReader;
 import android.under_dash.addresses.search.helpers.Utils;
@@ -94,6 +94,7 @@ public class AddressSearchActivity extends Activity_ {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //App.getBox(AddressName.class).removeAll();
+        //Log.i("shimi", "onCreate: -"+SharedPrefManager.get().getGoogleApiKey()+"-");
         initAddressNameList();
         setContentView(R.layout.activity_address_list);
         requestPermissions();
@@ -267,43 +268,7 @@ public class AddressSearchActivity extends Activity_ {
 
     }
 
-    private void initAddressData() {
-
-        App.getBackgroundHandler().post(() -> {
-            Box<Address> addressBox = getBox(Address.class);
-            List<Address> addresses = addressBox.getAll();
-            //StringBuilder destination = new StringBuilder();
-            List<String> destination = new ArrayList<>();
-            if(addresses != null && addresses.size() > 0 ){//&& addresses.get(0).getDuration() == 0) {
-
-                //
-                for (Address address : addresses) {
-                    if (address != null) {
-                        //destination.append(address.latLong).append("|");
-                        //Log.d("shimi", .toString());
-                    }
-                }
-
-                Log.d("shimi", "in create addresses.size() = "+addresses.size()+ "  destination = "+destination.toString());
-                HttpHelper.getDistanceInfoAndAddInDb(addresses, addresses);
-                //HttpHelper.getDistanceInfoAndAddInDb("New+York+City,NY",destination.toString(),null);
-            }else{
-                if(addresses != null) {
-                    Log.d("shimi", "in create else addresses.size() = "+addresses.size());
-                    for (Address address : addresses) {
-                        if (address != null) {
-                            //Log.d("shimi", " Distance = "+address.getDistance()+" Duration = "+address.getDuration()+" latLong ="+address.latLong);
-                        }
-                    }
-                }
-            }
-        });
-
-    }
-
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, Toolbar toolbar) {
-
-
 
         mAdapter = new AddressesSearchAdapter(this, mTwoPane);//DummyContent.ITEMS
         mAdapter.setHasStableIds(true);

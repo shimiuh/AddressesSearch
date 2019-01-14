@@ -8,6 +8,7 @@ import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.app.Constants;
 import android.under_dash.addresses.search.app.DistanceApiClient;
 import android.under_dash.addresses.search.app.RestUtil;
+import android.under_dash.addresses.search.app.SharedPrefManager;
 import android.under_dash.addresses.search.models.Address;
 import android.under_dash.addresses.search.models.AddressMap;
 import android.under_dash.addresses.search.models.AddressName;
@@ -42,8 +43,6 @@ public class GoogleMapsMatrixApiService extends AsyncTask<String, String, String
 
 
     private static final String TAG = GoogleMapsMatrixApiService.class.getSimpleName();
-    private static final String YOUR_API_KEY = "AIzaSyAOZZ2Xul6PmPxBUHxTZG7UurJOch_IDQ4";
-
     private int mCount = 0;
     private int mTotal = 0;
     private final Runnable mOnDone;
@@ -130,14 +129,6 @@ public class GoogleMapsMatrixApiService extends AsyncTask<String, String, String
 
     private void getDistanceInfoAndAddInDb(List<Address> startPointList, List<Address> destinationList) {
         Log.d(TAG,"in getDistanceInfoAndAddInDb startPointList.size = "+startPointList.size()+" destinationList.size = "+destinationList.size());
-
-//        if(Looper.myLooper() == Looper.getMainLooper()){
-//            App.getBackgroundHandler().post(() -> {
-//                getDistanceInfoAndAddInDb(startPointList, destinationList);
-//            });
-//            return;
-//        }
-
         int targetSize = 10;
         List<List<Address>> startPointListOfList = new ArrayList<>(ListUtils.partition(startPointList, targetSize));
         List<List<Address>> destinationListOfList = new ArrayList<>(ListUtils.partition(destinationList, targetSize));
@@ -211,7 +202,7 @@ public class GoogleMapsMatrixApiService extends AsyncTask<String, String, String
         mapQuery.put("origins", startPoint);
         mapQuery.put("destinations", destination );//+ "|" + cities[1] + "|" + cities[2]
         mapQuery.put("mode", "walking");
-        mapQuery.put("key", YOUR_API_KEY);
+        mapQuery.put("key", SharedPrefManager.get().getGoogleApiKey());
 //        mapQuery.put("destinations[1]", cities[1]);
 //        mapQuery.put("destinations[2]", cities[2]);
         DistanceApiClient client = RestUtil.getInstance().getRetrofit().create(DistanceApiClient.class);
@@ -236,45 +227,22 @@ public class GoogleMapsMatrixApiService extends AsyncTask<String, String, String
             }
 
             private void addRespondToDb(DistanceResponse body) {
-
-//                if(Looper.myLooper() == Looper.getMainLooper()){
-//                    App.getBackgroundHandler().post(() -> {
-//                        addRespondToDb(body);
-//                    });
-//                    return;
-//                }
-
-                //String originLatLong = "";
-                //String destinationLatLong = "";
-
-
-                //List<String> originAddressesList = body.getOriginAddresses();
-                //List<String> destinationAddressesList = body.getDestinationAddresses();
                 List<Row> rows = body.getRows();
                 Log.d(TAG, "addRespondToDb: rows = "+rows.size()+" "+body.getDestinationAddresses().size()+" "+body.getOriginAddresses().size());
-               // Box<Address> addressBox = App.getBox(Address.class);
                 for (int i = 0; i < rows.size() ; i++){
-                    //String originAddressString = originAddressesList.get(i);
-                    //originLatLong = Utils.getLatLongFromLocation(originAddressString);
                     Address originAddress = startPointList.get(i); //addressBox.query().equal(Address_.latLong, originLatLong).build().findUnique();
                     List<Element> elements = rows.get(i).getElements();
                     Log.d(TAG, "addRespondToDb: elements = "+elements.size());
                     for (int y = 0; y < elements.size(); y++) {
-                        //String destinationAddressString = destinationAddressesList.get(y);
-                        //destinationLatLong = Utils.getLatLongFromLocation(destinationAddressString);
                         Element element = elements.get(y);
                         //element.getStatus() TODO: ONLY ADD IF STATUS OK
-
-
                         Address destinationAddress = destinationList.get(y); //addressBox.query().equal(Address_.latLong, destinationLatLong).build().findUnique();
-
                         if(destinationAddress != null){
                             int       distance = element.getDistance().getValue();
                             int       duration = element.getDuration().getValue();
                             String    distanceText = element.getDuration().getText();
                             String    durationText = element.getDistance().getText();
                             AddressMap.add(distance, duration, distanceText, durationText, originAddress,  destinationAddress);
-
                             Log.d(TAG, "getStartLatLong = "+destinationAddress+" Distance = "+element.getDuration().getValue()+
                                     " Duration = "+element.getDistance().getValue()+" (address != null) = "+(destinationAddress != null));
                         }
@@ -284,7 +252,6 @@ public class GoogleMapsMatrixApiService extends AsyncTask<String, String, String
                 if(onDone != null) {
                     onDone.run();
                 }
-
             }
         });
     }

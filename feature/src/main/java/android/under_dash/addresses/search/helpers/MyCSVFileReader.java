@@ -22,7 +22,7 @@ public class MyCSVFileReader {
                 .withChosenListener(new ChooserDialog.Result() {
                     @Override
                     public void onChoosePath(String path, File pathFile) {
-                        Log.d("shimi", "selected file " + pathFile);
+                        Log.d("shimi", "selected file " + pathFile+" path = -"+path+"-");
                         if(onChoosePath != null) {
                             onChoosePath.onChoose(pathFile);
                         }
