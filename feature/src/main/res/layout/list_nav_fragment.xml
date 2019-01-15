@@ -36,7 +36,7 @@
 
 
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshAddressList"
         android:layout_marginTop="80dp"
         android:layout_marginBottom="315dp"
@@ -46,7 +46,7 @@
         android:layout_marginRight="8dp"
         android:elevation="5dp">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/addresses_list"
             android:name="android.under_dash.addresses.search.AddressListFragment"
             android:layout_width="match_parent"
@@ -54,11 +54,11 @@
             app:layout_constrainedWidth="true"
             android:outlineSpotShadowColor="@color/common_google_signin_btn_text_light"
             android:outlineAmbientShadowColor="@color/common_google_signin_btn_text_light"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layoutAnimation="@anim/layout_animation_fall_down"
             tools:context="android.under_dash.addresses.search.view.activitys.AddressSearchActivity"
             tools:listitem="@layout/addresses_list_item" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
     <FrameLayout
@@ -69,7 +69,7 @@
         android:background="@color/md_grey_200"
         android:elevation="2dp">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tag_search_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
         android:layout_marginBottom="55dp"
         android:elevation="2dp">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tag_result_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

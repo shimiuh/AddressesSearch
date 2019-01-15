@@ -10,18 +10,17 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintSet;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.under_dash.addresses.search.app.Constants;
-import android.under_dash.addresses.search.app.SharedPrefManager;
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
+
 import android.under_dash.addresses.search.helpers.GoogleMapsMatrixApiService;
 import android.under_dash.addresses.search.helpers.SearchManager;
 import android.under_dash.addresses.search.helpers.Work;
@@ -34,7 +33,6 @@ import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.helpers.ImportCVSToSQLiteDB;
 import android.under_dash.addresses.search.helpers.MyCSVFileReader;
-import android.under_dash.addresses.search.helpers.Utils;
 import android.under_dash.addresses.search.library.Activity_;
 import android.under_dash.addresses.search.models.Address;
 import android.under_dash.addresses.search.view.adapters.AddressesSearchAdapter;
@@ -59,7 +57,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.objectbox.Box;
-import io.objectbox.relation.ToMany;
 
 /**
  * An activity representing a list of Addresses. This activity

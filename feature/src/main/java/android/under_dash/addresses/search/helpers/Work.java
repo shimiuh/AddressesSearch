@@ -1,6 +1,6 @@
 package android.under_dash.addresses.search.helpers;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.under_dash.addresses.search.app.App;
 
 

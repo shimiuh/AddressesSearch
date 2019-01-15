@@ -1,6 +1,6 @@
 package android.under_dash.addresses.search.models;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.under_dash.addresses.search.app.App;
 import android.util.Log;
 
@@ -10,7 +10,6 @@ import io.objectbox.Box;
 import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
-import io.objectbox.annotation.Index;
 import io.objectbox.relation.ToOne;
 
 @Entity
