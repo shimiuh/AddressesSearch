@@ -1,16 +1,21 @@
 package android.under_dash.addresses.search.view.activitys;
 
 import android.Manifest;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.databinding.DataBindingUtil;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.databinding.ViewDataBinding;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintSet;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -20,26 +25,23 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.under_dash.addresses.search.app.Constants;
-import android.under_dash.addresses.search.app.SharedPrefManager;
 import android.under_dash.addresses.search.helpers.GoogleMapsMatrixApiService;
 import android.under_dash.addresses.search.helpers.SearchManager;
 import android.under_dash.addresses.search.helpers.Work;
 import android.under_dash.addresses.search.models.AddressMap;
 import android.under_dash.addresses.search.models.AddressName;
-import android.under_dash.addresses.search.models.AddressName_;
 import android.under_dash.addresses.search.models.SearchAddress;
 import android.under_dash.addresses.search.old.AddressDetailActivity;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.helpers.ImportCVSToSQLiteDB;
 import android.under_dash.addresses.search.helpers.MyCSVFileReader;
-import android.under_dash.addresses.search.helpers.Utils;
 import android.under_dash.addresses.search.library.Activity_;
 import android.under_dash.addresses.search.models.Address;
 import android.under_dash.addresses.search.view.adapters.AddressesSearchAdapter;
 import android.under_dash.addresses.search.view.adapters.multiChoice.MultiChoiceToolbar;
 import android.under_dash.addresses.search.view.fragments.AddressResultFragment;
+import android.under_dash.addresses.search.viewmodel.AddressViewModel;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -59,7 +61,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.objectbox.Box;
-import io.objectbox.relation.ToMany;
 
 /**
  * An activity representing a list of Addresses. This activity
@@ -69,7 +70,7 @@ import io.objectbox.relation.ToMany;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class AddressSearchActivity extends Activity_ {
+public class AddressSearchActivity extends Activity_ implements Observer<List<Address>> {
 
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {
@@ -89,12 +90,19 @@ public class AddressSearchActivity extends Activity_ {
     private LayoutAnimationController mItemAnimation;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+    private ViewDataBinding mDataBinder;
+    private AddressViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //App.getBox(AddressName.class).removeAll();
         //Log.i("shimi", "onCreate: -"+SharedPrefManager.get().getGoogleApiKey()+"-");
+        initBinding();
+        if(true){
+            return;
+        }
+
         initAddressNameList();
         setContentView(R.layout.activity_address_list);
         requestPermissions();
@@ -188,6 +196,7 @@ public class AddressSearchActivity extends Activity_ {
         mTwoPane = false;
         mRecyclerView = findViewById(R.id.address_list);
         mSwipeLayout = findViewById(R.id.swipeRefreshAddressList);
+       // mDataBinder.
         mSwipeLayout.setRefreshing(false);
         // Adding Listener
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -203,6 +212,15 @@ public class AddressSearchActivity extends Activity_ {
         mItemAnimation = AnimationUtils.loadLayoutAnimation(this, resId);
 
         //initAddressData();
+
+    }
+
+    private void initBinding() {
+        mDataBinder = DataBindingUtil.setContentView(this, R.layout.activity_address_list);
+        mViewModel = ViewModelProviders.of(this).get(AddressViewModel.class);
+
+        //mDataBinder.setShareInfoViewModel(mViewModel);
+        mViewModel.getAddresses().observe(this,this);
 
     }
 
@@ -323,8 +341,9 @@ public class AddressSearchActivity extends Activity_ {
                 mRecyclerView.setLayoutAnimation(mItemAnimation);
                 mAdapter.setData(searchAddress);//searchAddressName.addresses
                 mRecyclerView.scheduleLayoutAnimation();
-                mSwipeLayout.setRefreshing(false);
+
             }
+            mSwipeLayout.setRefreshing(false);
         },500);
 
     }
@@ -408,5 +427,10 @@ public class AddressSearchActivity extends Activity_ {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onChanged(@Nullable List<Address> addresses) {
+
     }
 }
