@@ -185,7 +185,6 @@ public class AddressSearchActivity extends Activity_ {
         mTwoPane = false;
         mRecyclerView = findViewById(R.id.address_list);
         mSwipeLayout = findViewById(R.id.swipeRefreshAddressList);
-        mSwipeLayout.setRefreshing(false);
         // Adding Listener
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -320,8 +319,8 @@ public class AddressSearchActivity extends Activity_ {
                 mRecyclerView.setLayoutAnimation(mItemAnimation);
                 mAdapter.setData(searchAddress);//searchAddressName.addresses
                 mRecyclerView.scheduleLayoutAnimation();
-                mSwipeLayout.setRefreshing(false);
             }
+            mSwipeLayout.setRefreshing(false);
         },500);
 
     }
