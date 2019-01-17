@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.under_dash.addresses.search.R;
-import android.under_dash.addresses.search.helpers.Utils;
+import android.under_dash.addresses.search.utils.Utils;
 import android.under_dash.addresses.search.models.Address;
 import android.under_dash.addresses.search.models.SearchAddress;
 import android.under_dash.addresses.search.view.adapters.multiChoice.MultiChoiceAdapter;

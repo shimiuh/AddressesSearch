@@ -13,7 +13,6 @@ import android.text.method.LinkMovementMethod;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.app.Constants;
-import android.under_dash.addresses.search.helpers.UiUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;

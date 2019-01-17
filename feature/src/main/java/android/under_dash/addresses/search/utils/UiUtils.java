@@ -1,4 +1,4 @@
-package android.under_dash.addresses.search.helpers;
+package android.under_dash.addresses.search.utils;
 
 import android.app.Activity;
 import android.content.Context;
