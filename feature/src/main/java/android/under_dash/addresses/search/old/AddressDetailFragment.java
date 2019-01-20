@@ -1,7 +1,6 @@
 package android.under_dash.addresses.search.old;
 
 import android.app.Activity;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.library.ui.fragment.Fragment_;

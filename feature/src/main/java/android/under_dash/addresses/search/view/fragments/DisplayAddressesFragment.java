@@ -1,23 +1,20 @@
 package android.under_dash.addresses.search.view.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.dummy.DummyContent;
-import android.under_dash.addresses.search.helpers.SearchManager;
 import android.under_dash.addresses.search.library.ui.fragment.Fragment_;
 import android.under_dash.addresses.search.models.Address;
-import android.under_dash.addresses.search.models.AddressMap;
 import android.under_dash.addresses.search.models.AddressName;
 import android.under_dash.addresses.search.old.AddressDetailActivity;
 import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
-import android.under_dash.addresses.search.view.adapters.AddressesResultAdapter;
 import android.under_dash.addresses.search.view.adapters.DisplayAddressesAdapter;
 import android.under_dash.addresses.search.view.adapters.multiChoice.MultiChoiceToolbar;
 import android.util.Log;
@@ -28,9 +25,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import io.objectbox.relation.ToMany;
 
 /**
  * A fragment representing a single Address detail screen.

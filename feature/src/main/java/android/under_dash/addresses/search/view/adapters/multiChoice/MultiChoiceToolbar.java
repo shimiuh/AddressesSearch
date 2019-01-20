@@ -1,10 +1,10 @@
 package android.under_dash.addresses.search.view.adapters.multiChoice;
 
 import android.content.res.TypedArray;
-import android.support.annotation.PluralsRes;
-import android.support.annotation.StringRes;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.under_dash.addresses.search.R;
 import android.util.TypedValue;
 import android.view.View;

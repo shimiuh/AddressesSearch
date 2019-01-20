@@ -1,30 +1,32 @@
 package android.under_dash.addresses.search.view.activitys;
 
 import android.Manifest;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.databinding.ViewDataBinding;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintSet;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.app.ActivityCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.Observer;
+
 import android.under_dash.addresses.search.helpers.GoogleMapsMatrixApiService;
 import android.under_dash.addresses.search.helpers.SearchManager;
 import android.under_dash.addresses.search.helpers.Work;
@@ -42,6 +44,7 @@ import android.under_dash.addresses.search.view.adapters.AddressesSearchAdapter;
 import android.under_dash.addresses.search.view.adapters.multiChoice.MultiChoiceToolbar;
 import android.under_dash.addresses.search.view.fragments.AddressResultFragment;
 import android.under_dash.addresses.search.viewmodel.AddressViewModel;
+//import android.under_dash.addresses.search.ActivityAddressListBinding;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -90,7 +93,7 @@ public class AddressSearchActivity extends Activity_ implements Observer<List<Ad
     private LayoutAnimationController mItemAnimation;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-    private ViewDataBinding mDataBinder;
+    private ViewDataBinding mDataBinder;//ActivityAddressListBinding ViewDataBinding
     private AddressViewModel mViewModel;
 
     @Override
@@ -126,45 +129,45 @@ public class AddressSearchActivity extends Activity_ implements Observer<List<Ad
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerToggle.syncState();
 
-        SpringFabMenu fab = (SpringFabMenu)findViewById(R.id.fab);
-        fab.setOnSpringFabMenuItemClickListener(new SpringFabMenu.OnSpringFabMenuItemClickListener() {
-            @Override
-            public void onSpringFabMenuItemClick(View view) {
-                int id = view.getId();
-
-                if(id == R.id.fab_clip){
-                    if(true){
-                        searchListes(App.getBox(AddressName.class).get(SearchManager.get().getSearchId()).addresses,
-                                App.getBox(AddressName.class).get(SearchManager.get().getResultId()).addresses);
-                        return;
-                    }
-                    addAddressFromClip();
-                    Toast.makeText(getApplicationContext(), " clicked!",Toast.LENGTH_SHORT).show();
-                }else if(id == R.id.fab_result_list){
-
-                    MyCSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
-                        AddressName resultAddressName = App.getBox(AddressName.class).get(SearchManager.get().getResultId());
-                        Log.d("shimi", "in fab fab_result_list resultAddressName = "+resultAddressName.name+" getResultId = "+SearchManager.get().getResultId());
-                        new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,resultAddressName, () -> {
-                            updateSearchListData();
-                        }).execute();
-                    });
-                }else if(id == R.id.fab_search_list){
-
-                    MyCSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
-                        AddressName searchAddressName = App.getBox(AddressName.class).get(SearchManager.get().getSearchId());
-                        Log.d("shimi", "in fab fab_search_list searchAddressName = "+searchAddressName.name+" getSearchId = "+SearchManager.get().getSearchId());
-                        new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,searchAddressName, () -> {
-                            updateSearchListData();
-                        }).execute();
-                    });
-                }else if(id == R.id.fab_swap){
-                    Log.d("shimi", "in fab fab_swap");
-                    SearchManager.get().swapLists();
-                    updateSearchListData();
-                }
-            }
-        });
+//        SpringFabMenu fab = (SpringFabMenu)findViewById(R.id.fab);
+//        fab.setOnSpringFabMenuItemClickListener(new SpringFabMenu.OnSpringFabMenuItemClickListener() {
+//            @Override
+//            public void onSpringFabMenuItemClick(View view) {
+//                int id = view.getId();
+//
+//                if(id == R.id.fab_clip){
+//                    if(true){
+//                        searchListes(App.getBox(AddressName.class).get(SearchManager.get().getSearchId()).addresses,
+//                                App.getBox(AddressName.class).get(SearchManager.get().getResultId()).addresses);
+//                        return;
+//                    }
+//                    addAddressFromClip();
+//                    Toast.makeText(getApplicationContext(), " clicked!",Toast.LENGTH_SHORT).show();
+//                }else if(id == R.id.fab_result_list){
+//
+//                    MyCSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
+//                        AddressName resultAddressName = App.getBox(AddressName.class).get(SearchManager.get().getResultId());
+//                        Log.d("shimi", "in fab fab_result_list resultAddressName = "+resultAddressName.name+" getResultId = "+SearchManager.get().getResultId());
+//                        new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,resultAddressName, () -> {
+//                            updateSearchListData();
+//                        }).execute();
+//                    });
+//                }else if(id == R.id.fab_search_list){
+//
+//                    MyCSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
+//                        AddressName searchAddressName = App.getBox(AddressName.class).get(SearchManager.get().getSearchId());
+//                        Log.d("shimi", "in fab fab_search_list searchAddressName = "+searchAddressName.name+" getSearchId = "+SearchManager.get().getSearchId());
+//                        new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,searchAddressName, () -> {
+//                            updateSearchListData();
+//                        }).execute();
+//                    });
+//                }else if(id == R.id.fab_swap){
+//                    Log.d("shimi", "in fab fab_swap");
+//                    SearchManager.get().swapLists();
+//                    updateSearchListData();
+//                }
+//            }
+//        });
 
         View detailContainer = findViewById(R.id.address_detail_container);
         View parent = findViewById(R.id.content_frame);
@@ -217,10 +220,10 @@ public class AddressSearchActivity extends Activity_ implements Observer<List<Ad
 
     private void initBinding() {
         mDataBinder = DataBindingUtil.setContentView(this, R.layout.activity_address_list);
-        mViewModel = ViewModelProviders.of(this).get(AddressViewModel.class);
+         mViewModel = ViewModelProviders.of(this).get(AddressViewModel.class);
 
         //mDataBinder.setShareInfoViewModel(mViewModel);
-        mViewModel.getAddresses().observe(this,this);
+         mViewModel.getAddresses().observe(this,this);
 
     }
 
@@ -341,7 +344,6 @@ public class AddressSearchActivity extends Activity_ implements Observer<List<Ad
                 mRecyclerView.setLayoutAnimation(mItemAnimation);
                 mAdapter.setData(searchAddress);//searchAddressName.addresses
                 mRecyclerView.scheduleLayoutAnimation();
-
             }
             mSwipeLayout.setRefreshing(false);
         },500);
@@ -430,7 +432,7 @@ public class AddressSearchActivity extends Activity_ implements Observer<List<Ad
     }
 
     @Override
-    public void onChanged(@Nullable List<Address> addresses) {
+    public void onChanged(List<Address> addresses) {
 
     }
 }

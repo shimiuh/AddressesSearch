@@ -6,15 +6,13 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.res.Resources;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import android.text.method.LinkMovementMethod;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.app.Constants;
-import android.under_dash.addresses.search.helpers.UiUtils;
-import android.under_dash.addresses.search.helpers.Utils;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -76,7 +74,7 @@ public class DialogUtil extends AlertDialog.Builder {
     }
 
     @Override
-    public android.support.v7.app.AlertDialog create() {
+    public androidx.appcompat.app.AlertDialog create() {
 
         final AlertDialog mDialog =  super.create();
         mDialog.setOnShowListener(dialog -> {

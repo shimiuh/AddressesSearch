@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:5513185966850713947",
-      "lastPropertyId": "5:8304827675097755335",
+      "lastPropertyId": "6:1902144152885691752",
       "name": "Address",
       "properties": [
         {
@@ -23,6 +23,10 @@
         {
           "id": "4:228716137710064207",
           "name": "website"
+        },
+        {
+          "id": "6:1902144152885691752",
+          "name": "elevation"
         }
       ],
       "relations": [

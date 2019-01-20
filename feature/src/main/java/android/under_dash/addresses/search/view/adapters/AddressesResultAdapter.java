@@ -1,16 +1,14 @@
 package android.under_dash.addresses.search.view.adapters;
 
 import android.app.Activity;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import android.under_dash.addresses.search.R;
-import android.under_dash.addresses.search.helpers.Utils;
-import android.under_dash.addresses.search.models.Address;
+import android.under_dash.addresses.search.utils.Utils;
 import android.under_dash.addresses.search.models.AddressMap;
 import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
 import android.under_dash.addresses.search.view.adapters.multiChoice.MultiChoiceAdapter;
-import android.under_dash.addresses.search.view.fragments.AddressResultFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

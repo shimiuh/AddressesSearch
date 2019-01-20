@@ -2,12 +2,11 @@ package android.under_dash.addresses.search.view.adapters.multiChoice;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import android.support.annotation.PluralsRes;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.under_dash.addresses.search.R;
+import androidx.annotation.PluralsRes;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;

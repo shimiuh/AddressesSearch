@@ -1,20 +1,16 @@
 package android.under_dash.addresses.search.view.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.under_dash.addresses.search.R;
-import android.under_dash.addresses.search.helpers.UiUtils;
-import android.under_dash.addresses.search.helpers.Utils;
+import android.under_dash.addresses.search.utils.UiUtils;
+import android.under_dash.addresses.search.utils.Utils;
 import android.under_dash.addresses.search.models.AddressName;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.FrameLayout;
-import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import com.google.android.flexbox.FlexboxLayoutManager;
-import com.obsez.android.lib.filechooser.internals.UiUtil;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,11 +1,11 @@
 package android.under_dash.addresses.search.view.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
@@ -13,15 +13,12 @@ import android.under_dash.addresses.search.app.Constants;
 import android.under_dash.addresses.search.helpers.ImportCVSToSQLiteDB;
 import android.under_dash.addresses.search.helpers.MyCSVFileReader;
 import android.under_dash.addresses.search.helpers.SearchManager;
-import android.under_dash.addresses.search.helpers.Utils;
+import android.under_dash.addresses.search.utils.Utils;
 import android.under_dash.addresses.search.helpers.Work;
 import android.under_dash.addresses.search.library.ui.fragment.Fragment_;
 import android.under_dash.addresses.search.models.Address;
-import android.under_dash.addresses.search.models.AddressMap;
-import android.under_dash.addresses.search.models.AddressMap_;
 import android.under_dash.addresses.search.models.AddressName;
 import android.under_dash.addresses.search.models.AddressName_;
-import android.under_dash.addresses.search.models.Address_;
 import android.under_dash.addresses.search.utils.DialogUtil;
 import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
 import android.under_dash.addresses.search.view.adapters.AddressesListAdapter;
@@ -36,10 +33,8 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import io.objectbox.Box;

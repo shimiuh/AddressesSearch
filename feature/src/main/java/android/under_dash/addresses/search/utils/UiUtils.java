@@ -1,4 +1,4 @@
-package android.under_dash.addresses.search.helpers;
+package android.under_dash.addresses.search.utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,9 +8,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.under_dash.addresses.search.app.App;
 import android.view.LayoutInflater;
 import android.view.View;

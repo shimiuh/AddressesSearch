@@ -24,6 +24,7 @@ public class Address {
     public String name;
     public String address;
     public String website;
+    public double elevation;
     public ToMany<AddressMap> addressMaps;
     public ToMany<AddressName> addressNames;
 
