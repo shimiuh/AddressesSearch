@@ -1,6 +1,6 @@
 package android.under_dash.addresses.search.view.adapters;
 
-import android.content.Context;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.utils.UiUtils;
@@ -19,13 +19,11 @@ import java.util.List;
 public  class TagAdapter  extends RecyclerView.Adapter<TagAdapter.ViewHolder>{
 
 
-    private final Context mContext;
     private int mSelectedType;
     private final AddressesListAdapter.OnSelectionChange mOnSelectionChange;
     private List<AddressName> mValues = new ArrayList<>();
 
-    public TagAdapter(Context context,int selectedType, AddressesListAdapter.OnSelectionChange onSelectionChange) {
-        mContext = context;
+    public TagAdapter(int selectedType, AddressesListAdapter.OnSelectionChange onSelectionChange) {
         mSelectedType = selectedType;
         mOnSelectionChange = onSelectionChange;
     }
@@ -59,14 +57,15 @@ public  class TagAdapter  extends RecyclerView.Adapter<TagAdapter.ViewHolder>{
 
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tag_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         if(position == 0){
             ((FlexboxLayoutManager.LayoutParams) holder.itemView.getLayoutParams()).setMarginStart(UiUtils.pixToDp(115));
         }
@@ -85,11 +84,11 @@ public  class TagAdapter  extends RecyclerView.Adapter<TagAdapter.ViewHolder>{
         return mValues.size();
     }
 
-    private void setItemSelected(int selectedPosition, boolean isSelected) {
+    private void setItemSelected(int selectedPosition) {
         if(mSelectedType == AddressesListAdapter.SELECTED_TYPE_SEARCH){
-            mValues.get(selectedPosition).setSearchSelected(isSelected);
+            mValues.get(selectedPosition).setSearchSelected(false);
         }else{
-            mValues.get(selectedPosition).setResultSelected(isSelected);
+            mValues.get(selectedPosition).setResultSelected(false);
         }
         if(mOnSelectionChange != null){
             mOnSelectionChange.onSelectionUpdate();
@@ -100,15 +99,13 @@ public  class TagAdapter  extends RecyclerView.Adapter<TagAdapter.ViewHolder>{
     class ViewHolder extends RecyclerView.ViewHolder {
         final TextView mName;
         private final View mRemove;
-        private final boolean mIsSelected = false;
-
         ViewHolder(View view) {
             super(view);
             mName = view.findViewById(R.id.tag);
             mRemove = view.findViewById(R.id.remove);
             mRemove.setOnClickListener(v -> {
                 int pos = getAdapterPosition();
-                setItemSelected(pos, false);
+                setItemSelected(pos);
                 remove(pos);
             });
         }

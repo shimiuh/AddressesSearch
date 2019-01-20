@@ -1,13 +1,9 @@
 package android.under_dash.addresses.search.view.adapters;
 
-import android.app.Activity;
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.utils.Utils;
 import android.under_dash.addresses.search.models.AddressMap;
-import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
 import android.under_dash.addresses.search.view.adapters.multiChoice.MultiChoiceAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,20 +18,13 @@ import java.util.List;
 public  class AddressesResultAdapter extends MultiChoiceAdapter<AddressesResultAdapter.ViewHolder> {
 
 
-    private final Activity mParentActivity;
     private List<AddressMap> mValues = new ArrayList<>();
-    private final boolean mTwoPane;
 
-    public AddressesResultAdapter(Activity parent, boolean twoPane) {
-        mParentActivity = parent;
-        mTwoPane = twoPane;
+    public AddressesResultAdapter() {
     }
-    public AddressesResultAdapter(AddressSearchActivity parent, List<AddressMap> items, boolean twoPane) {
-        mParentActivity = parent;
-        mTwoPane = twoPane;
+    public AddressesResultAdapter(List<AddressMap> items) {
         setData(items);
     }
-
     public void setData(List<AddressMap> items) {
         int currentSize = mValues.size()+1;
         //remove the current items

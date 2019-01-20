@@ -26,12 +26,6 @@ import android.view.animation.LayoutAnimationController;
 
 import java.util.ArrayList;
 
-/**
- * A fragment representing a single Address detail screen.
- * This fragment is either contained in a {@link AddressSearchActivity}
- * in two-pane mode (on tablets) or a {@link AddressDetailActivity}
- * on handsets.
- */
 public class DisplayAddressesFragment extends Fragment_ {//implements AppBarLayout.OnOffsetChangedListener
     /**
      * The fragment argument representing the item ID that this fragment
@@ -43,12 +37,6 @@ public class DisplayAddressesFragment extends Fragment_ {//implements AppBarLayo
     private SwipeRefreshLayout mSwipeLayout;
     private RecyclerView mRecyclerView;
     private LayoutAnimationController mItemAnimation;
-
-    /**
-     * The dummy content this fragment is presenting.
-     */
-    private DummyContent.DummyItem mItem;
-    private SwipeRefreshLayout mSwipeRefresh;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -63,18 +51,17 @@ public class DisplayAddressesFragment extends Fragment_ {//implements AppBarLayo
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.address_result_fragment, container, false);
-
-
-        return rootView;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.address_result_fragment, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initUi(view);
+    }
 
+    private void initUi(View view) {
         mRecyclerView = view.findViewById(R.id.address_list);
         mSwipeLayout = view.findViewById(R.id.swipeRefreshResultList);
         // Adding Listener
@@ -94,7 +81,7 @@ public class DisplayAddressesFragment extends Fragment_ {//implements AppBarLayo
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, Toolbar toolbar) {
 
-        mAdapter = new DisplayAddressesAdapter(getActivity());//DummyContent.ITEMS
+        mAdapter = new DisplayAddressesAdapter();
         mAdapter.setHasStableIds(true);
         MultiChoiceToolbar multiChoiceToolbar = new MultiChoiceToolbar.Builder((AppCompatActivity)getActivity(), toolbar).setDefaultIcon(R.drawable.ic_delete_24dp, new View.OnClickListener() {
             @Override
@@ -103,34 +90,28 @@ public class DisplayAddressesFragment extends Fragment_ {//implements AppBarLayo
             }
         }).build();
         mAdapter.setMultiChoiceToolbar(multiChoiceToolbar);
-        //adapter.setSingleClickMode(true);
         recyclerView.setAdapter(mAdapter);
         updateListData();
     }
 
     private void updateListData() {
         mAdapter.setData(new ArrayList<Address>());
-        App.getUiHandler().postDelayed(new Runnable() {
-            @Override public void run() {
-                Long id = null;
-                Bundle bundle = getArguments();
-                if(bundle != null && bundle.containsKey(ARG_ITEM_ID)) {
-                    id = bundle.getLong(ARG_ITEM_ID);
-                    AddressName searchAddress = App.getBox(AddressName.class).get(id);
-                    mItemAnimation.getAnimation().reset();
-                    mRecyclerView.setLayoutAnimation(mItemAnimation);
+        App.getUiHandler().postDelayed(() -> {
+            Long id;
+            Bundle bundle = getArguments();
+            if(bundle != null && bundle.containsKey(ARG_ITEM_ID)) {
+                id = bundle.getLong(ARG_ITEM_ID);
+                AddressName searchAddress = App.getBox(AddressName.class).get(id);
+                mItemAnimation.getAnimation().reset();
+                mRecyclerView.setLayoutAnimation(mItemAnimation);
 
-                    mAdapter.setData(searchAddress.addresses);
-                    mRecyclerView.scheduleLayoutAnimation();
-                    mSwipeLayout.setRefreshing(false);
-                    //mRecyclerView.invalidate();
-                    //mRecyclerView.requestLayout();
-                }else{
-                    Log.i("shimi", "run: bundle == null");
-                }
+                mAdapter.setData(searchAddress.addresses);
+                mRecyclerView.scheduleLayoutAnimation();
+                mSwipeLayout.setRefreshing(false);
+            }else{
+                Log.i("shimi", "run: bundle == null");
             }
         }, 500); // Delay in millis
-
     }
 
 }

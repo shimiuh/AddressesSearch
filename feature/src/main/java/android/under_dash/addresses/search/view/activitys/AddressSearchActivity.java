@@ -21,12 +21,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
+import android.under_dash.addresses.search.app.Constants;
 import android.under_dash.addresses.search.helpers.GoogleMapsMatrixApiService;
 import android.under_dash.addresses.search.helpers.SearchManager;
 import android.under_dash.addresses.search.helpers.Work;
 import android.under_dash.addresses.search.models.AddressMap;
 import android.under_dash.addresses.search.models.AddressName;
-import android.under_dash.addresses.search.models.AddressName_;
 import android.under_dash.addresses.search.models.SearchAddress;
 import android.under_dash.addresses.search.old.AddressDetailActivity;
 import android.under_dash.addresses.search.R;
@@ -58,22 +58,9 @@ import java.util.List;
 
 import io.objectbox.Box;
 
-/**
- * An activity representing a list of Addresses. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link AddressDetailActivity} representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
- */
+
 public class AddressSearchActivity extends Activity_ {
 
-    int PERMISSION_ALL = 1;
-    String[] PERMISSIONS = {
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-    };
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -92,7 +79,11 @@ public class AddressSearchActivity extends Activity_ {
         super.onCreate(savedInstanceState);
         //App.getBox(AddressName.class).removeAll();
         //Log.i("shimi", "onCreate: -"+SharedPrefManager.get().getGoogleApiKey()+"-");
-        initAddressNameList();
+       // tempInitAddressNameList();
+        initUi();
+    }
+
+    private void initUi() {
         setContentView(R.layout.activity_address_list);
         requestPermissions();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -114,7 +105,6 @@ public class AddressSearchActivity extends Activity_ {
         };
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerToggle.syncState();
-
         SpringFabMenu fab = (SpringFabMenu)findViewById(R.id.fab);
         fab.setOnSpringFabMenuItemClickListener(new SpringFabMenu.OnSpringFabMenuItemClickListener() {
             @Override
@@ -123,7 +113,7 @@ public class AddressSearchActivity extends Activity_ {
 
                 if(id == R.id.fab_clip){
                     if(true){
-                        searchListes(App.getBox(AddressName.class).get(SearchManager.get().getSearchId()).addresses,
+                        searchLists(App.getBox(AddressName.class).get(SearchManager.get().getSearchId()).addresses,
                                 App.getBox(AddressName.class).get(SearchManager.get().getResultId()).addresses);
                         return;
                     }
@@ -156,23 +146,13 @@ public class AddressSearchActivity extends Activity_ {
         });
 
         View detailContainer = findViewById(R.id.address_detail_container);
-        View parent = findViewById(R.id.content_frame);
 
-
-        if (findViewById(R.id.address_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-
-        }
         ConstraintSet set = new ConstraintSet();
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape
             detailContainer.setVisibility(View.VISIBLE);
             set.constrainPercentWidth(R.id.address_list,0.5f);
-            //set.constrainPercentWidth(R.id.address_detail_container,0.5f);
             mTwoPane = true;
         } else {
             // In portrait
@@ -180,7 +160,6 @@ public class AddressSearchActivity extends Activity_ {
             set.constrainPercentWidth(R.id.address_list,1);
             mTwoPane = false;
         }
-        //set.applyTo((ConstraintLayout) parent);
 
         mTwoPane = false;
         mRecyclerView = findViewById(R.id.address_list);
@@ -197,12 +176,10 @@ public class AddressSearchActivity extends Activity_ {
 
         int resId = R.anim.layout_animation_fall_down;
         mItemAnimation = AnimationUtils.loadLayoutAnimation(this, resId);
-
         //initAddressData();
-
     }
 
-    public void searchListes(List<Address> startPointAddresses, List<Address> destinationAddresses) {
+    public void searchLists(List<Address> startPointAddresses, List<Address> destinationAddresses) {
         App.getBox(AddressName.class).getAll().forEach(addressName -> {
             Log.i("shimi", "in AddressName.class).getAll().forEach : name "+addressName.name+"  id = "+addressName.id);
         });
@@ -213,10 +190,7 @@ public class AddressSearchActivity extends Activity_ {
         }).execute();
     }
 
-    private void initAddressNameList() {
-        if(true){
-            return;
-        }
+    private void tempInitAddressNameList() {
         App.getBackgroundHandler().post(() -> {
             if(App.getBox(AddressName.class).getAll().size() == 0) {
                 SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("Stores in NY")));
@@ -234,7 +208,6 @@ public class AddressSearchActivity extends Activity_ {
     }
 
     private void addAddressFromClip() {
-
         if(Looper.myLooper() != Looper.getMainLooper()){
             App.getBackgroundHandler().post(this::addAddressFromClip);
             return;
@@ -247,9 +220,6 @@ public class AddressSearchActivity extends Activity_ {
             Box<Address> searchBox = getBox(Address.class);
             //searchBox.put(new Address("",address,"",latLong)); TODO: add addressName
         }
-
-
-
     }
 
     private void removeAddress(Address address) {
@@ -258,7 +228,6 @@ public class AddressSearchActivity extends Activity_ {
             App.getBackgroundHandler().post(() -> removeAddress(address));
             return;
         }
-
         Box<Address> searchBox = getBox(Address.class);
         searchBox.remove(address);
 
@@ -275,7 +244,6 @@ public class AddressSearchActivity extends Activity_ {
             }
         }).build();
         mAdapter.setMultiChoiceToolbar(multiChoiceToolbar);
-        //adapter.setSingleClickMode(true);
         recyclerView.setAdapter(mAdapter);
         updateSearchListData();
     }
@@ -294,7 +262,7 @@ public class AddressSearchActivity extends Activity_ {
                 List<AddressMap> listMap = new ArrayList<>();
                 List<AddressMap> searchAddressMaps = address.addressMaps;
                 if(searchAddressMaps.size() > 0){
-                    //TODO: check if you can query this list
+                    //TODO: figure a query and avoid Big O 2
                     searchAddressMaps.forEach(addressMap -> {
                         addressMap.originAddress.getTarget().addressNames.forEach(addressName -> {
                             Log.i("shimi", "run: addressName.id = " + addressName.id);
@@ -310,8 +278,8 @@ public class AddressSearchActivity extends Activity_ {
                     }
                 }
 
-            }); return true;
-
+            });
+            return true;
         }).onUiDelayed(object -> {
             if((boolean)object) {
                 Log.i("shimi", "in updateSearchListData:  searchAddress.size= " + searchAddress.size());
@@ -328,7 +296,7 @@ public class AddressSearchActivity extends Activity_ {
 
     public void requestPermissions(){
 
-        Dexter.withActivity(this).withPermissions(PERMISSIONS).withListener(new MultiplePermissionsListener() {
+        Dexter.withActivity(this).withPermissions(Constants.PERMISSIONS).withListener(new MultiplePermissionsListener() {
             @Override public void onPermissionsChecked(MultiplePermissionsReport report) {/* ... */}
             @Override public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {/* ... */}
         }).check();
@@ -361,12 +329,7 @@ public class AddressSearchActivity extends Activity_ {
             return null;
         }
         LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-//        Criteria criteria = new Criteria();
-//        String bestProvider = lm.getBestProvider(criteria, false);
-//        Location location = lm.getLastKnownLocation(bestProvider);
-        return location;
+        return lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     }
 
     @Override
@@ -374,7 +337,6 @@ public class AddressSearchActivity extends Activity_ {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(AddressResultFragment.TAG);
         if(fragment != null ){
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-            //getSupportFragmentManager().popBackStack();
             return;
         }
         super.onBackPressed();

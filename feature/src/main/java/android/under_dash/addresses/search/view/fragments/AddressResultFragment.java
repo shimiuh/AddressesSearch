@@ -3,9 +3,7 @@ package android.under_dash.addresses.search.view.fragments;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
@@ -32,12 +30,6 @@ import java.util.List;
 
 import io.objectbox.relation.ToMany;
 
-/**
- * A fragment representing a single Address detail screen.
- * This fragment is either contained in a {@link AddressSearchActivity}
- * in two-pane mode (on tablets) or a {@link AddressDetailActivity}
- * on handsets.
- */
 public class AddressResultFragment extends Fragment_ {//implements AppBarLayout.OnOffsetChangedListener
     /**
      * The fragment argument representing the item ID that this fragment
@@ -69,26 +61,17 @@ public class AddressResultFragment extends Fragment_ {//implements AppBarLayout.
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.address_result_fragment, container, false);
-
-
-        return rootView;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.address_result_fragment, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        initUi(view);
+    }
 
+    private void initUi(View view) {
         mRecyclerView = view.findViewById(R.id.address_list);
         mSwipeLayout = view.findViewById(R.id.swipeRefreshResultList);
         // Adding Listener
@@ -101,26 +84,13 @@ public class AddressResultFragment extends Fragment_ {//implements AppBarLayout.
         });
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         setupRecyclerView(mRecyclerView, toolbar);
-
         int resId = R.anim.layout_animation_fall_down;
         mItemAnimation = AnimationUtils.loadLayoutAnimation(getContext(), resId);
-
-
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        recyclerView.setLayoutManager(layoutManager);
-
-
-//        // Show the Up button in the action bar.
-//        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-//        if (actionBar != null) {
-//            actionBar.setDisplayHomeAsUpEnabled(true);
-//        }
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, Toolbar toolbar) {
 
-        mAdapter = new AddressesResultAdapter(getActivity(), false);//DummyContent.ITEMS
+        mAdapter = new AddressesResultAdapter();
         mAdapter.setHasStableIds(true);
         MultiChoiceToolbar multiChoiceToolbar = new MultiChoiceToolbar.Builder((AppCompatActivity)getActivity(), toolbar).setDefaultIcon(R.drawable.ic_delete_24dp, new View.OnClickListener() {
             @Override
@@ -129,82 +99,43 @@ public class AddressResultFragment extends Fragment_ {//implements AppBarLayout.
             }
         }).build();
         mAdapter.setMultiChoiceToolbar(multiChoiceToolbar);
-        //adapter.setSingleClickMode(true);
         recyclerView.setAdapter(mAdapter);
         updateListData();
     }
 
     private void updateListData() {
         mAdapter.setData(new ArrayList<AddressMap>());
-        App.getUiHandler().postDelayed(new Runnable() {
-            @Override public void run() {
-                Long id = null;
-                Bundle bundle = getArguments();
-                if(bundle != null && bundle.containsKey(ARG_ITEM_ID)) {
-                    id = bundle.getLong(ARG_ITEM_ID);
-                    Address searchAddress = App.getBox(Address.class).get(id);
-                    List<AddressMap> listMap = new ArrayList<>();
-
-//                    This will work but is more work
-//                    List<Address> list = Address.getAllResultSelected();
-//                    Long finalId = id;
-//                    list.forEach(address ->{
-//                        address.addressMaps.forEach(addressMap ->{
-//                            if(addressMap.originAddress.getTarget().id == finalId){
-//                                listMap.add(addressMap);
-//                            }
-//                        });
-//                    });
-
-                    ToMany<AddressMap> searchAddressMaps = searchAddress.addressMaps;
-                    Log.i("shimi", "run: in set DATA getResultId = "+SearchManager.get().getResultId());
-                    //TODO: check if you can query this list
-                    searchAddressMaps.forEach(addressMap -> {
-                        addressMap.originAddress.getTarget().addressNames.forEach(addressName -> {
-                            Log.i("shimi", "run: addressName.id = "+addressName.id);
-                            if(addressName.isResultSelected && !listMap.contains(addressMap)){
-                                listMap.add(addressMap);
-                            }
-                        });
-
+        App.getUiHandler().postDelayed(() -> {
+            Long id = null;
+            Bundle bundle = getArguments();
+            if(bundle != null && bundle.containsKey(ARG_ITEM_ID)) {
+                id = bundle.getLong(ARG_ITEM_ID);
+                Address searchAddress = App.getBox(Address.class).get(id);
+                List<AddressMap> listMap = new ArrayList<>();
+                ToMany<AddressMap> searchAddressMaps = searchAddress.addressMaps;
+                Log.i("shimi", "run: in set DATA getResultId = "+SearchManager.get().getResultId());
+                //TODO: check if you can query this list
+                searchAddressMaps.forEach(addressMap -> {
+                    addressMap.originAddress.getTarget().addressNames.forEach(addressName -> {
+                        Log.i("shimi", "run: addressName.id = "+addressName.id);
+                        if(addressName.isResultSelected && !listMap.contains(addressMap)){
+                            listMap.add(addressMap);
+                        }
                     });
-                    Log.i("shimi", "in set DATA listMap.size() = "+listMap.size());
-                    listMap.sort(AddressMap.Comparators.DURATION);
-                    mItemAnimation.getAnimation().reset();
-                    mRecyclerView.setLayoutAnimation(mItemAnimation);
 
-                    mAdapter.setData(listMap);
-                    mRecyclerView.scheduleLayoutAnimation();
-                    mSwipeLayout.setRefreshing(false);
-                    //mRecyclerView.invalidate();
-                    //mRecyclerView.requestLayout();
-                }else{
-                    Log.i("shimi", "run: bundle == null");
-                }
+                });
+                Log.i("shimi", "in set DATA listMap.size() = "+listMap.size());
+                listMap.sort(AddressMap.Comparators.DURATION);
+                mItemAnimation.getAnimation().reset();
+                mRecyclerView.setLayoutAnimation(mItemAnimation);
+
+                mAdapter.setData(listMap);
+                mRecyclerView.scheduleLayoutAnimation();
+                mSwipeLayout.setRefreshing(false);
+            }else{
+                Log.i("shimi", "run: bundle == null");
             }
         }, 500); // Delay in millis
 
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        //mAppBarLayout.addOnOffsetChangedListener(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        //mAppBarLayout.removeOnOffsetChangedListener(this);
-    }
-
-//    @Override
-//    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-//        //mSwipeRefresh.setEnabled(verticalOffset == 0);
-////        if (mAppBarLayout.getHeight() + verticalOffset < 2 * ViewCompat.getMinimumHeight(mAppBarLayout)) {
-////            mSwipeRefresh.setEnabled(false);
-////        } else {
-////            mSwipeRefresh.setEnabled(true);
-////        }
-//    }
 }

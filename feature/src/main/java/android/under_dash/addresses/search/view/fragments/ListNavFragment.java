@@ -1,5 +1,6 @@
 package android.under_dash.addresses.search.view.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,8 +54,8 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
     private CheckBox mSearchTagCheckBox;
     private CheckBox mResultTagCheckBox;
     private LoadingTextView mCostTextView;
-    List<Address> mSearchAddressesForFetch = new ArrayList<>();
-    List<Address> mResultAddressesForFetch = new ArrayList<>();
+    private List<Address> mSearchAddressesForFetch = new ArrayList<>();
+    private List<Address> mResultAddressesForFetch = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,11 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initUi(view);
+    }
+
+    private void initUi(View view) {
+
         int resId = R.anim.layout_animation_fall_down;
         mItemAnimation = AnimationUtils.loadLayoutAnimation(getContext(), resId);
         mCostTextView = view.findViewById(R.id.cost);
@@ -88,7 +94,10 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
 
         view.findViewById(R.id.start_compare).setOnClickListener(v -> {
             if(mSearchAddressesForFetch.size()> 0 && mResultAddressesForFetch.size() > 0) {
-                ((AddressSearchActivity) getActivity()).searchListes(mSearchAddressesForFetch, mResultAddressesForFetch);
+                Activity activity = getActivity();
+                if(activity instanceof AddressSearchActivity) {
+                    ((AddressSearchActivity) activity).searchLists(mSearchAddressesForFetch, mResultAddressesForFetch);
+                }
             }else {
                 int textId  = mResultAddressesForFetch.size() > 0 ? R.string.no_search_to_do :R.string.add_result_for_search;
                 Toast.makeText(getContext(),textId,Toast.LENGTH_SHORT).show();
@@ -129,6 +138,7 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
             updateData();
         });
 
+
     }
 
     private void addListDialog() {
@@ -164,9 +174,7 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
     private void importAddressesFromFile(AddressName addressName) {
         MyCSVFileReader.openDialogToReadCSV(getActivity(), pathFile -> {
             Log.d("shimi", "in fab fab_result_list resultAddressName = "+addressName.name+" getResultId = "+SearchManager.get().getResultId());
-            new ImportCVSToSQLiteDB(getActivity(),pathFile,addressName, () -> {
-                updateData();
-            }).execute();
+            new ImportCVSToSQLiteDB(getActivity(),pathFile,addressName, this::updateData).execute();
         });
     }
 
@@ -231,11 +239,10 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
 
     private void setTagLists(View view) {
 
-        mSearchTagAdapter = new TagAdapter(view.getContext(),AddressesListAdapter.SELECTED_TYPE_SEARCH,this);
+        mSearchTagAdapter = new TagAdapter(AddressesListAdapter.SELECTED_TYPE_SEARCH,this);
         mTagSearchRecycler.setAdapter(mSearchTagAdapter);
 
-
-        mResultTagAdapter = new TagAdapter(view.getContext(),AddressesListAdapter.SELECTED_TYPE_RESULT,this);
+        mResultTagAdapter = new TagAdapter(AddressesListAdapter.SELECTED_TYPE_RESULT,this);
         mTagResultRecycler.setAdapter(mResultTagAdapter);
 
         updateTagData(AddressesListAdapter.SELECTED_TYPE_SEARCH);
@@ -273,7 +280,7 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
 
     private void setupRecyclerView() {
 
-        mAdapter = new AddressesListAdapter(getContext(),AddressesListAdapter.SELECTED_TYPE_SEARCH,this);
+        mAdapter = new AddressesListAdapter(AddressesListAdapter.SELECTED_TYPE_SEARCH,this);
         mAdapter.setHasStableIds(true);
         mRecyclerView.setAdapter(mAdapter);
         updateSearchListData(AddressesListAdapter.SELECTED_TYPE_SEARCH);
@@ -310,7 +317,10 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
         arguments.putLong(AddressResultFragment.ARG_ITEM_ID, AddressName.id);
         DisplayAddressesFragment fragment = new DisplayAddressesFragment();
         fragment.setArguments(arguments);//.addToBackStack(AddressResultFragment.TAG)
-        ((AppCompatActivity)getActivity()).getSupportFragmentManager().beginTransaction().add(android.R.id.content, fragment,DisplayAddressesFragment.TAG).addToBackStack(DisplayAddressesFragment.TAG).commit();
+        Activity activity = getActivity();
+        if(activity instanceof AppCompatActivity) {
+            ((AppCompatActivity) activity).getSupportFragmentManager().beginTransaction().add(android.R.id.content, fragment, DisplayAddressesFragment.TAG).addToBackStack(DisplayAddressesFragment.TAG).commit();
+        }
 
     }
 }

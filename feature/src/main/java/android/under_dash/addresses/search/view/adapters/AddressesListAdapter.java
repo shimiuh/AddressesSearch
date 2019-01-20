@@ -1,6 +1,5 @@
 package android.under_dash.addresses.search.view.adapters;
 
-import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.utils.Utils;
@@ -22,7 +21,6 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
 
     public static final int SELECTED_TYPE_SEARCH = 0;
     public static final int SELECTED_TYPE_RESULT = 1;
-    private final Context mParentActivity;
     private final OnSelectionChange mOnSelectionChange;
     private int mSelectedType;
     private List<AddressName> mValues = new ArrayList<>();
@@ -33,8 +31,7 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
         void onShowList(AddressName addressName);
     }
 
-    public AddressesListAdapter(Context context, int selectedType, OnSelectionChange onSelectionChange) {
-        mParentActivity = context;
+    public AddressesListAdapter(int selectedType, OnSelectionChange onSelectionChange) {
         mSelectedType = selectedType;
         mOnSelectionChange = onSelectionChange;
         setSingleClickMode(true);
