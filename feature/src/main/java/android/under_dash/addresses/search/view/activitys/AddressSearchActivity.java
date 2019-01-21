@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
 import android.under_dash.addresses.search.app.Constants;
-import android.under_dash.addresses.search.helpers.GoogleMapsMatrixApiService;
+import android.under_dash.addresses.search.helpers.MapsMatrixApiService;
 import android.under_dash.addresses.search.helpers.SearchManager;
 import android.under_dash.addresses.search.helpers.Work;
 import android.under_dash.addresses.search.models.AddressMap;
@@ -184,7 +184,7 @@ public class AddressSearchActivity extends Activity_ {
         });
 
         Log.i("shimi", "in GoogleMapsMatrixApiService.build: getSearchId "+SearchManager.get().getSearchId()+"  getResultId = "+SearchManager.get().getResultId());
-        GoogleMapsMatrixApiService.build(AddressSearchActivity.this,startPointAddresses,destinationAddresses,() -> {
+        MapsMatrixApiService.build(AddressSearchActivity.this,startPointAddresses,destinationAddresses,() -> {
             Log.i("shimi", "in GoogleMapsMatrixApiService onDone AddressMap size = " +App.getBox(AddressMap.class).getAll().size());
         }).execute();
     }
