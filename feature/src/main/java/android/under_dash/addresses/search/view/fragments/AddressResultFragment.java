@@ -11,11 +11,8 @@ import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.helpers.SearchManager;
 import android.under_dash.addresses.search.models.Address;
 import android.under_dash.addresses.search.models.AddressMap;
-import android.under_dash.addresses.search.old.AddressDetailActivity;
 import android.under_dash.addresses.search.R;
-import android.under_dash.addresses.search.dummy.DummyContent;
 import android.under_dash.addresses.search.library.ui.fragment.Fragment_;
-import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
 import android.under_dash.addresses.search.view.adapters.AddressesResultAdapter;
 import android.under_dash.addresses.search.view.adapters.multiChoice.MultiChoiceToolbar;
 import android.util.Log;
@@ -41,12 +38,6 @@ public class AddressResultFragment extends Fragment_ {//implements AppBarLayout.
     private SwipeRefreshLayout mSwipeLayout;
     private RecyclerView mRecyclerView;
     private LayoutAnimationController mItemAnimation;
-
-    /**
-     * The dummy content this fragment is presenting.
-     */
-    private DummyContent.DummyItem mItem;
-    private SwipeRefreshLayout mSwipeRefresh;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the

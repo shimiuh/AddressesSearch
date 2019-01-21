@@ -28,7 +28,6 @@ import android.under_dash.addresses.search.helpers.Work;
 import android.under_dash.addresses.search.models.AddressMap;
 import android.under_dash.addresses.search.models.AddressName;
 import android.under_dash.addresses.search.models.SearchAddress;
-import android.under_dash.addresses.search.old.AddressDetailActivity;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.helpers.ImportCVSToSQLiteDB;

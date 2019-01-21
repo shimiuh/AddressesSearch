@@ -1,4 +1,4 @@
-package android.under_dash.addresses.search.app;
+package android.under_dash.addresses.search.utils;
 
 import java.util.concurrent.TimeUnit;
 

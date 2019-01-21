@@ -3,38 +3,24 @@ package android.under_dash.addresses.search.helpers;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Looper;
 import android.under_dash.addresses.search.app.App;
-import android.under_dash.addresses.search.app.Constants;
-import android.under_dash.addresses.search.app.DistanceApiClient;
-import android.under_dash.addresses.search.app.RestUtil;
+import android.under_dash.addresses.search.utils.RestUtil;
 import android.under_dash.addresses.search.app.SharedPrefManager;
 import android.under_dash.addresses.search.models.Address;
 import android.under_dash.addresses.search.models.AddressMap;
-import android.under_dash.addresses.search.models.AddressName;
-import android.under_dash.addresses.search.models.AddressName_;
-import android.under_dash.addresses.search.models.Address_;
 import android.under_dash.addresses.search.models.DistanceResponse;
 import android.under_dash.addresses.search.models.Element;
-import android.under_dash.addresses.search.models.Institution;
 import android.under_dash.addresses.search.models.Row;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.apache.commons.collections4.ListUtils;
 
-import java.io.File;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.siegmar.fastcsv.reader.CsvContainer;
-import de.siegmar.fastcsv.reader.CsvReader;
-import de.siegmar.fastcsv.reader.CsvRow;
-import io.objectbox.Box;
+import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,33 +29,35 @@ public class GoogleMapsMatrixApiService extends AsyncTask<String, String, String
 
 
     private static final String TAG = GoogleMapsMatrixApiService.class.getSimpleName();
-    private int mCount = 0;
-    private int mTotal = 0;
+    private int mCount = 0;//Just for log TODO: remove for release
+    private int mTotal = 0;//Just for log TODO: remove for release
     private final Runnable mOnDone;
     private List<Address> mStartPointAddresses;
     private List<Address> mDestinationAddresses;
-    private Context mContext;
     private ProgressDialog mDialog;
-    private boolean isGettingInfo;
+    private boolean mIsJobInProgress;
     private long mLastCallToApi;
+
+//     Call to this job will look like this
+//    GoogleMapsMatrixApiService.build(context, startPointAddresses, destinationAddresses, () -> {
+//    }).execute();
 
 
     public static GoogleMapsMatrixApiService build(Context context, List<Address> startPointAddressNameId, List<Address> destinationAddressNameId, Runnable onDone){
         return new GoogleMapsMatrixApiService(context, startPointAddressNameId,  destinationAddressNameId,  onDone);
     }
 
-    public GoogleMapsMatrixApiService(Context context, List<Address> startPointAddresses, List<Address> destinationAddresses, Runnable onDone) {
-        this.mContext = context;
+    private GoogleMapsMatrixApiService(Context context, List<Address> startPointAddresses, List<Address> destinationAddresses, Runnable onDone) {
         this.mStartPointAddresses  = startPointAddresses;
         this.mDestinationAddresses = destinationAddresses;
         this.mOnDone = onDone;
         mLastCallToApi = 0;
+        mDialog = new ProgressDialog(context);
     }
 
     @Override
     protected void onPreExecute()
     {
-        mDialog =new ProgressDialog(mContext);
         mDialog.setTitle("Importing Data into Secure DataBase");
         mDialog.setMessage("Please wait...");
         mDialog.setCancelable(false);
@@ -86,18 +74,15 @@ public class GoogleMapsMatrixApiService extends AsyncTask<String, String, String
     @Override
     protected String doInBackground(String... params) {
 
-        String data="";
-
         if(mStartPointAddresses.isEmpty() || mDestinationAddresses.isEmpty()){
-            Log.e(TAG, "##### ONE LIST IS EMPTY ##### aborting calling");
+            Log.e(TAG, "##### ONE LIST IS EMPTY ##### aborting job");
             return "";
         }
 
-
         Log.i(TAG, "doInBackground: mStartPointAddresses.size() = "+ mStartPointAddresses.size()+" mDestinationAddresses.size() = "+mDestinationAddresses.size());
         getDistanceInfoAndAddInDb(mStartPointAddresses, mDestinationAddresses);
-        isGettingInfo = true;
-        while (isGettingInfo){
+        mIsJobInProgress = true;
+        while (mIsJobInProgress){
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -105,37 +90,34 @@ public class GoogleMapsMatrixApiService extends AsyncTask<String, String, String
             }
         }
 
-        return data="";
-
+        return "";
     }
 
     protected void onPostExecute(String data)
     {
         Log.i(TAG, "onPostExecute: ");
-        if (mDialog.isShowing()){
+        if (mDialog != null && mDialog.isShowing()){
             mDialog.dismiss();
         }
         if(mOnDone != null){
             mOnDone.run();
         }
         if (data.length()!=0){
-            Toast.makeText(mContext, "File is built Successfully! size = "+App.getBox(Address.class).getAll().size(), Toast.LENGTH_LONG).show();
-            //Log.d("shimi", "File is built Successfully!"+"\n"+data+"\n institutionDB = "+AppDatabase.get(mContext).institutionDao().getAll().toString());
+            Log.d(TAG,"File is built Successfully! size = "+App.getBox(Address.class).getAll().size());
         }else{
-            Toast.makeText(mContext, "File fail to build", Toast.LENGTH_SHORT).show();
+            Log.d(TAG,"File fail to build");
         }
-        mContext = null;
+        mDialog = null;
     }
 
     private void getDistanceInfoAndAddInDb(List<Address> startPointList, List<Address> destinationList) {
         Log.d(TAG,"in getDistanceInfoAndAddInDb startPointList.size = "+startPointList.size()+" destinationList.size = "+destinationList.size());
+        mCount = 0;
         int targetSize = 10;
         List<List<Address>> startPointListOfList = new ArrayList<>(ListUtils.partition(startPointList, targetSize));
         List<List<Address>> destinationListOfList = new ArrayList<>(ListUtils.partition(destinationList, targetSize));
+        List<List<Address>> originDestinationListOfList = new ArrayList<>(destinationListOfList);
 
-        List<List<Address>> originDestinationListOfList = new ArrayList<>();
-        originDestinationListOfList.addAll(destinationListOfList);
-        mCount = 0;
         mTotal = startPointListOfList.size() * destinationListOfList.size();
         publishProgress("Done with list partition");
         getDistanceInfoRecursion(startPointListOfList,destinationListOfList,originDestinationListOfList);
@@ -151,7 +133,7 @@ public class GoogleMapsMatrixApiService extends AsyncTask<String, String, String
                 +" originDestinationListOfList.size = "+originDestinationListOfList.size());
         if(startPointListOfList.size() == 0 ){
             Log.d(TAG,"in getDistanceInfoRecursion END");
-            isGettingInfo = false;
+            mIsJobInProgress = false;
             return;
         }
 
@@ -172,8 +154,7 @@ public class GoogleMapsMatrixApiService extends AsyncTask<String, String, String
             }
         }else{
             startPointListOfList.remove(0);
-            List<List<Address>>  newDestinationListOfList = new ArrayList<>();
-            newDestinationListOfList.addAll(originDestinationListOfList);
+            List<List<Address>> newDestinationListOfList = new ArrayList<>(originDestinationListOfList);
             getDistanceInfoRecursion(startPointListOfList, newDestinationListOfList,originDestinationListOfList);
         }
         publishProgress(mCount +" Done out of "+mTotal);
@@ -193,9 +174,7 @@ public class GoogleMapsMatrixApiService extends AsyncTask<String, String, String
     private void getDistanceInfoAndAddInDb(List<Address> startPointList, List<Address> destinationList, Runnable onDone) {
         String startPoint  = getFormatDistanceInfo(startPointList);
         String destination = getFormatDistanceInfo(destinationList);
-        Log.i("shimi", "in getDistanceInfoAndAddInDb: startPointList.size = "+startPointList.size()+" destinationList.size = "+destinationList.size());
-
-        // http://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY
+        Log.i(TAG, "in getDistanceInfoAndAddInDb: startPointList.size = "+startPointList.size()+" destinationList.size = "+destinationList.size());
         //https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY&key=YOUR_API_KEY
         Map<String, String> mapQuery = new HashMap<>();
         //mapQuery.put("units", "imperial"); metric is default
@@ -210,7 +189,7 @@ public class GoogleMapsMatrixApiService extends AsyncTask<String, String, String
         Call<DistanceResponse> call = client.getDistanceInfo(mapQuery);
         call.enqueue(new Callback<DistanceResponse>() {
             @Override
-            public void onResponse(Call<DistanceResponse> call, Response<DistanceResponse> response) {
+            public void onResponse(@NonNull Call<DistanceResponse> call, @NonNull Response<DistanceResponse> response) {
                 DistanceResponse body = response.body();
                 Log.d(TAG,"onResponse call = "+ (body == null ? "null" : body.getStatus()));
                 if (body!= null){
@@ -218,8 +197,8 @@ public class GoogleMapsMatrixApiService extends AsyncTask<String, String, String
                 }
             }
             @Override
-            public void onFailure(Call<DistanceResponse> call, Throwable t) {
-                Log.d(TAG,"onFailure call = "+ (call == null ? "null" : call.toString()+ " t.getMessage = " +t.getMessage()));
+            public void onFailure(@NonNull Call<DistanceResponse> call, @NonNull Throwable t) {
+                Log.d(TAG,"onFailure call = "+ call.toString()+ " t.getMessage = " +t.getMessage());
                 if(onDone != null) {
                     onDone.run();
                 }
@@ -247,7 +226,6 @@ public class GoogleMapsMatrixApiService extends AsyncTask<String, String, String
                                     " Duration = "+element.getDistance().getValue()+" (address != null) = "+(destinationAddress != null));
                         }
                     }
-
                 }
                 if(onDone != null) {
                     onDone.run();

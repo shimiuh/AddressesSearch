@@ -1,4 +1,4 @@
-package android.under_dash.addresses.search.app;
+package android.under_dash.addresses.search.helpers;
 
 import android.under_dash.addresses.search.models.DistanceResponse;
 import java.util.Map;
