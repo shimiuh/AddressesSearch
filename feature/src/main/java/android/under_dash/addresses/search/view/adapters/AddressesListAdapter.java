@@ -159,6 +159,9 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
             super(view);
 
             mName = view.findViewById(R.id.listName);
+            mName.setOnClickListener(v -> {
+                setItemSelected(getAdapterPosition(),mName.isChecked());
+            });
             mRemove = view.findViewById(R.id.listRemove);
             mRemove.setOnClickListener(v -> {
                 int pos = getAdapterPosition();
