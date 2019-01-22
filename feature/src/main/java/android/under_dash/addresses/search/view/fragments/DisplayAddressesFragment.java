@@ -74,6 +74,11 @@ public class DisplayAddressesFragment extends Fragment_ {//implements AppBarLayo
 
         int resId = R.anim.layout_animation_fall_down;
         mItemAnimation = AnimationUtils.loadLayoutAnimation(getContext(), resId);
+        View fab = view.findViewById(R.id.fab);
+        fab.setVisibility(View.VISIBLE);
+        fab.setOnClickListener(v -> {
+
+        });
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, Toolbar toolbar) {
