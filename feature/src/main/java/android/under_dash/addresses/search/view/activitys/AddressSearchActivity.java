@@ -23,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.under_dash.addresses.search.app.Constants;
 import android.under_dash.addresses.search.helpers.MapsMatrixApiService;
+import android.under_dash.addresses.search.helpers.MapsMatrixApiService2;
 import android.under_dash.addresses.search.helpers.SearchManager;
 import android.under_dash.addresses.search.helpers.Work;
 import android.under_dash.addresses.search.models.AddressMap;
@@ -184,9 +185,9 @@ public class AddressSearchActivity extends Activity_ {
         });
 
         Log.i("shimi", "in GoogleMapsMatrixApiService.build: getSearchId "+SearchManager.get().getSearchId()+"  getResultId = "+SearchManager.get().getResultId());
-        MapsMatrixApiService.build(AddressSearchActivity.this,startPointAddresses,destinationAddresses,() -> {
+        MapsMatrixApiService.build(AddressSearchActivity.this, startPointAddresses, startPointAddresses,() -> {
             Log.i("shimi", "in GoogleMapsMatrixApiService onDone AddressMap size = " +App.getBox(AddressMap.class).getAll().size());
-        }).execute();
+        });
     }
 
     private void tempInitAddressNameList() {

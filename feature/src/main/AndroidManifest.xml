@@ -17,15 +17,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".old.AddressDetailActivity"
-            android:label="@string/title_address_detail"
-            android:parentActivityName=".view.activitys.AddressSearchActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="android.under_dash.addresses.search.view.activitys.AddressSearchActivity" />
-        </activity>
     </application>
 
 </manifest>
