@@ -1,4 +1,4 @@
-package android.under_dash.addresses.search.utils;
+package android.under_dash.addresses.search.network;
 
 import java.util.concurrent.TimeUnit;
 
@@ -7,12 +7,12 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-public class RestUtil {
-    private static RestUtil self;
+public class RetrofitBuilder {
+    private static RetrofitBuilder self;
     private String API_BASE_URL = "https://maps.googleapis.com/";
     private Retrofit retrofit;
 
-    private RestUtil() {
+    private RetrofitBuilder() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient httpClient = new OkHttpClient.Builder().addInterceptor(interceptor)
@@ -28,11 +28,11 @@ public class RestUtil {
         retrofit = builder.client(httpClient).build();
     }
 
-    public static RestUtil getInstance() {
+    public static RetrofitBuilder getInstance() {
         if (self == null) {
-            synchronized(RestUtil.class) {
+            synchronized(RetrofitBuilder.class) {
                 if (self == null) {
-                    self = new RestUtil();
+                    self = new RetrofitBuilder();
                 }
             }
         }

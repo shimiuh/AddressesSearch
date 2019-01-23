@@ -1,4 +1,4 @@
-package android.under_dash.addresses.search.helpers
+package android.under_dash.addresses.search.network
 
 import android.app.ProgressDialog
 import android.content.Context
@@ -8,7 +8,6 @@ import android.under_dash.addresses.search.app.SharedPrefManager
 import android.under_dash.addresses.search.models.objectBox.Address
 import android.under_dash.addresses.search.models.objectBox.AddressMap
 import android.under_dash.addresses.search.models.matrixMapApi.DistanceResponse
-import android.under_dash.addresses.search.utils.RestUtil
 import android.util.Log
 
 import org.apache.commons.collections4.ListUtils
@@ -146,7 +145,7 @@ class MapsMatrixApiService
         mapQuery["key"] = SharedPrefManager.get().googleApiKey
         //        mapQuery.put("destinations[1]", cities[1]);
         //        mapQuery.put("destinations[2]", cities[2]);
-        val client = RestUtil.getInstance().retrofit.create<DistanceApiClient>(DistanceApiClient::class.java)
+        val client = RetrofitBuilder.getInstance().retrofit.create<DistanceApiClient>(DistanceApiClient::class.java)
 
         try {
             val body = client.getDistanceInfo(mapQuery).execute().body()

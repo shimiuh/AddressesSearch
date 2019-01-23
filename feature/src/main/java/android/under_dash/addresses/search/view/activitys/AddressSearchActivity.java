@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
 import android.under_dash.addresses.search.app.Constants;
-import android.under_dash.addresses.search.helpers.MapsMatrixApiService;
+import android.under_dash.addresses.search.network.MapsMatrixApiService;
 import android.under_dash.addresses.search.helpers.SearchManager;
 import android.under_dash.addresses.search.helpers.Work;
 import android.under_dash.addresses.search.models.objectBox.AddressMap;
@@ -30,8 +30,8 @@ import android.under_dash.addresses.search.models.objectBox.AddressName;
 import android.under_dash.addresses.search.models.SearchAddress;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
-import android.under_dash.addresses.search.helpers.ImportCVSToSQLiteDB;
-import android.under_dash.addresses.search.helpers.MyCSVFileReader;
+import android.under_dash.addresses.search.helpers.ImportCVSToDB;
+import android.under_dash.addresses.search.helpers.CSVFileReader;
 import android.under_dash.addresses.search.library.Activity_;
 import android.under_dash.addresses.search.models.objectBox.Address;
 import android.under_dash.addresses.search.view.adapters.AddressesSearchAdapter;
@@ -120,19 +120,19 @@ public class AddressSearchActivity extends Activity_ {
                     Toast.makeText(getApplicationContext(), " clicked!",Toast.LENGTH_SHORT).show();
                 }else if(id == R.id.fab_result_list){
 
-                    MyCSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
+                    CSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
                         AddressName resultAddressName = App.getBox(AddressName.class).get(SearchManager.get().getResultId());
                         Log.d("shimi", "in fab fab_result_list resultAddressName = "+resultAddressName.name+" getResultId = "+SearchManager.get().getResultId());
-                        new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,resultAddressName, () -> {
+                        new ImportCVSToDB(AddressSearchActivity.this,pathFile,resultAddressName, () -> {
                             updateSearchListData();
                         }).execute();
                     });
                 }else if(id == R.id.fab_search_list){
 
-                    MyCSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
+                    CSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
                         AddressName searchAddressName = App.getBox(AddressName.class).get(SearchManager.get().getSearchId());
                         Log.d("shimi", "in fab fab_search_list searchAddressName = "+searchAddressName.name+" getSearchId = "+SearchManager.get().getSearchId());
-                        new ImportCVSToSQLiteDB(AddressSearchActivity.this,pathFile,searchAddressName, () -> {
+                        new ImportCVSToDB(AddressSearchActivity.this,pathFile,searchAddressName, () -> {
                             updateSearchListData();
                         }).execute();
                     });

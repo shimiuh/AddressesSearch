@@ -11,8 +11,8 @@ import android.text.TextUtils;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.app.Constants;
-import android.under_dash.addresses.search.helpers.ImportCVSToSQLiteDB;
-import android.under_dash.addresses.search.helpers.MyCSVFileReader;
+import android.under_dash.addresses.search.helpers.ImportCVSToDB;
+import android.under_dash.addresses.search.helpers.CSVFileReader;
 import android.under_dash.addresses.search.helpers.SearchManager;
 import android.under_dash.addresses.search.models.objectBox.AddressName_;
 import android.under_dash.addresses.search.utils.Utils;
@@ -172,9 +172,9 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
     }
 
     private void importAddressesFromFile(AddressName addressName) {
-        MyCSVFileReader.openDialogToReadCSV(getActivity(), pathFile -> {
+        CSVFileReader.openDialogToReadCSV(getActivity(), pathFile -> {
             Log.d("shimi", "in fab fab_result_list resultAddressName = "+addressName.name+" getResultId = "+SearchManager.get().getResultId());
-            new ImportCVSToSQLiteDB(getActivity(),pathFile,addressName, this::updateData).execute();
+            new ImportCVSToDB(getActivity(),pathFile,addressName, this::updateData).execute();
         });
     }
 

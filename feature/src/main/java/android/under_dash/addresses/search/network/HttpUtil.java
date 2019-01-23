@@ -1,4 +1,4 @@
-package android.under_dash.addresses.search.utils;
+package android.under_dash.addresses.search.network;
 
 import android.location.Address;
 import android.location.Geocoder;
@@ -62,7 +62,10 @@ public class HttpUtil {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
+
 // code based of https://stackoverflow.com/questions/1995998/get-altitude-by-longitude-and-latitude-in-android
 
         return result[0];

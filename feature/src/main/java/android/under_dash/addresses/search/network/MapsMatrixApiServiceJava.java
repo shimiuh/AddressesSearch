@@ -1,10 +1,9 @@
-package android.under_dash.addresses.search.helpers;
+package android.under_dash.addresses.search.network;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.text.format.DateUtils;
-import android.under_dash.addresses.search.utils.RestUtil;
 import android.under_dash.addresses.search.app.SharedPrefManager;
 import android.under_dash.addresses.search.models.objectBox.Address;
 import android.under_dash.addresses.search.models.objectBox.AddressMap;
@@ -174,7 +173,7 @@ public class MapsMatrixApiServiceJava extends AsyncTask<String, String, String> 
         mapQuery.put("key", SharedPrefManager.get().getGoogleApiKey());
 //        mapQuery.put("destinations[1]", cities[1]);
 //        mapQuery.put("destinations[2]", cities[2]);
-        DistanceApiClient client = RestUtil.getInstance().getRetrofit().create(DistanceApiClient.class);
+        DistanceApiClient client = RetrofitBuilder.getInstance().getRetrofit().create(DistanceApiClient.class);
 
 
         try {

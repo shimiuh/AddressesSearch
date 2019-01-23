@@ -1,4 +1,4 @@
-package android.under_dash.addresses.search.helpers;
+package android.under_dash.addresses.search.network;
 
 import android.under_dash.addresses.search.models.matrixMapApi.DistanceResponse;
 import java.util.Map;

@@ -85,44 +85,12 @@ public  class AddressesSearchAdapter extends MultiChoiceAdapter<AddressesSearchA
         if(item == null){
             return;
         }
-//        AddressName resultAddressName = App.getBox(AddressName.class).query().equal(AddressName_.name,Constants.ADDRESS_RESULT).build().findUnique();
-//        List<Address> addressResultList = resultAddressName.addresses;
-//
-//        AddressName searchAddressName = App.getBox(AddressName.class).query().equal(AddressName_.name,Constants.ADDRESS_SEARCH).build().findUnique();
-//        List<Address> addressSearchList = searchAddressName.addresses;
-
-//        HttpHelper.getDistanceInfoAndAddInDb(addressSearchList, addressResultList, () -> {
-//
-//
-//
-//        });
         int addFragmentTo = mTwoPane ? R.id.address_detail_container : android.R.id.content;
         Bundle arguments = new Bundle();
         arguments.putLong(AddressResultFragment.ARG_ITEM_ID, item.id);
         AddressResultFragment fragment = new AddressResultFragment();
         fragment.setArguments(arguments);//.addToBackStack(AddressResultFragment.TAG)
         ((AppCompatActivity)mParentActivity).getSupportFragmentManager().beginTransaction().add(android.R.id.content, fragment,AddressResultFragment.TAG).commit();
-
-//        Bundle arguments = new Bundle();
-//        arguments.putString(AddressDetailListFragment.ARG_ITEM_ID, getIntent().getStringExtra(AddressDetailListFragment.ARG_ITEM_ID));
-//        AddressDetailListFragment fragment = new AddressDetailListFragment();
-//        fragment.setArguments(arguments);
-//        getSupportFragmentManager().beginTransaction().add(R.id.address_detail_list_container, fragment).commit();
-
-//        if (mTwoPane) {
-//            Bundle arguments = new Bundle();
-//            arguments.putString(AddressDetailFragment.ARG_ITEM_ID, String.valueOf(item.id));
-//            AddressDetailFragment fragment = new AddressDetailFragment();
-//            fragment.setArguments(arguments);
-//            mParentActivity.getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.address_detail_container, fragment)
-//                    .commit();
-//        } else {
-//            Context context = view.getContext();
-//            Intent intent = new Intent(context, AddressDetailActivity.class);
-//            intent.putExtra(AddressDetailFragment.ARG_ITEM_ID, String.valueOf(item.id));
-//            context.startActivity(intent);
-//        }
     }
 
     @Override

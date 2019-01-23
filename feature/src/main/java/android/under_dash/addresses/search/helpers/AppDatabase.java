@@ -8,6 +8,9 @@ import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.models.room.Institution;
 import android.under_dash.addresses.search.models.room.SearchList;
 import android.under_dash.addresses.search.models.room.SearchResult;
+import android.under_dash.addresses.search.models.room.dao.InstitutionDao;
+import android.under_dash.addresses.search.models.room.dao.SearchListDao;
+import android.under_dash.addresses.search.models.room.dao.SearchResDao;
 
 @Database(entities = {Institution.class, SearchList.class, SearchResult.class }, version = 11, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
