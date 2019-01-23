@@ -2,13 +2,15 @@ package android.under_dash.addresses.search.models.objectBox;
 
 import android.under_dash.addresses.search.app.App;
 
+import androidx.room.ColumnInfo;
+import androidx.room.PrimaryKey;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 import io.objectbox.annotation.Index;
 import io.objectbox.annotation.Unique;
 import io.objectbox.relation.ToMany;
 
-@Entity
+@Entity @androidx.room.Entity(tableName = "address_lists")
 public class AddressList {
 
     public AddressList() {}
@@ -16,12 +18,19 @@ public class AddressList {
         this.name = name;
     }
 
-    @Id
+    @Id @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id")
     public long id;
-    @Index @Unique
+
+    @Index @Unique @ColumnInfo(name = "name")
     public String name;
+
+    @ColumnInfo(name = "fileLocation")
     public String fileLocation;
+
+    @ColumnInfo(name = "isSearchSelected")
     public boolean isSearchSelected;
+
+    @ColumnInfo(name = "isResultSelected")
     public boolean isResultSelected;
 
     public ToMany<Address> addresses;

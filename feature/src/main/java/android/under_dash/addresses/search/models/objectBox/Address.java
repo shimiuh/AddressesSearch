@@ -7,6 +7,8 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.room.ColumnInfo;
+import androidx.room.PrimaryKey;
 import io.objectbox.Box;
 import io.objectbox.Property;
 import io.objectbox.annotation.Entity;
@@ -14,14 +16,24 @@ import io.objectbox.annotation.Id;
 import io.objectbox.query.QueryBuilder;
 import io.objectbox.relation.ToMany;
 
-@Entity
+@Entity @androidx.room.Entity(tableName = "addresses")
 public class Address {
-    @Id
+
+    @Id @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id")
     public long id;
+
+    @ColumnInfo(name = "name")
     public String name;
+
+    @ColumnInfo(name = "address")
     public String address;
+
+    @ColumnInfo(name = "website")
     public String website;
+
+    @ColumnInfo(name = "elevation")
     public double elevation;
+
     public ToMany<AddressMap> addressMaps;
     public ToMany<AddressList> addressLists;
 

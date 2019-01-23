@@ -6,27 +6,42 @@ import android.util.Log;
 
 import java.util.Comparator;
 
+import androidx.room.ColumnInfo;
+import androidx.room.PrimaryKey;
 import io.objectbox.Box;
 import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 import io.objectbox.relation.ToOne;
 
-@Entity
+@Entity @androidx.room.Entity(tableName = "address_maps")
 public class AddressMap implements Comparable<AddressMap> {
 
-    public String    origAddress;
-    public String    destAddress;
 
-    @Id
+
+    @Id @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id")
     public long id;
+
+    @ColumnInfo(name = "distance")
+    public int          distance;
+
+    @ColumnInfo(name = "duration")
+    public int          duration;
+
+    @ColumnInfo(name = "distanceText")
+    public String       distanceText;
+
+    @ColumnInfo(name = "durationText")
+    public String       durationText;
+
+    @ColumnInfo(name = "origAddress")
+    public String       origAddress;
+
+    @ColumnInfo(name = "destAddress")
+    public String       destAddress;
+
     public ToOne<Address> originAddress;
     public ToOne<Address> destinationAddress;
-
-    public int       distance;
-    public int       duration;
-    public String    distanceText;
-    public String    durationText;
 
     public AddressMap() {}
     public AddressMap(int distance, int duration, String distanceText,String durationText,String origAddress, String destAddress) {//String originLatLong, String destinationLatLong,

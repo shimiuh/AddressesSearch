@@ -4,26 +4,27 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import android.under_dash.addresses.search.models.room.SearchResult;
+
+import android.under_dash.addresses.search.models.objectBox.AddressMap;
 
 import java.util.List;
 
 @Dao
-public interface SearchResDao {
+public interface AddressMapDao {
 
-   @Query("SELECT * FROM search_results")
-   List<SearchResult> getAll();
+   @Query("SELECT * FROM address_maps")
+   List<AddressMap> getAll();
 
-    @Query("SELECT * FROM search_results WHERE walking_distance LIKE :name" +" LIMIT 1")
-    SearchResult findBywalkingDistance(String name);
+    @Query("SELECT * FROM address_maps WHERE distance LIKE :name" +" LIMIT 1")
+    AddressMap changeThisQuery(String name);
 
     @Insert
-    void insertAll(SearchResult... searchList);
+    void insertAll(AddressMap... addressMaps);
 
     @Delete
-    void delete(SearchResult... searchList);
+    void delete(AddressMap... addressMaps);
 
-    @Query("DELETE FROM search_results")
+    @Query("DELETE FROM address_maps")
     void deleteAll();
 
 //

@@ -5,20 +5,20 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import android.content.Context;
 import android.under_dash.addresses.search.app.App;
-import android.under_dash.addresses.search.models.room.Institution;
-import android.under_dash.addresses.search.models.room.SearchList;
-import android.under_dash.addresses.search.models.room.SearchResult;
-import android.under_dash.addresses.search.models.room.dao.InstitutionDao;
-import android.under_dash.addresses.search.models.room.dao.SearchListDao;
-import android.under_dash.addresses.search.models.room.dao.SearchResDao;
+import android.under_dash.addresses.search.models.objectBox.Address;
+import android.under_dash.addresses.search.models.objectBox.AddressList;
+import android.under_dash.addresses.search.models.objectBox.AddressMap;
+import android.under_dash.addresses.search.models.room.dao.AddressDao;
+import android.under_dash.addresses.search.models.room.dao.AddressListDao;
+import android.under_dash.addresses.search.models.room.dao.AddressMapDao;
 
-@Database(entities = {Institution.class, SearchList.class, SearchResult.class }, version = 11, exportSchema = false)
+@Database(entities = {Address.class, AddressMap.class, AddressList.class }, version = 11, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase mInstance;
     private static final String DB_NAME = "institution.db";
-    public abstract InstitutionDao institutionDao();
-    public abstract SearchListDao searchListDao();
-    public abstract SearchResDao searchResDao();
+    public abstract AddressDao institutionDao();
+    public abstract AddressListDao searchListDao();
+    public abstract AddressMapDao searchResDao();
 
     public static AppDatabase get(final Context context) {
         if (mInstance == null) {
@@ -31,11 +31,11 @@ public abstract class AppDatabase extends RoomDatabase {
         return mInstance;
     }
 
-    public void addSearchItem(final SearchList... searchList){
-        App.getBackgroundHandler().post(() -> searchListDao().insertAll(searchList));
+    public void addAddressList(final AddressList... addressLists){
+        App.getBackgroundHandler().post(() -> searchListDao().insertAll(addressLists));
     }
 
-    public void addInstitution(final Institution... institution){
-        App.getBackgroundHandler().post(() -> institutionDao().insertAll(institution));
+    public void addAddress(final Address... addresses){
+        App.getBackgroundHandler().post(() -> institutionDao().insertAll(addresses));
     }
 }
