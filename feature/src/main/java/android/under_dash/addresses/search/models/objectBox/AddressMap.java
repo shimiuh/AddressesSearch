@@ -15,6 +15,19 @@ import io.objectbox.relation.ToOne;
 @Entity
 public class AddressMap implements Comparable<AddressMap> {
 
+    public String    origAddress;
+    public String    destAddress;
+
+    @Id
+    public long id;
+    public ToOne<Address> originAddress;
+    public ToOne<Address> destinationAddress;
+
+    public int       distance;
+    public int       duration;
+    public String    distanceText;
+    public String    durationText;
+
     public AddressMap() {}
     public AddressMap(int distance, int duration, String distanceText,String durationText,String origAddress, String destAddress) {//String originLatLong, String destinationLatLong,
         this .distance = distance;
@@ -24,21 +37,6 @@ public class AddressMap implements Comparable<AddressMap> {
         this.origAddress = origAddress;
         this.destAddress = destAddress;
     }
-
-    public String    origAddress;
-    public String    destAddress;
-
-    @Id
-    public long id;
-    @Backlink(to = "addressMaps")
-    public ToOne<Address> originAddress;
-    @Backlink(to = "addressMaps")
-    public ToOne<Address> destinationAddress;
-
-    public int    distance;
-    public int    duration;
-    public String    distanceText;
-    public String    durationText;
 
     public Address getOriginAddress() {
         return this.originAddress.getTarget();

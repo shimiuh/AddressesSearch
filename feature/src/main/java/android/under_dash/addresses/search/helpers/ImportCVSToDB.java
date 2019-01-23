@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.models.objectBox.Address;
-import android.under_dash.addresses.search.models.objectBox.AddressName;
+import android.under_dash.addresses.search.models.objectBox.AddressList;
 import android.under_dash.addresses.search.models.room.Institution;
 import android.util.Log;
 import android.widget.Toast;
@@ -19,12 +19,12 @@ import de.siegmar.fastcsv.reader.CsvRow;
 public class ImportCVSToDB extends AsyncTask<String, String, String> {
 
     private final Runnable mOnDone;
-    AddressName mAddressName;
+    AddressList mAddressName;
     Context mContext;
     File mFile = null;
     private ProgressDialog mDialog;
 
-    public ImportCVSToDB(Context context, File file, AddressName addressName, Runnable onDone) {
+    public ImportCVSToDB(Context context, File file, AddressList addressName, Runnable onDone) {
         this.mContext=context;
         this.mFile=file;
         this.mAddressName = addressName;

@@ -22,11 +22,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
 import android.under_dash.addresses.search.app.Constants;
+import android.under_dash.addresses.search.models.objectBox.AddressList;
 import android.under_dash.addresses.search.network.MapsMatrixApiService;
 import android.under_dash.addresses.search.helpers.SearchManager;
 import android.under_dash.addresses.search.helpers.Work;
 import android.under_dash.addresses.search.models.objectBox.AddressMap;
-import android.under_dash.addresses.search.models.objectBox.AddressName;
 import android.under_dash.addresses.search.models.SearchAddress;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
@@ -112,8 +112,8 @@ public class AddressSearchActivity extends Activity_ {
 
                 if(id == R.id.fab_clip){
                     if(true){
-                        searchLists(App.getBox(AddressName.class).get(SearchManager.get().getSearchId()).addresses,
-                                App.getBox(AddressName.class).get(SearchManager.get().getResultId()).addresses);
+                        searchLists(App.getBox(AddressList.class).get(SearchManager.get().getSearchId()).addresses,
+                                App.getBox(AddressList.class).get(SearchManager.get().getResultId()).addresses);
                         return;
                     }
                     addAddressFromClip();
@@ -121,7 +121,7 @@ public class AddressSearchActivity extends Activity_ {
                 }else if(id == R.id.fab_result_list){
 
                     CSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
-                        AddressName resultAddressName = App.getBox(AddressName.class).get(SearchManager.get().getResultId());
+                        AddressList resultAddressName = App.getBox(AddressList.class).get(SearchManager.get().getResultId());
                         Log.d("shimi", "in fab fab_result_list resultAddressName = "+resultAddressName.name+" getResultId = "+SearchManager.get().getResultId());
                         new ImportCVSToDB(AddressSearchActivity.this,pathFile,resultAddressName, () -> {
                             updateSearchListData();
@@ -130,7 +130,7 @@ public class AddressSearchActivity extends Activity_ {
                 }else if(id == R.id.fab_search_list){
 
                     CSVFileReader.openDialogToReadCSV(AddressSearchActivity.this, pathFile -> {
-                        AddressName searchAddressName = App.getBox(AddressName.class).get(SearchManager.get().getSearchId());
+                        AddressList searchAddressName = App.getBox(AddressList.class).get(SearchManager.get().getSearchId());
                         Log.d("shimi", "in fab fab_search_list searchAddressName = "+searchAddressName.name+" getSearchId = "+SearchManager.get().getSearchId());
                         new ImportCVSToDB(AddressSearchActivity.this,pathFile,searchAddressName, () -> {
                             updateSearchListData();
@@ -179,7 +179,7 @@ public class AddressSearchActivity extends Activity_ {
     }
 
     public void searchLists(List<Address> startPointAddresses, List<Address> destinationAddresses) {
-        App.getBox(AddressName.class).getAll().forEach(addressName -> {
+        App.getBox(AddressList.class).getAll().forEach(addressName -> {
             Log.i("shimi", "in AddressName.class).getAll().forEach : name "+addressName.name+"  id = "+addressName.id);
         });
 
@@ -191,17 +191,17 @@ public class AddressSearchActivity extends Activity_ {
 
     private void tempInitAddressNameList() {
         App.getBackgroundHandler().post(() -> {
-            if(App.getBox(AddressName.class).getAll().size() == 0) {
-                SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("Stores in NY")));
-                SearchManager.get().setSearchId(App.getBox(AddressName.class).put(new AddressName("Shops")));
-                SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("Toys")));
-                SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("Food mark st")));
-                SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("Chabad")));
-                SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("Signings")));
-                SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("Churches")));
-                SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("Mask")));
-                SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("Try me out")));
-                SearchManager.get().setResultId(App.getBox(AddressName.class).put(new AddressName("All")));
+            if(App.getBox(AddressList.class).getAll().size() == 0) {
+                SearchManager.get().setResultId(App.getBox(AddressList.class).put(new AddressList("Stores in NY")));
+                SearchManager.get().setSearchId(App.getBox(AddressList.class).put(new AddressList("Shops")));
+                SearchManager.get().setResultId(App.getBox(AddressList.class).put(new AddressList("Toys")));
+                SearchManager.get().setResultId(App.getBox(AddressList.class).put(new AddressList("Food mark st")));
+                SearchManager.get().setResultId(App.getBox(AddressList.class).put(new AddressList("Chabad")));
+                SearchManager.get().setResultId(App.getBox(AddressList.class).put(new AddressList("Signings")));
+                SearchManager.get().setResultId(App.getBox(AddressList.class).put(new AddressList("Churches")));
+                SearchManager.get().setResultId(App.getBox(AddressList.class).put(new AddressList("Mask")));
+                SearchManager.get().setResultId(App.getBox(AddressList.class).put(new AddressList("Try me out")));
+                SearchManager.get().setResultId(App.getBox(AddressList.class).put(new AddressList("All")));
             }
         });
     }
@@ -263,7 +263,7 @@ public class AddressSearchActivity extends Activity_ {
                 if(searchAddressMaps.size() > 0){
                     //TODO: figure a query and avoid Big O 2
                     searchAddressMaps.forEach(addressMap -> {
-                        addressMap.originAddress.getTarget().addressNames.forEach(addressName -> {
+                        addressMap.originAddress.getTarget().addressLists.forEach(addressName -> {
                             Log.i("shimi", "run: addressName.id = " + addressName.id);
                             if (addressName.isResultSelected && !listMap.contains(addressMap)) {
                                 listMap.add(addressMap);

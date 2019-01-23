@@ -3,9 +3,9 @@ package android.under_dash.addresses.search.view.adapters;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.under_dash.addresses.search.R;
+import android.under_dash.addresses.search.models.objectBox.AddressList;
 import android.under_dash.addresses.search.utils.UiUtils;
 import android.under_dash.addresses.search.utils.Utils;
-import android.under_dash.addresses.search.models.objectBox.AddressName;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +21,7 @@ public  class TagAdapter  extends RecyclerView.Adapter<TagAdapter.ViewHolder>{
 
     private int mSelectedType;
     private final AddressesListAdapter.OnSelectionChange mOnSelectionChange;
-    private List<AddressName> mValues = new ArrayList<>();
+    private List<AddressList> mValues = new ArrayList<>();
 
     public TagAdapter(int selectedType, AddressesListAdapter.OnSelectionChange onSelectionChange) {
         mSelectedType = selectedType;
@@ -33,7 +33,7 @@ public  class TagAdapter  extends RecyclerView.Adapter<TagAdapter.ViewHolder>{
         notifyDataSetChanged();
     }
 
-    public void setData(List<AddressName> items) {
+    public void setData(List<AddressList> items) {
         int currentSize = mValues.size()+1;
         //remove the current items
         mValues.clear();

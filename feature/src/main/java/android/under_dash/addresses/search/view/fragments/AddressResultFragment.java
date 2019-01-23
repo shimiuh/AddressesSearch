@@ -107,7 +107,7 @@ public class AddressResultFragment extends Fragment_ {//implements AppBarLayout.
                 Log.i("shimi", "run: in set DATA getResultId = "+SearchManager.get().getResultId());
                 //TODO: check if you can query this list
                 searchAddressMaps.forEach(addressMap -> {
-                    addressMap.originAddress.getTarget().addressNames.forEach(addressName -> {
+                    addressMap.originAddress.getTarget().addressLists.forEach(addressName -> {
                         Log.i("shimi", "run: addressName.id = "+addressName.id);
                         if(addressName.isResultSelected && !listMap.contains(addressMap)){
                             listMap.add(addressMap);

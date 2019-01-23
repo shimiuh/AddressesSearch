@@ -9,10 +9,10 @@ import io.objectbox.annotation.Unique;
 import io.objectbox.relation.ToMany;
 
 @Entity
-public class AddressName {
+public class AddressList {
 
-    public AddressName() {}
-    public AddressName(String name) {
+    public AddressList() {}
+    public AddressList(String name) {
         this.name = name;
     }
 
@@ -25,7 +25,6 @@ public class AddressName {
     public boolean isResultSelected;
 
     public ToMany<Address> addresses;
-    //public ToMany<AddressListMap> addressListMaps;
 
     public long getId() {
         return id;
@@ -46,10 +45,10 @@ public class AddressName {
     }
 
     public void update() {
-        App.getBoxStore().runInTx(() -> App.getBox(AddressName.class).put(this) );
+        App.getBoxStore().runInTx(() -> App.getBox(AddressList.class).put(this) );
     }
 
     public void remove() {
-        App.getBoxStore().runInTx(() -> App.getBox(AddressName.class).remove(this ));
+        App.getBoxStore().runInTx(() -> App.getBox(AddressList.class).remove(this ));
     }
 }

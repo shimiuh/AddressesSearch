@@ -23,7 +23,7 @@ public class Address {
     public String website;
     public double elevation;
     public ToMany<AddressMap> addressMaps;
-    public ToMany<AddressName> addressNames;
+    public ToMany<AddressList> addressLists;
 
     public Address() {}
 
@@ -32,25 +32,6 @@ public class Address {
         this.address = address;
         this.website = website;
     }
-
-    public ToMany<AddressMap> getAddressMaps() {
-        return addressMaps;
-    }
-
-    public void setAddressMap(AddressMap addressMap) {
-        this.addressMaps.add(addressMap);
-    }
-    public AddressMap getAddressMap(long id) {
-        return addressMaps.getById(id);
-    }
-
-//    public AddressName getAddressName() {
-//        return addressNames.getTarget();
-//    }
-//
-//    public void setAddressName(AddressName addressName) {
-//        this.addressNames.setTarget(addressName);
-//    }
 
     public String getName() {return name;}
 
@@ -74,17 +55,12 @@ public class Address {
         this.website = website;
     }
 
-    @Override
-    public String toString() {
-        return "Address{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", website='" + website + '\'' +
-                '}';
-    }
 
-    public static boolean add(String name, String str_address, String website, AddressName addressName) {
+
+
+
+
+    public static boolean add(String name, String str_address, String website, AddressList addressList) {
         boolean didAdd = false;
         Box<Address> box = App.getBox(Address.class);
 
@@ -94,46 +70,49 @@ public class Address {
             didAdd = true;
         }
 
-        addressName.addresses.add(address);
+        addressList.addresses.add(address);
         //box.attach(address);
-        address.addressNames.add(addressName);
+        address.addressLists.add(addressList);
         box.put(address);
-        Log.d("shimi", "in add Address id = " + address.id + " addressNames size = " + address.addressNames.size() +
-                " getAll().size = " + box.getAll().size() + " " + addressName.addresses.size());
-        App.getBox(AddressName.class).put(addressName);
+        Log.d("shimi", "in add Address id = " + address.id + " addressNames size = " + address.addressLists.size() +
+                " getAll().size = " + box.getAll().size() + " " + addressList.addresses.size());
+        App.getBox(AddressList.class).put(addressList);
         return didAdd;
     }
 
     public static List<Address> getAllSearchSelected() {
-        return getAllSelected(AddressName_.isSearchSelected);
+        return getAllSelected(AddressList_.isSearchSelected);
     }
 
     public static List<Address> getAllResultSelected() {
-        return getAllSelected(AddressName_.isResultSelected);
+        return getAllSelected(AddressList_.isResultSelected);
     }
 
-    public static List<Address> getAllSelected(Property<AddressName> selected) {
+    public static List<Address> getAllSelected(Property<AddressList> selected) {
         List<Address> addresses = new ArrayList<>();
-        App.getBox(AddressName.class).query().equal(selected,true).build().find().forEach(addressName -> {
+        App.getBox(AddressList.class).query().equal(selected,true).build().find().forEach(addressName -> {
             addresses.addAll(addressName.addresses);
         });
         return addresses;
     }
 
     public static boolean isLinked(Address originAddress, Address destinationAddress) {
-        //AddressMap test = App.getBox(AddressMap.class).query().equal(AddressMap_.originAddress.targetInfo.getEntityId(),).build().findFirst();
-        //builder = App.getBox(Address.class).query().equals(Address_.address, originAddress.address);
-        //Address test = builder.link(AddressMap_.originAddress).equal(Address_.address, originAddress.address).build().findFirst();
        // Log.i("shimi", "isLinked: test = "+test);
         QueryBuilder<Address> builder = App.getBox(Address.class).query();
         builder.link(Address_.addressMaps).equal(AddressMap_.origAddress,originAddress.address).and()
                 .equal(AddressMap_.destAddress,destinationAddress.address);
 
-        //QueryBuilder<Address> destinationBuilder = App.getBox(Address.class).query();
-        //originBuilder.link(Address_.addressMaps).equal(AddressMap_.destAddress,destinationAddress.address);
-        //QueryBuilder<Address> destinationBuilder = App.getBox(Address.class).query().link(Address_.addressMaps).equal(AddressMap_.destAddress,destinationAddress.address);
-        //QueryBuilder<Address> test = builder.link(AddressMap_.originAddress);
         return builder.build().findFirst() != null;
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", website='" + website + '\'' +
+                '}';
     }
 
 }

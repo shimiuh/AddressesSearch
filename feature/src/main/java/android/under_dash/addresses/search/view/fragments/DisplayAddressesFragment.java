@@ -11,7 +11,7 @@ import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.library.ui.fragment.Fragment_;
 import android.under_dash.addresses.search.models.objectBox.Address;
-import android.under_dash.addresses.search.models.objectBox.AddressName;
+import android.under_dash.addresses.search.models.objectBox.AddressList;
 import android.under_dash.addresses.search.view.adapters.DisplayAddressesAdapter;
 import android.under_dash.addresses.search.view.adapters.multiChoice.MultiChoiceToolbar;
 import android.util.Log;
@@ -103,7 +103,7 @@ public class DisplayAddressesFragment extends Fragment_ {//implements AppBarLayo
             Bundle bundle = getArguments();
             if(bundle != null && bundle.containsKey(ARG_ITEM_ID)) {
                 id = bundle.getLong(ARG_ITEM_ID);
-                AddressName searchAddress = App.getBox(AddressName.class).get(id);
+                AddressList searchAddress = App.getBox(AddressList.class).get(id);
                 mItemAnimation.getAnimation().reset();
                 mRecyclerView.setLayoutAnimation(mItemAnimation);
 

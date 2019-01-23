@@ -14,12 +14,12 @@ import android.under_dash.addresses.search.app.Constants;
 import android.under_dash.addresses.search.helpers.ImportCVSToDB;
 import android.under_dash.addresses.search.helpers.CSVFileReader;
 import android.under_dash.addresses.search.helpers.SearchManager;
-import android.under_dash.addresses.search.models.objectBox.AddressName_;
+import android.under_dash.addresses.search.models.objectBox.AddressList;
+import android.under_dash.addresses.search.models.objectBox.AddressList_;
 import android.under_dash.addresses.search.utils.Utils;
 import android.under_dash.addresses.search.helpers.Work;
 import android.under_dash.addresses.search.library.ui.fragment.Fragment_;
 import android.under_dash.addresses.search.models.objectBox.Address;
-import android.under_dash.addresses.search.models.objectBox.AddressName;
 import android.under_dash.addresses.search.utils.DialogUtil;
 import android.under_dash.addresses.search.view.activitys.AddressSearchActivity;
 import android.under_dash.addresses.search.view.adapters.AddressesListAdapter;
@@ -150,7 +150,7 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
                         return;
                     }
                     Log.i("shimi", "in addListDialog : name = -"+listName+"-"+listName.length());
-                    List<AddressName> addressName = App.getBox(AddressName.class).find(AddressName_.name,listName);
+                    List<AddressList> addressName = App.getBox(AddressList.class).find(AddressList_.name,listName);
                     //AddressName address = App.getBox(AddressName.class).query().equal(AddressName_.name,listName).build().findFirst();
 
                     if(addressName.size() > 0 ){
@@ -162,7 +162,7 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
                                     addListDialog();
                                 });
                     }else{
-                        AddressName newAddressName = new AddressName(listName);
+                        AddressList newAddressName = new AddressList(listName);
                         newAddressName.update();
                         importAddressesFromFile(newAddressName);
                     }
@@ -171,7 +171,7 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
 
     }
 
-    private void importAddressesFromFile(AddressName addressName) {
+    private void importAddressesFromFile(AddressList addressName) {
         CSVFileReader.openDialogToReadCSV(getActivity(), pathFile -> {
             Log.d("shimi", "in fab fab_result_list resultAddressName = "+addressName.name+" getResultId = "+SearchManager.get().getResultId());
             new ImportCVSToDB(getActivity(),pathFile,addressName, this::updateData).execute();
@@ -258,8 +258,8 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
     }
 
     private void updateSearchTagData() {
-        Box<AddressName> box = App.getBox(AddressName.class);
-        List<AddressName> searchList = box.query().equal(AddressName_.isSearchSelected, true).build().find();
+        Box<AddressList> box = App.getBox(AddressList.class);
+        List<AddressList> searchList = box.query().equal(AddressList_.isSearchSelected, true).build().find();
         mItemAnimation.getAnimation().reset();
         mTagSearchRecycler.setLayoutAnimation(mItemAnimation);
         mSearchTagAdapter.setSelectedType(AddressesListAdapter.SELECTED_TYPE_SEARCH);
@@ -268,8 +268,8 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
     }
 
     private void updateResultTagData() {
-        Box<AddressName> box = App.getBox(AddressName.class);
-        List<AddressName> resultList = box.query().equal(AddressName_.isResultSelected, true).build().find();
+        Box<AddressList> box = App.getBox(AddressList.class);
+        List<AddressList> resultList = box.query().equal(AddressList_.isResultSelected, true).build().find();
         mItemAnimation.getAnimation().reset();
         mTagResultRecycler.setLayoutAnimation(mItemAnimation);
         mResultTagAdapter.setSelectedType(AddressesListAdapter.SELECTED_TYPE_RESULT);
@@ -296,7 +296,7 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
     private void updateSearchListData(int selectedType) {
 
         mSwipeLayout.setRefreshing(true);
-        List<AddressName> addressNames = App.getBox(AddressName.class).getAll();
+        List<AddressList> addressNames = App.getBox(AddressList.class).getAll();
         Log.i("shimi", "in updateSearchListData:  addressNames.size= "+addressNames.size());
         mItemAnimation.getAnimation().reset();
         mRecyclerView.setLayoutAnimation(mItemAnimation);
@@ -312,7 +312,7 @@ public class ListNavFragment extends Fragment_ implements AddressesListAdapter.O
     }
 
     @Override
-    public void onShowList(AddressName AddressName) {
+    public void onShowList(AddressList AddressName) {
         Bundle arguments = new Bundle();
         arguments.putLong(AddressResultFragment.ARG_ITEM_ID, AddressName.id);
         DisplayAddressesFragment fragment = new DisplayAddressesFragment();

@@ -2,8 +2,8 @@ package android.under_dash.addresses.search.view.adapters;
 
 import androidx.recyclerview.widget.RecyclerView;
 import android.under_dash.addresses.search.R;
+import android.under_dash.addresses.search.models.objectBox.AddressList;
 import android.under_dash.addresses.search.utils.Utils;
-import android.under_dash.addresses.search.models.objectBox.AddressName;
 import android.under_dash.addresses.search.view.adapters.multiChoice.MultiChoiceAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,12 +23,12 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
     public static final int SELECTED_TYPE_RESULT = 1;
     private final OnSelectionChange mOnSelectionChange;
     private int mSelectedType;
-    private List<AddressName> mValues = new ArrayList<>();
+    private List<AddressList> mValues = new ArrayList<>();
     int mCreationPosition;
 
     public interface OnSelectionChange{
         void onSelectionUpdate();
-        void onShowList(AddressName addressName);
+        void onShowList(AddressList addressName);
     }
 
     public AddressesListAdapter(int selectedType, OnSelectionChange onSelectionChange) {
@@ -43,7 +43,7 @@ public  class AddressesListAdapter extends MultiChoiceAdapter<AddressesListAdapt
         notifyDataSetChanged();
     }
 
-    public void setData(List<AddressName> items) {
+    public void setData(List<AddressList> items) {
         int currentSize = mValues.size()+1;
         //remove the current items
         mValues.clear();
