@@ -4,7 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import android.under_dash.addresses.search.models.SearchResult;
+import android.under_dash.addresses.search.models.room.SearchResult;
 
 import java.util.List;
 

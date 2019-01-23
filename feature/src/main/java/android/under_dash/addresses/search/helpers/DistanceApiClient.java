@@ -1,6 +1,6 @@
 package android.under_dash.addresses.search.helpers;
 
-import android.under_dash.addresses.search.models.DistanceResponse;
+import android.under_dash.addresses.search.models.matrixMapApi.DistanceResponse;
 import java.util.Map;
 
 import retrofit2.Call;

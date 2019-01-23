@@ -1,4 +1,4 @@
-package android.under_dash.addresses.search.models;
+package android.under_dash.addresses.search.models.matrixMapApi;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

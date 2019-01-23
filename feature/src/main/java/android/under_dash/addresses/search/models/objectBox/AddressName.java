@@ -1,6 +1,5 @@
-package android.under_dash.addresses.search.models;
+package android.under_dash.addresses.search.models.objectBox;
 
-import androidx.annotation.NonNull;
 import android.under_dash.addresses.search.app.App;
 
 import io.objectbox.annotation.Entity;

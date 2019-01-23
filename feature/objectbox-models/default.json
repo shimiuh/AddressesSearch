@@ -1,0 +1,135 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:4506456638048870062",
+      "lastPropertyId": "5:5924303874949528482",
+      "name": "Address",
+      "properties": [
+        {
+          "id": "1:8890323509323287684",
+          "name": "id"
+        },
+        {
+          "id": "2:5106760925987113174",
+          "name": "name"
+        },
+        {
+          "id": "3:3035689582752356278",
+          "name": "address"
+        },
+        {
+          "id": "4:5068193821793024059",
+          "name": "website"
+        },
+        {
+          "id": "5:5924303874949528482",
+          "name": "elevation"
+        }
+      ],
+      "relations": [
+        {
+          "id": "1:4179452567171080886",
+          "name": "addressMaps"
+        },
+        {
+          "id": "2:825288904440106997",
+          "name": "addressNames"
+        }
+      ]
+    },
+    {
+      "id": "2:7274914675794154451",
+      "lastPropertyId": "9:5515110971068944504",
+      "name": "AddressMap",
+      "properties": [
+        {
+          "id": "1:2401810283319647988",
+          "name": "origAddress"
+        },
+        {
+          "id": "2:3117490031744411926",
+          "name": "destAddress"
+        },
+        {
+          "id": "3:5076853148935677132",
+          "name": "id"
+        },
+        {
+          "id": "4:6424162286754233086",
+          "name": "distance"
+        },
+        {
+          "id": "5:4339682361680508783",
+          "name": "duration"
+        },
+        {
+          "id": "6:709379055169431940",
+          "name": "distanceText"
+        },
+        {
+          "id": "7:6771744335107691707",
+          "name": "durationText"
+        },
+        {
+          "id": "8:2133754491625705860",
+          "indexId": "1:7699155292556241440",
+          "name": "originAddressId"
+        },
+        {
+          "id": "9:5515110971068944504",
+          "indexId": "2:4170704773116649928",
+          "name": "destinationAddressId"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:677584654374007655",
+      "lastPropertyId": "5:4035926096448092074",
+      "name": "AddressName",
+      "properties": [
+        {
+          "id": "1:4795887208586025274",
+          "name": "id"
+        },
+        {
+          "id": "2:8202045985467446154",
+          "indexId": "3:1491766036304059101",
+          "name": "name"
+        },
+        {
+          "id": "3:2742131503848562273",
+          "name": "fileLocation"
+        },
+        {
+          "id": "4:3547225272390929495",
+          "name": "isSearchSelected"
+        },
+        {
+          "id": "5:4035926096448092074",
+          "name": "isResultSelected"
+        }
+      ],
+      "relations": [
+        {
+          "id": "3:6143967408860597869",
+          "name": "addresses"
+        }
+      ]
+    }
+  ],
+  "lastEntityId": "3:677584654374007655",
+  "lastIndexId": "3:1491766036304059101",
+  "lastRelationId": "3:6143967408860597869",
+  "lastSequenceId": "0:0",
+  "modelVersion": 4,
+  "modelVersionParserMinimum": 4,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

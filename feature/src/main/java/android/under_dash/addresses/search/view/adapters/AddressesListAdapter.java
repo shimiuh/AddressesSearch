@@ -3,7 +3,7 @@ package android.under_dash.addresses.search.view.adapters;
 import androidx.recyclerview.widget.RecyclerView;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.utils.Utils;
-import android.under_dash.addresses.search.models.AddressName;
+import android.under_dash.addresses.search.models.objectBox.AddressName;
 import android.under_dash.addresses.search.view.adapters.multiChoice.MultiChoiceAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;

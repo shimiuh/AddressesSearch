@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.under_dash.addresses.search.R;
 import android.under_dash.addresses.search.utils.Utils;
-import android.under_dash.addresses.search.models.Address;
+import android.under_dash.addresses.search.models.objectBox.Address;
 import android.under_dash.addresses.search.view.adapters.multiChoice.MultiChoiceAdapter;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -6,11 +6,11 @@ import android.os.AsyncTask;
 import android.text.format.DateUtils;
 import android.under_dash.addresses.search.utils.RestUtil;
 import android.under_dash.addresses.search.app.SharedPrefManager;
-import android.under_dash.addresses.search.models.Address;
-import android.under_dash.addresses.search.models.AddressMap;
-import android.under_dash.addresses.search.models.DistanceResponse;
-import android.under_dash.addresses.search.models.Element;
-import android.under_dash.addresses.search.models.Row;
+import android.under_dash.addresses.search.models.objectBox.Address;
+import android.under_dash.addresses.search.models.objectBox.AddressMap;
+import android.under_dash.addresses.search.models.matrixMapApi.DistanceResponse;
+import android.under_dash.addresses.search.models.matrixMapApi.Element;
+import android.under_dash.addresses.search.models.matrixMapApi.Row;
 import android.util.Log;
 import org.apache.commons.collections4.ListUtils;
 

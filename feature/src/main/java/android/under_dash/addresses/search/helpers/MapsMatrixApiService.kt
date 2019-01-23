@@ -5,9 +5,9 @@ import android.content.Context
 import android.os.AsyncTask
 import android.text.format.DateUtils
 import android.under_dash.addresses.search.app.SharedPrefManager
-import android.under_dash.addresses.search.models.Address
-import android.under_dash.addresses.search.models.AddressMap
-import android.under_dash.addresses.search.models.DistanceResponse
+import android.under_dash.addresses.search.models.objectBox.Address
+import android.under_dash.addresses.search.models.objectBox.AddressMap
+import android.under_dash.addresses.search.models.matrixMapApi.DistanceResponse
 import android.under_dash.addresses.search.utils.RestUtil
 import android.util.Log
 

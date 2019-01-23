@@ -5,9 +5,9 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import android.content.Context;
 import android.under_dash.addresses.search.app.App;
-import android.under_dash.addresses.search.models.Institution;
-import android.under_dash.addresses.search.models.SearchList;
-import android.under_dash.addresses.search.models.SearchResult;
+import android.under_dash.addresses.search.models.room.Institution;
+import android.under_dash.addresses.search.models.room.SearchList;
+import android.under_dash.addresses.search.models.room.SearchResult;
 
 @Database(entities = {Institution.class, SearchList.class, SearchResult.class }, version = 11, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {

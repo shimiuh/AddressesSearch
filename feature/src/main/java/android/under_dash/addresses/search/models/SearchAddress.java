@@ -1,5 +1,7 @@
 package android.under_dash.addresses.search.models;
 
+import android.under_dash.addresses.search.models.objectBox.Address;
+
 import androidx.annotation.NonNull;
 
 import java.util.Comparator;

@@ -33,7 +33,7 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Process;
 import android.under_dash.addresses.search.app.App;
-import android.under_dash.addresses.search.models.MyObjectBox;
+import android.under_dash.addresses.search.models.objectBox.MyObjectBox;
 import android.util.Log;
 
 import java.io.InputStream;
@@ -73,6 +73,7 @@ public class Application_ extends Application {
 	}
 
 	synchronized public static BoxStore getBoxStore(){
+//      TODO: back up DB on local devise
 //		BoxStoreBuilder builder = MyObjectBox.builder();
 //		Factory<InputStream> is = new Factory<InputStream>() {
 //			@Override

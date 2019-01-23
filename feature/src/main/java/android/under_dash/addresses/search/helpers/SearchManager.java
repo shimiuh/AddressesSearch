@@ -1,17 +1,6 @@
 package android.under_dash.addresses.search.helpers;
 
-import android.os.Looper;
-import android.under_dash.addresses.search.app.App;
-import android.under_dash.addresses.search.app.Constants;
 import android.under_dash.addresses.search.app.SharedPrefManager;
-import android.under_dash.addresses.search.models.Address;
-import android.under_dash.addresses.search.models.AddressName;
-import android.under_dash.addresses.search.models.AddressName_;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import io.objectbox.Box;
 
 public class SearchManager {
 

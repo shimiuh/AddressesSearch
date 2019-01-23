@@ -1,4 +1,4 @@
-package android.under_dash.addresses.search.models;
+package android.under_dash.addresses.search.models.objectBox;
 
 
 import android.under_dash.addresses.search.app.App;
@@ -9,13 +9,10 @@ import java.util.List;
 
 import io.objectbox.Box;
 import io.objectbox.Property;
-import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
-import io.objectbox.annotation.Unique;
 import io.objectbox.query.QueryBuilder;
 import io.objectbox.relation.ToMany;
-import io.objectbox.relation.ToOne;
 
 @Entity
 public class Address {
