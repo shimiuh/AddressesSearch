@@ -20,10 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MapsMatrixApiService extends AsyncTask<String, String, String> {
+public class MapsMatrixApiServiceJava extends AsyncTask<String, String, String> {
 
 
-    private static final String TAG = MapsMatrixApiService.class.getSimpleName();
+    private static final String TAG = MapsMatrixApiServiceJava.class.getSimpleName();
     private static final long MIN_API_CALL_INTERVAL = DateUtils.SECOND_IN_MILLIS*10;//A google restriction for sending a request one after the other
     private int mCount;
     private int mTotal;
@@ -39,11 +39,11 @@ public class MapsMatrixApiService extends AsyncTask<String, String, String> {
 //    }).execute();
 
 
-    public static MapsMatrixApiService build(Context context, List<Address> startPointAddressNameId, List<Address> destinationAddressNameId, Runnable onDone){
-        return new MapsMatrixApiService(context, startPointAddressNameId,  destinationAddressNameId,  onDone);
+    public static MapsMatrixApiServiceJava build(Context context, List<Address> startPointAddressNameId, List<Address> destinationAddressNameId, Runnable onDone){
+        return new MapsMatrixApiServiceJava(context, startPointAddressNameId,  destinationAddressNameId,  onDone);
     }
 
-    private MapsMatrixApiService(Context context, List<Address> startPointAddresses, List<Address> destinationAddresses, Runnable onDone) {
+    private MapsMatrixApiServiceJava(Context context, List<Address> startPointAddresses, List<Address> destinationAddresses, Runnable onDone) {
         this.mStartPointAddresses  = startPointAddresses;
         this.mDestinationAddresses = destinationAddresses;
         this.mOnDone = onDone;
