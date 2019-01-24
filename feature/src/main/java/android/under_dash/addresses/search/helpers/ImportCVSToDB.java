@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.under_dash.addresses.search.app.App;
 import android.under_dash.addresses.search.models.objectBox.Address;
 import android.under_dash.addresses.search.models.objectBox.AddressList;
-import android.under_dash.addresses.search.models.room.Institution;
 import android.util.Log;
 import android.widget.Toast;
 import java.io.File;
@@ -65,7 +64,6 @@ public class ImportCVSToDB extends AsyncTask<String, String, String> {
                 String acc_website = row.getField(1);
                 String acc_address = row.getField(2);
 
-                Institution institution = new Institution(0,acc_name,acc_website,acc_address);
                 //AppDatabase.get(mContext).addInstitution(institution);
                 //String latLong = Utils.getLatLongFromLocation(acc_address);
                 //Log.e("shimi", "latLong = "+latLong);
