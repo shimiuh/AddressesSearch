@@ -8,6 +8,7 @@ import android.under_dash.addresses.search.app.SharedPrefManager
 import android.under_dash.addresses.search.models.objectBox.Address
 import android.under_dash.addresses.search.models.objectBox.AddressMap
 import android.under_dash.addresses.search.models.matrixMapApi.DistanceResponse
+import android.under_dash.addresses.search.utils.Utils
 import android.util.Log
 
 import org.apache.commons.collections4.ListUtils
@@ -165,12 +166,14 @@ class MapsMatrixApiService
         Log.d(TAG, "addRespondToDb: rows = " + rows.size + " " + body.destinationAddresses.size + " " + body.originAddresses.size)
         for (i in rows.indices) {
             val originAddress = startPointList[i]
+            originAddress.setElevation(HttpUtil.getElevation(originAddress.address))
             val elements = rows[i].elements
             Log.d(TAG, "addRespondToDb: elements = " + elements.size)
             for (y in elements.indices) {
                 val element = elements[y]
                 val destinationAddress = destinationList[y]
                 if (destinationAddress != null) {
+                    destinationAddress.setElevation(HttpUtil.getElevation(destinationAddress.address))
                     val distance = element.distance.value
                     val duration = element.duration.value
                     val distanceText = element.duration.text

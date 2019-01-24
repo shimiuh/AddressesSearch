@@ -58,18 +58,12 @@ public class ImportCVSToDB extends AsyncTask<String, String, String> {
             CsvContainer csv = csvReader.read(mFile, StandardCharsets.UTF_8);
             for (CsvRow row : csv.getRows()) {
 
-
-
                 String acc_name = row.getField(0);
                 String acc_website = row.getField(1);
                 String acc_address = row.getField(2);
 
-                //AppDatabase.get(mContext).addInstitution(institution);
                 //String latLong = Utils.getLatLongFromLocation(acc_address);
-                //Log.e("shimi", "latLong = "+latLong);
                 Address.add(acc_name,acc_address,acc_website,mAddressName);
-                //data=data+"Account_name:"+acc_name  +"  Account_web:"+acc_website+"\n" +"  Account_address:"+acc_address+"\n";
-                //Log.d("shimi", "doInBackground: "+"Read line: " + row);
                 publishProgress(mAddressName.addresses.size()+" Done out of "+csv.getRowCount());
             }
             Log.d("shimi", "DB added  size = "+mAddressName.addresses.size()+" "+App.getBox(Address.class).getAll().size());

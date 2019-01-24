@@ -21,6 +21,9 @@ public class Address {
     public String name;
     public String address;
     public String website;
+
+
+
     public double elevation;
     public ToMany<AddressMap> addressMaps;
     public ToMany<AddressList> addressLists;
@@ -53,6 +56,10 @@ public class Address {
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    public void setElevation(double elevation) {
+        this.elevation = elevation;
     }
 
 

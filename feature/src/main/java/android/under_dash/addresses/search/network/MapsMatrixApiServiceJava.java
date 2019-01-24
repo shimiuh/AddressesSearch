@@ -193,12 +193,14 @@ public class MapsMatrixApiServiceJava extends AsyncTask<String, String, String> 
         Log.d(TAG, "addRespondToDb: rows = "+rows.size()+" "+body.getDestinationAddresses().size()+" "+body.getOriginAddresses().size());
         for (int i = 0; i < rows.size() ; i++){
             Address originAddress = startPointList.get(i);
+            originAddress.setElevation(HttpUtil.getElevation(originAddress.address));
             List<Element> elements = rows.get(i).getElements();
             Log.d(TAG, "addRespondToDb: elements = "+elements.size());
             for (int y = 0; y < elements.size(); y++) {
                 Element element = elements.get(y);
                 Address destinationAddress = destinationList.get(y);
                 if(destinationAddress != null){
+                    destinationAddress.setElevation(HttpUtil.getElevation(destinationAddress.address));
                     int       distance = element.getDistance().getValue();
                     int       duration = element.getDuration().getValue();
                     String    distanceText = element.getDuration().getText();
